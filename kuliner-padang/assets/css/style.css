@@ -1,0 +1,1522 @@
+/* ==========================================================================
+   STYLE.CSS — PETA RASA PADANG (Tema Minang IT FEST 2026)
+   Warna Dasar:
+   - Merah Tua: #8B1A1A (Marun Minangkabau)
+   - Emas:      #D4A017 (Ukiran Songket / Kemewahan Adat)
+   - Hitam:     #1A1A1A (Kekuatan & Karakter Minang)
+   - Krem:      #FFF6E5 (Kertas Naskah Kuno / Lembut Bersahaja)
+   ========================================================================== */
+
+:root {
+    --merah: #8B1A1A;
+    --merah-gelap: #6b1414;
+    --merah-terang: #a82323;
+    --emas: #D4A017;
+    --emas-muda: #f5c842;
+    --hitam: #1A1A1A;
+    --abu-gelap: #2a2a2a;
+    --krem: #FFF6E5;
+    --krem-muda: #fcf9f2;
+    --putih: #ffffff;
+    --border-emas: rgba(212, 160, 23, 0.35);
+    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 10px 30px rgba(139, 26, 26, 0.15);
+    --font-heading: 'Cinzel', serif, Georgia;
+    --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    color: var(--hitam);
+    background-color: var(--krem-muda);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* ==========================================================================
+   TYPOGRAPHY & UTILITIES
+   ========================================================================== */
+h1, h2, h3, h4, .brand-title, .section-heading {
+    font-family: var(--font-heading);
+    color: var(--merah);
+    letter-spacing: 0.5px;
+}
+
+a {
+    color: var(--merah);
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+a:hover {
+    color: var(--emas);
+}
+
+.text-gold {
+    color: var(--emas) !important;
+}
+
+.text-muted {
+    color: #666;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.required {
+    color: #dc3545;
+}
+
+/* ==========================================================================
+   BUTTONS & BADGES
+   ========================================================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    font-family: var(--font-body);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--merah) 0%, var(--merah-gelap) 100%);
+    color: var(--putih);
+    border-color: var(--merah-gelap);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--merah-terang) 0%, var(--merah) 100%);
+    color: var(--emas-muda);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(139, 26, 26, 0.3);
+}
+
+.btn-gold {
+    background: linear-gradient(135deg, var(--emas) 0%, #b3850e 100%);
+    color: var(--hitam);
+    font-weight: 700;
+}
+
+.btn-gold:hover {
+    background: linear-gradient(135deg, var(--emas-muda) 0%, var(--emas) 100%);
+    color: var(--hitam);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(212, 160, 23, 0.35);
+}
+
+.btn-outline-gold {
+    background: transparent;
+    color: var(--emas-muda);
+    border: 1.5px solid var(--emas);
+}
+
+.btn-outline-gold:hover {
+    background: var(--emas);
+    color: var(--hitam);
+    transform: translateY(-2px);
+}
+
+.btn-outline-light {
+    background: transparent;
+    color: #fff;
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+}
+
+.btn-outline-light:hover {
+    background: #fff;
+    color: var(--merah);
+}
+
+.btn-secondary {
+    background: #e2e8f0;
+    color: #334155;
+}
+
+.btn-secondary:hover {
+    background: #cbd5e1;
+    color: #1e293b;
+}
+
+.btn-danger {
+    background: #dc2626;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background: #b91c1c;
+    color: #fff;
+}
+
+.btn-warning {
+    background: #d97706;
+    color: #fff;
+}
+
+.btn-info {
+    background: #0284c7;
+    color: #fff;
+}
+
+.btn-sm {
+    padding: 6px 14px;
+    font-size: 0.85rem;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.badge-gold {
+    background-color: var(--krem);
+    color: var(--merah);
+    border: 1px solid var(--emas);
+}
+
+.badge-count {
+    background-color: #f1f5f9;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+}
+
+/* ==========================================================================
+   NAVBAR (Animasi Hover Garis Bawah Emas & Efek Scroll)
+   ========================================================================== */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: var(--merah);
+    border-bottom: 3px solid var(--emas);
+    transition: all 0.35s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.navbar.scrolled {
+    background-color: rgba(139, 26, 26, 0.96);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    padding: 2px 0;
+}
+
+.nav-container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-icon {
+    font-size: 1.8rem;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.brand-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--emas-muda);
+    display: block;
+    line-height: 1.2;
+}
+
+.brand-tagline {
+    font-size: 0.75rem;
+    color: var(--krem);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-link {
+    color: var(--krem);
+    font-weight: 500;
+    font-size: 0.95rem;
+    position: relative;
+    padding: 6px 0;
+}
+
+/* Animasi hover garis emas */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--emas);
+    transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.nav-link:hover {
+    color: var(--emas-muda);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.user-greeting {
+    color: var(--krem);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   HERO SECTION (Siluet Minang & Tagline)
+   ========================================================================== */
+.hero-section {
+    position: relative;
+    background: linear-gradient(135deg, #1a0505 0%, #4a0d0d 50%, #8B1A1A 100%);
+    color: var(--putih);
+    padding: 100px 24px 120px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(212, 160, 23, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(139, 26, 26, 0.25) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.hero-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: rgba(212, 160, 23, 0.2);
+    border: 1px solid var(--emas);
+    color: var(--emas-muda);
+    border-radius: 30px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--emas-muda);
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    margin-bottom: 12px;
+    line-height: 1.15;
+}
+
+.hero-tagline {
+    font-size: 1.4rem;
+    color: var(--krem);
+    font-weight: 600;
+    margin-bottom: 18px;
+}
+
+.hero-subtext {
+    font-size: 1.05rem;
+    color: rgba(255, 246, 229, 0.85);
+    max-width: 720px;
+    margin: 0 auto 36px;
+}
+
+.hero-stats {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    margin-bottom: 40px;
+    padding: 18px 24px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-emas);
+    border-radius: var(--radius-md);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--emas);
+    font-family: var(--font-heading);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--krem);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-divider {
+    width: 1px;
+    height: 36px;
+    background: var(--border-emas);
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.btn-hero-primary {
+    background: linear-gradient(135deg, var(--emas) 0%, #b3850e 100%);
+    color: var(--hitam);
+    font-weight: 700;
+    padding: 14px 28px;
+    border-radius: var(--radius-sm);
+    font-size: 1.05rem;
+    box-shadow: 0 4px 20px rgba(212, 160, 23, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-hero-primary:hover {
+    background: linear-gradient(135deg, var(--emas-muda) 0%, var(--emas) 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(212, 160, 23, 0.6);
+    color: var(--hitam);
+}
+
+.btn-hero-secondary {
+    background: transparent;
+    color: var(--krem);
+    border: 2px solid var(--emas);
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: var(--radius-sm);
+    font-size: 1.05rem;
+}
+
+.btn-hero-secondary:hover {
+    background: rgba(212, 160, 23, 0.2);
+    color: var(--emas-muda);
+    transform: translateY(-3px);
+}
+
+/* Motif Songket Border Bawah Hero */
+.songket-border-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 16px;
+    background: repeating-linear-gradient(
+        45deg,
+        var(--emas),
+        var(--emas) 12px,
+        var(--merah-gelap) 12px,
+        var(--merah-gelap) 24px
+    );
+    border-top: 2px solid var(--emas-muda);
+}
+
+.songket-strip {
+    height: 10px;
+    background: repeating-linear-gradient(
+        -45deg,
+        var(--merah),
+        var(--merah) 10px,
+        var(--emas) 10px,
+        var(--emas) 20px
+    );
+    margin: 40px 0;
+}
+
+/* ==========================================================================
+   SECTION COMMON
+   ========================================================================== */
+.section-container {
+    max-width: 1240px;
+    margin: 60px auto;
+    padding: 0 24px;
+}
+
+.section-kicker {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--merah);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.section-heading {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.section-subtext {
+    color: #555;
+    font-size: 1rem;
+    max-width: 700px;
+    margin: 0 auto 24px;
+}
+
+.minang-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--emas);
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+}
+
+.minang-divider .center-diamond {
+    font-size: 1.3rem;
+    color: var(--merah);
+}
+
+.minang-divider-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--emas);
+    margin: 8px 0 16px;
+}
+
+/* ==========================================================================
+   MAP & FILTER CONTROLS
+   ========================================================================== */
+.map-controls-card {
+    background: var(--putih);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--border-emas);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.search-box-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.1rem;
+    color: #888;
+}
+
+.search-input {
+    width: 100%;
+    padding: 14px 16px 14px 46px;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    font-family: var(--font-body);
+    transition: all 0.25s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--merah);
+    box-shadow: 0 0 0 3px rgba(139, 26, 26, 0.15);
+}
+
+.category-filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1.5px solid #cbd5e1;
+    background: var(--putih);
+    color: #475569;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-family: var(--font-body);
+}
+
+.filter-btn:hover {
+    border-color: var(--emas);
+    color: var(--merah);
+    background-color: var(--krem);
+}
+
+.filter-btn.active {
+    background: var(--merah);
+    border-color: var(--merah);
+    color: var(--putih);
+    box-shadow: 0 4px 12px rgba(139, 26, 26, 0.25);
+}
+
+/* Map Wrapper */
+.map-wrapper {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 3px solid var(--emas);
+    box-shadow: var(--shadow-hover);
+}
+
+.main-map {
+    height: 540px;
+    width: 100%;
+    background-color: #e5e7eb;
+}
+
+.mini-map-box {
+    height: 280px;
+    width: 100%;
+    border-radius: var(--radius-sm);
+    border: 2px solid #cbd5e1;
+    margin-top: 6px;
+}
+
+.map-legend {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 999;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    border: 1px solid var(--border-emas);
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Custom Marker Leaflet Gonjong */
+.custom-gonjong-marker {
+    background: transparent;
+    border: none;
+}
+
+.marker-pin {
+    width: 36px;
+    height: 42px;
+    background: var(--merah);
+    border: 2px solid var(--emas-muda);
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+    position: relative;
+}
+
+.marker-symbol {
+    transform: rotate(45deg);
+    font-size: 16px;
+}
+
+/* Leaflet Popup Minang */
+.leaflet-popup-content-wrapper {
+    border-radius: var(--radius-md);
+    border: 2px solid var(--emas);
+    box-shadow: var(--shadow-hover);
+    padding: 0;
+    overflow: hidden;
+}
+
+.leaflet-popup-content {
+    margin: 16px;
+    line-height: 1.5;
+}
+
+.minang-popup .popup-header {
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+}
+
+.popup-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: var(--krem);
+    color: var(--merah);
+    border: 1px solid var(--emas);
+    margin-bottom: 4px;
+}
+
+.popup-title {
+    font-size: 1.15rem;
+    color: var(--merah);
+    margin: 0;
+}
+
+.popup-address {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 6px;
+}
+
+.popup-desc {
+    font-size: 0.85rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.popup-menu-list {
+    background: #fdfbf7;
+    border: 1px dashed var(--emas);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    margin-bottom: 12px;
+    font-size: 0.8rem;
+}
+
+.popup-menu-list strong {
+    color: var(--merah);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.popup-menu-list ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.popup-menu-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
+    border-bottom: 1px solid #f1ece1;
+}
+
+.popup-menu-list li:last-child {
+    border-bottom: none;
+}
+
+.menu-price {
+    font-weight: 700;
+    color: var(--merah);
+}
+
+.popup-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-popup-maps {
+    flex: 1;
+    background: #0284c7;
+    color: #fff;
+    padding: 6px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+.btn-popup-maps:hover {
+    background: #0369a1;
+    color: #fff;
+}
+
+.btn-popup-wa {
+    flex: 1;
+    background: #16a34a;
+    color: #fff;
+    padding: 6px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+.btn-popup-wa:hover {
+    background: #15803d;
+    color: #fff;
+}
+
+/* ==========================================================================
+   GRID KARTU TOKO (repeat(auto-fill, minmax(260px, 1fr)))
+   ========================================================================== */
+.toko-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.toko-card {
+    background: var(--putih);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1.5px solid #f1f5f9;
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    cursor: pointer;
+}
+
+.toko-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--emas);
+    box-shadow: var(--shadow-hover);
+}
+
+.card-img-wrapper {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    background-color: #eee;
+}
+
+.card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.toko-card:hover .card-img {
+    transform: scale(1.05);
+}
+
+.card-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(139, 26, 26, 0.9);
+    color: var(--emas-muda);
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: 1px solid var(--emas);
+    backdrop-filter: blur(4px);
+}
+
+.card-body {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--merah);
+    margin-bottom: 6px;
+    line-height: 1.3;
+}
+
+.card-address {
+    font-size: 0.82rem;
+    color: #64748b;
+    margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-desc {
+    font-size: 0.85rem;
+    color: #334155;
+    margin-bottom: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1;
+}
+
+.card-menu-preview {
+    background-color: #f8fafc;
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    margin-bottom: 16px;
+    font-size: 0.8rem;
+    border: 1px solid #e2e8f0;
+}
+
+.preview-menu-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
+    color: #475569;
+}
+
+.price-tag {
+    font-weight: 700;
+    color: var(--merah);
+}
+
+.card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.badge-total-view {
+    background: var(--krem);
+    color: var(--merah);
+    border: 1px solid var(--emas);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+/* Skeleton Loading */
+.skeleton-card {
+    height: 380px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+    border-radius: var(--radius-md);
+}
+
+@keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ==========================================================================
+   ABOUT SECTION
+   ========================================================================== */
+.about-card {
+    background: var(--putih);
+    border-radius: var(--radius-lg);
+    padding: 48px;
+    box-shadow: var(--shadow-soft);
+    border: 2px solid var(--border-emas);
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.about-title {
+    font-size: 2rem;
+    margin-bottom: 12px;
+}
+
+.about-info p {
+    margin-bottom: 14px;
+    color: #475569;
+}
+
+.features-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.feature-badge {
+    background: #fdfbf7;
+    border-left: 3px solid var(--emas);
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--hitam);
+}
+
+.about-visual {
+    display: flex;
+    justify-content: center;
+}
+
+.gonjong-box {
+    background: linear-gradient(135deg, var(--merah) 0%, var(--hitam) 100%);
+    border: 3px solid var(--emas);
+    border-radius: var(--radius-md);
+    padding: 36px 24px;
+    text-align: center;
+    color: var(--krem);
+    box-shadow: var(--shadow-hover);
+    width: 100%;
+    max-width: 320px;
+}
+
+.gonjong-roof {
+    font-size: 3rem;
+    margin-bottom: 12px;
+}
+
+.gonjong-box h3 {
+    color: var(--emas-muda);
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+}
+
+.gonjong-box p {
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+    line-height: 1.4;
+}
+
+.badge-award {
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(212, 160, 23, 0.25);
+    border: 1px solid var(--emas);
+    color: var(--emas-muda);
+    font-size: 0.8rem;
+    font-weight: 700;
+    border-radius: 20px;
+}
+
+/* ==========================================================================
+   FOOTER MINANG
+   ========================================================================== */
+.footer-minang {
+    background-color: var(--hitam);
+    color: var(--krem);
+    position: relative;
+    padding-top: 60px;
+}
+
+.footer-songket-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--merah),
+        var(--merah) 20px,
+        var(--emas) 20px,
+        var(--emas) 40px
+    );
+}
+
+.footer-container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 24px 48px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.2fr;
+    gap: 40px;
+}
+
+.footer-brand {
+    margin-bottom: 14px;
+}
+
+.footer-logo {
+    color: var(--emas-muda);
+    font-size: 1.3rem;
+    line-height: 1.2;
+}
+
+.footer-bio {
+    font-size: 0.85rem;
+    color: #a1a1aa;
+    line-height: 1.6;
+}
+
+.footer-heading {
+    font-size: 1.05rem;
+    color: var(--emas);
+    margin-bottom: 16px;
+    font-family: var(--font-heading);
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 8px;
+}
+
+.footer-links a {
+    color: #d4d4d8;
+    font-size: 0.9rem;
+}
+
+.footer-links a:hover {
+    color: var(--emas-muda);
+    padding-left: 4px;
+}
+
+.footer-bottom {
+    border-top: 1px solid #27272a;
+    padding: 20px 24px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #71717a;
+}
+
+/* ==========================================================================
+   AUTH PAGES (Login & Register)
+   ========================================================================== */
+.auth-page {
+    background: radial-gradient(circle at center, #3b0b0b 0%, #150303 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 440px;
+}
+
+.auth-card {
+    background: var(--putih);
+    border-radius: var(--radius-lg);
+    padding: 36px;
+    border: 2px solid var(--emas);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.brand-link {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.gonjong-icon {
+    font-size: 2.4rem;
+}
+
+.auth-subtitle {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-top: 4px;
+}
+
+.demo-account-hint {
+    background: var(--krem);
+    border-left: 4px solid var(--emas);
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 20px;
+    color: var(--hitam);
+}
+
+.demo-account-hint code {
+    background: #e2e8f0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #334155;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid #cbd5e1;
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-family: var(--font-body);
+    transition: all 0.2s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--merah);
+    box-shadow: 0 0 0 3px rgba(139, 26, 26, 0.15);
+}
+
+.alert {
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.alert-danger {
+    background-color: #fee2e2;
+    border: 1px solid #f87171;
+    color: #991b1b;
+}
+
+.alert-success {
+    background-color: #dcfce7;
+    border: 1px solid #4ade80;
+    color: #166534;
+}
+
+.alert-link {
+    font-weight: 700;
+    color: #15803d;
+    text-decoration: underline;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid #e2e8f0;
+    font-size: 0.9rem;
+}
+
+.back-home {
+    display: inline-block;
+    margin-top: 8px;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   ADMIN DASHBOARD & CRUD STYLES
+   ========================================================================== */
+.admin-body {
+    background-color: #f8fafc;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-nav {
+    background-color: var(--merah);
+    border-bottom: 3px solid var(--emas);
+    color: var(--putih);
+    box-shadow: var(--shadow-soft);
+}
+
+.admin-nav-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--emas-muda);
+}
+
+.admin-user-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 0.9rem;
+}
+
+.admin-main {
+    flex: 1;
+    padding: 36px 0;
+}
+
+.admin-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.admin-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 24px;
+    gap: 16px;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    color: var(--merah);
+}
+
+.section-desc {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+.card-table {
+    background: var(--putih);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+.data-table th {
+    background-color: #f1f5f9;
+    color: #334155;
+    padding: 14px 16px;
+    font-weight: 700;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.data-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+.data-table tr:hover {
+    background-color: #fdfbf7;
+}
+
+.thumb-table {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    border: 1px solid #cbd5e1;
+}
+
+.btn-group {
+    display: inline-flex;
+    gap: 6px;
+}
+
+.admin-footer {
+    background: #1e293b;
+    color: #94a3b8;
+    text-align: center;
+    padding: 18px 24px;
+    font-size: 0.85rem;
+    margin-top: auto;
+}
+
+/* Admin Two Columns (Menu CRUD) */
+.admin-two-cols {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 30px;
+    align-items: start;
+}
+
+.price-badge {
+    font-weight: 700;
+    color: var(--merah);
+    background: #fef2f2;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid #fecaca;
+}
+
+/* Admin Forms */
+.form-container {
+    max-width: 980px;
+}
+
+.form-card {
+    background: var(--putih);
+    border-radius: var(--radius-md);
+    padding: 32px;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid var(--border-emas);
+}
+
+.form-title {
+    font-size: 1.6rem;
+    color: var(--merah);
+    margin-bottom: 6px;
+}
+
+.form-title-sm {
+    font-size: 1.25rem;
+    color: var(--merah);
+    margin-bottom: 18px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 10px;
+}
+
+.form-subtitle {
+    color: #64748b;
+    margin-bottom: 24px;
+    font-size: 0.95rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 24px;
+}
+
+.form-col {
+    flex: 1;
+}
+
+.col-half {
+    flex: 1;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* ==========================================================================
+   RESPONSIVE (MOBILE & TABLET)
+   ========================================================================== */
+@media (max-width: 992px) {
+    .hero-title {
+        font-size: 2.8rem;
+    }
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+    .footer-container {
+        grid-template-columns: 1fr 1fr;
+    }
+    .admin-two-cols {
+        grid-template-columns: 1fr;
+    }
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column;
+        gap: 12px;
+    }
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
+    .hero-title {
+        font-size: 2.2rem;
+    }
+    .hero-tagline {
+        font-size: 1.15rem;
+    }
+    .hero-stats {
+        flex-direction: column;
+        gap: 14px;
+    }
+    .stat-divider {
+        display: none;
+    }
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+    .admin-header-flex {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .main-map {
+        height: 400px;
+    }
+    .features-list {
+        grid-template-columns: 1fr;
+    }
+}
