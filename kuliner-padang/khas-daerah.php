@@ -78,6 +78,11 @@ $res_toko_khas = mysqli_query($koneksi, "SELECT * FROM toko WHERE is_khas = 1 OR
                                     <span class="khas-loc-title"><i class="fa-solid fa-store"></i> Rekomendasi Tempat Cicip:</span>
                                     <strong class="khas-loc-name"><?= htmlspecialchars($toko_k['nama_toko']); ?></strong>
                                     <p class="khas-loc-address"><i class="fa-solid fa-map-pin"></i> <?= htmlspecialchars($toko_k['alamat']); ?></p>
+                            <?php if (!empty($toko_k['jam_buka'])): ?>
+                                <p class="khas-loc-address" style="color:#0284C7; font-weight:600; margin-top:2px;">
+                                    <i class="fa-regular fa-clock"></i> Buka: <?= htmlspecialchars($toko_k['jam_buka']); ?>
+                                </p>
+                            <?php endif; ?>
                                 </div>
                                 <div class="khas-card-actions">
                                     <a href="detail.php?id=<?= $toko_k['id_toko']; ?>" class="btn btn-sm btn-gold">

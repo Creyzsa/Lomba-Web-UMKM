@@ -146,6 +146,11 @@ $kategori_list = ['Semua', 'Rumah Makan', 'Sate', 'Kopi', 'Oleh-oleh', 'Camilan'
                         <div class="card-body">
                             <h3 class="card-title"><?= htmlspecialchars($toko['nama_toko']); ?></h3>
                             <p class="card-address"><i class="fa-solid fa-location-dot"></i> <?= htmlspecialchars($toko['alamat']); ?></p>
+                            <?php if (!empty($toko['jam_buka'])): ?>
+                                <p class="card-address" style="color:#0284C7; font-weight:600; margin-top:-4px; margin-bottom:8px;">
+                                    <i class="fa-regular fa-clock"></i> <?= htmlspecialchars($toko['jam_buka']); ?>
+                                </p>
+                            <?php endif; ?>
                             <p class="card-desc"><?= htmlspecialchars($toko['deskripsi']); ?></p>
 
                             <!-- Rincian Menu Makanan -->

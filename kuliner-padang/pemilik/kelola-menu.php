@@ -81,34 +81,73 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'hapus
         if (empty($nama_menu) || $harga === false || $harga <= 0) {
             $error = "Nama menu dan harga (harus lebih dari 0) wajib diisi!";
         } else {
+            // Ambil foto lama jika mode edit
+            $foto_menu_nama = null;
             if ($id_menu_edit > 0) {
-                $stmt_check = mysqli_prepare($koneksi, "SELECT id_menu FROM menu WHERE id_menu = ? AND id_toko = ?");
-                mysqli_stmt_bind_param($stmt_check, "ii", $id_menu_edit, $id_toko);
-                mysqli_stmt_execute($stmt_check);
-                $menu_exists = mysqli_stmt_get_result($stmt_check);
-                mysqli_stmt_close($stmt_check);
+                $stmt_old = mysqli_prepare($koneksi, "SELECT foto_menu FROM menu WHERE id_menu = ? AND id_toko = ?");
+                mysqli_stmt_bind_param($stmt_old, "ii", $id_menu_edit, $id_toko);
+                mysqli_stmt_execute($stmt_old);
+                $old_res = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_old));
+                $foto_menu_nama = $old_res['foto_menu'] ?? null;
+                mysqli_stmt_close($stmt_old);
+            }
 
-                if (mysqli_num_rows($menu_exists) === 0) {
-                    $error = "Menu tidak ditemukan di toko ini.";
+            // Proses upload foto menu jika ada file baru diunggah
+            if (isset($_FILES['foto_menu']) && $_FILES['foto_menu']['error'] === UPLOAD_ERR_OK) {
+                $file_tmp  = $_FILES['foto_menu']['tmp_name'];
+                $file_size = $_FILES['foto_menu']['size'];
+                $image_info = @getimagesize($file_tmp);
+                $allowed_mime = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
+                $mime_type = $image_info['mime'] ?? '';
+
+                if (!isset($allowed_mime[$mime_type])) {
+                    $error = 'Format file foto menu harus berupa JPG, PNG, atau WEBP!';
+                } elseif ($file_size > 2 * 1024 * 1024) {
+                    $error = 'Ukuran file foto menu maksimal 2 MB!';
                 } else {
-                    $stmt_up = mysqli_prepare($koneksi, "UPDATE menu SET nama_menu = ?, harga = ?, deskripsi = ? WHERE id_menu = ? AND id_toko = ?");
-                    mysqli_stmt_bind_param($stmt_up, "sisii", $nama_menu, $harga, $deskripsi, $id_menu_edit, $id_toko);
-                    if (mysqli_stmt_execute($stmt_up)) {
-                        $pesan = "Menu '" . $nama_menu . "' berhasil diperbarui!";
-                    } else {
-                        $error = "Gagal memperbarui menu: " . mysqli_stmt_error($stmt_up);
+                    $foto_menu_nama = 'menu_' . bin2hex(random_bytes(8)) . '.' . $allowed_mime[$mime_type];
+                    $target_dir = '../assets/img/';
+                    if (!is_dir($target_dir)) {
+                        mkdir($target_dir, 0755, true);
                     }
-                    mysqli_stmt_close($stmt_up);
+                    if (move_uploaded_file($file_tmp, $target_dir . $foto_menu_nama)) {
+                        @copy($target_dir . $foto_menu_nama, "C:/xampp/htdocs/kuliner-padang/assets/img/" . $foto_menu_nama);
+                    } else {
+                        $error = 'Gagal menyimpan foto menu ke server.';
+                    }
                 }
-            } else {
-                $stmt_in = mysqli_prepare($koneksi, "INSERT INTO menu (id_toko, nama_menu, harga, deskripsi) VALUES (?, ?, ?, ?)");
-                mysqli_stmt_bind_param($stmt_in, "isis", $id_toko, $nama_menu, $harga, $deskripsi);
-                if (mysqli_stmt_execute($stmt_in)) {
-                    $pesan = "Menu baru '" . $nama_menu . "' berhasil ditambahkan!";
+            }
+
+            if (empty($error)) {
+                if ($id_menu_edit > 0) {
+                    $stmt_check = mysqli_prepare($koneksi, "SELECT id_menu FROM menu WHERE id_menu = ? AND id_toko = ?");
+                    mysqli_stmt_bind_param($stmt_check, "ii", $id_menu_edit, $id_toko);
+                    mysqli_stmt_execute($stmt_check);
+                    $menu_exists = mysqli_stmt_get_result($stmt_check);
+                    mysqli_stmt_close($stmt_check);
+
+                    if (mysqli_num_rows($menu_exists) === 0) {
+                        $error = "Menu tidak ditemukan di toko ini.";
+                    } else {
+                        $stmt_up = mysqli_prepare($koneksi, "UPDATE menu SET nama_menu = ?, harga = ?, deskripsi = ?, foto_menu = ? WHERE id_menu = ? AND id_toko = ?");
+                        mysqli_stmt_bind_param($stmt_up, "sissii", $nama_menu, $harga, $deskripsi, $foto_menu_nama, $id_menu_edit, $id_toko);
+                        if (mysqli_stmt_execute($stmt_up)) {
+                            $pesan = "Menu '" . $nama_menu . "' berhasil diperbarui!";
+                        } else {
+                            $error = "Gagal memperbarui menu: " . mysqli_stmt_error($stmt_up);
+                        }
+                        mysqli_stmt_close($stmt_up);
+                    }
                 } else {
-                    $error = "Gagal menambahkan menu: " . mysqli_stmt_error($stmt_in);
+                    $stmt_in = mysqli_prepare($koneksi, "INSERT INTO menu (id_toko, nama_menu, harga, deskripsi, foto_menu) VALUES (?, ?, ?, ?, ?)");
+                    mysqli_stmt_bind_param($stmt_in, "isiss", $id_toko, $nama_menu, $harga, $deskripsi, $foto_menu_nama);
+                    if (mysqli_stmt_execute($stmt_in)) {
+                        $pesan = "Menu baru '" . $nama_menu . "' berhasil ditambahkan!";
+                    } else {
+                        $error = "Gagal menambahkan menu: " . mysqli_stmt_error($stmt_in);
+                    }
+                    mysqli_stmt_close($stmt_in);
                 }
-                mysqli_stmt_close($stmt_in);
             }
         }
     }
@@ -186,7 +225,7 @@ $res_menu = mysqli_stmt_get_result($stmt_list);
                 <div class="col-form">
                     <div class="form-card">
                         <h3 class="form-title-sm"><?= $edit_item ? '✏️ Edit Menu' : '➕ Tambah Menu Baru'; ?></h3>
-                        <form action="menu.php?id_toko=<?= $id_toko; ?>" method="POST">
+                        <form action="menu.php?id_toko=<?= $id_toko; ?>" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="id_menu" value="<?= $edit_item ? $edit_item['id_menu'] : 0; ?>">
                             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token); ?>">
 
@@ -203,6 +242,17 @@ $res_menu = mysqli_stmt_get_result($stmt_list);
                             <div class="form-group">
                                 <label for="deskripsi">Deskripsi Singkat Menu</label>
                                 <textarea id="deskripsi" name="deskripsi" class="form-control" rows="3" placeholder="Jelaskan porsi, rasa, atau bahan utama..."><?= htmlspecialchars($edit_item['deskripsi'] ?? ''); ?></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="foto_menu">Foto Menu Makanan/Minuman (JPG / PNG / WEBP, maks 2MB)</label>
+                                <?php if (!empty($edit_item['foto_menu'])): ?>
+                                    <div style="margin-bottom:8px; display:flex; align-items:center; gap:10px;">
+                                        <img src="../assets/img/<?= htmlspecialchars($edit_item['foto_menu']); ?>" alt="Foto Menu" style="width:54px; height:54px; object-fit:cover; border-radius:8px; border:1.5px solid var(--emas-utama);">
+                                        <small class="text-muted">Foto menu saat ini.<br>Pilih file baru jika ingin mengganti.</small>
+                                    </div>
+                                <?php endif; ?>
+                                <input type="file" id="foto_menu" name="foto_menu" class="form-control" accept=".jpg,.jpeg,.png,.webp">
                             </div>
 
                             <div class="form-actions">
@@ -225,6 +275,7 @@ $res_menu = mysqli_stmt_get_result($stmt_list);
                                 <thead>
                                     <tr>
                                         <th style="width: 40px;">No</th>
+                                        <th style="width: 60px;">Foto</th>
                                         <th>Nama Menu</th>
                                         <th>Harga</th>
                                         <th>Deskripsi</th>
@@ -233,9 +284,14 @@ $res_menu = mysqli_stmt_get_result($stmt_list);
                                 </thead>
                                 <tbody>
                                     <?php if (mysqli_num_rows($res_menu) > 0): ?>
-                                        <?php $no = 1; while ($m = mysqli_fetch_assoc($res_menu)): ?>
+                                        <?php $no = 1; while ($m = mysqli_fetch_assoc($res_menu)): 
+                                            $foto_thumb = !empty($m['foto_menu']) ? '../assets/img/' . $m['foto_menu'] : '../assets/img/default.png';
+                                        ?>
                                             <tr>
                                                 <td><?= $no++; ?></td>
+                                                <td>
+                                                    <img src="<?= htmlspecialchars($foto_thumb); ?>" alt="Foto" style="width:46px; height:46px; object-fit:cover; border-radius:6px; border:1px solid var(--border-halus);" onerror="this.src='../assets/img/default.png'">
+                                                </td>
                                                 <td><strong><?= htmlspecialchars($m['nama_menu']); ?></strong></td>
                                                 <td><span class="price-badge">Rp<?= number_format($m['harga'], 0, ',', '.'); ?></span></td>
                                                 <td><small><?= htmlspecialchars($m['deskripsi'] ?? '-'); ?></small></td>

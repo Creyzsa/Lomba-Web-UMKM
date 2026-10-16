@@ -204,6 +204,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="card-body">
                     <h3 class="card-title">${escapeHtml(toko.nama_toko)} ${toko.badges ? toko.badges.map(b => b === 'Khas Daerah' ? '<span style="font-size:0.7rem;background:rgba(212,160,23,0.12);color:#8C6500;padding:2px 8px;border-radius:999px;font-weight:600;vertical-align:middle;"><i class="fa-solid fa-medal"></i> Khas Daerah</span>' : '<span style="font-size:0.7rem;background:rgba(147,51,234,0.08);color:#7C3AED;padding:2px 8px;border-radius:999px;font-weight:600;vertical-align:middle;"><i class="fa-solid fa-gem"></i> Hidden Gem</span>').join(' ') : ''}</h3>
                     <p class="card-address"><i class="fa-solid fa-location-dot"></i> ${escapeHtml(toko.alamat)}</p>
+                    ${toko.jam_buka ? `<p class="card-address" style="color:#0284C7; font-weight:600; margin-top:-4px; margin-bottom:8px;"><i class="fa-regular fa-clock"></i> ${escapeHtml(toko.jam_buka)}</p>` : ''}
                     <p class="card-desc">${escapeHtml(toko.deskripsi)}</p>
                     ${previewMenuHtml}
                     <div class="card-actions">

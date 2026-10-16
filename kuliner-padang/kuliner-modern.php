@@ -77,6 +77,11 @@ $res_toko_modern = mysqli_query($koneksi, "SELECT * FROM toko WHERE id_toko >= 1
                                     <span class="khas-loc-title"><i class="fa-solid fa-store"></i> Tersedia di Resto/Cafe:</span>
                                     <strong class="khas-loc-name"><?= htmlspecialchars($toko_m['nama_toko']); ?></strong>
                                     <p class="khas-loc-address"><i class="fa-solid fa-map-pin"></i> <?= htmlspecialchars($toko_m['alamat']); ?></p>
+                            <?php if (!empty($toko_m['jam_buka'])): ?>
+                                <p class="khas-loc-address" style="color:#0284C7; font-weight:600; margin-top:2px;">
+                                    <i class="fa-regular fa-clock"></i> Buka: <?= htmlspecialchars($toko_m['jam_buka']); ?>
+                                </p>
+                            <?php endif; ?>
                                 </div>
                                 <div class="khas-card-actions">
                                     <a href="detail.php?id=<?= $toko_m['id_toko']; ?>" class="btn btn-sm btn-gold">

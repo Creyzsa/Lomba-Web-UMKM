@@ -142,6 +142,11 @@ $active_nav = 'beranda';
                     <div class="card-body">
                         <h3 class="card-title"><?= htmlspecialchars($t['nama_toko']); ?></h3>
                         <p class="card-address"><i class="fa-solid fa-location-dot"></i> <?= htmlspecialchars($t['alamat']); ?></p>
+                        <?php if (!empty($t['jam_buka'])): ?>
+                            <p class="card-address" style="color:#0284C7; font-weight:600; margin-top:-4px; margin-bottom:8px;">
+                                <i class="fa-regular fa-clock"></i> <?= htmlspecialchars($t['jam_buka']); ?>
+                            </p>
+                        <?php endif; ?>
                         <p class="card-desc"><?= htmlspecialchars($t['deskripsi']); ?></p>
                         <div class="card-actions">
                             <a href="peta.php?toko=<?= $t['id_toko']; ?>" class="btn btn-primary btn-sm btn-block">
