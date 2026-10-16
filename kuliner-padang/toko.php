@@ -155,6 +155,11 @@ $kategori_list = ['Semua', 'Rumah Makan', 'Sate', 'Kopi', 'Oleh-oleh', 'Camilan'
                                 <?php else: ?>
                                     <span class="text-muted" style="font-size:0.8rem;">Belum ada data menu.</span>
                                 <?php endif; ?>
+                                <?php if (($_SESSION['role'] ?? '') === 'pemilik' && (int)($toko['id_pemilik'] ?? 0) === (int)($_SESSION['id_user'] ?? 0)): ?>
+                                    <a href="admin/menu.php?id_toko=<?= (int)$id_t; ?>" class="btn btn-secondary btn-sm" style="margin-top:10px;">
+                                        ✏️ Kelola Menu Toko Ini
+                                    </a>
+                                <?php endif; ?>
                             </div>
 
                             <div class="card-actions" style="margin-top:auto; display:flex; gap:8px;">

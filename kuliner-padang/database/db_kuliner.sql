@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
   id_user INT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(50) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
-  role ENUM('admin','user') DEFAULT 'user'
+  role ENUM('admin','pemilik','user') NOT NULL DEFAULT 'user'
 );
 
 -- 2. Tabel toko
@@ -29,7 +29,9 @@ CREATE TABLE IF NOT EXISTS toko (
   is_khas TINYINT(1) DEFAULT 0,
   is_hidden_gem TINYINT(1) DEFAULT 0,
   visit_count INT DEFAULT 0,
-  whatsapp_views INT DEFAULT 0
+  whatsapp_views INT DEFAULT 0,
+  id_pemilik INT DEFAULT NULL,
+  CONSTRAINT fk_toko_pemilik FOREIGN KEY (id_pemilik) REFERENCES users(id_user) ON DELETE SET NULL
 );
 
 -- 3. Tabel menu

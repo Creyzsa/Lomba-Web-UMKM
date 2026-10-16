@@ -30,6 +30,8 @@ if (!isset($active_nav)) {
             <?php if (isset($_SESSION['role'])): ?>
                 <?php if ($_SESSION['role'] === 'admin'): ?>
                     <a href="admin/dashboard.php" class="btn btn-gold btn-sm">⚙️ Panel Admin</a>
+                <?php elseif ($_SESSION['role'] === 'pemilik'): ?>
+                    <a href="pemilik/dashboard.php" class="btn btn-gold btn-sm">🏪 Kelola Toko</a>
                 <?php else: ?>
                     <span class="user-greeting">Halo, <?= htmlspecialchars($_SESSION['username']); ?></span>
                 <?php endif; ?>

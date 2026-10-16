@@ -1,37 +1,53 @@
 <?php
 /**
- * admin/edit.php — Ubah Data Toko
- * Aturan: Proteksi admin, prepared statement, Leaflet map interaktif, upload foto baru
+ * admin/edit.php — Admin atau pemilik mengubah profil toko
  */
 session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+$is_pemilik = isset($_SESSION['role']) && $_SESSION['role'] === 'pemilik';
+if ((!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['admin', 'pemilik'], true))
+    || ($is_pemilik && empty($_SESSION['id_user']))) {
     header("Location: ../login.php");
     exit;
 }
 
 require_once '../koneksi.php';
 
+$id_pemilik_login = $is_pemilik ? (int)$_SESSION['id_user'] : 0;
 $id_toko = (int)($_GET['id'] ?? 0);
 if ($id_toko <= 0) {
-    header("Location: dashboard.php");
+    header("Location: " . ($is_pemilik ? "../pemilik/dashboard.php" : "dashboard.php"));
     exit;
 }
 
-// Ambil data toko lama
-$stmt_get = mysqli_prepare($koneksi, "SELECT * FROM toko WHERE id_toko = ?");
-mysqli_stmt_bind_param($stmt_get, "i", $id_toko);
+// Pemilik hanya dapat membuka toko yang ditautkan pada akunnya.
+$query_get = $is_pemilik
+    ? "SELECT * FROM toko WHERE id_toko = ? AND id_pemilik = ?"
+    : "SELECT * FROM toko WHERE id_toko = ?";
+$stmt_get = mysqli_prepare($koneksi, $query_get);
+if ($is_pemilik) {
+    mysqli_stmt_bind_param($stmt_get, "ii", $id_toko, $id_pemilik_login);
+} else {
+    mysqli_stmt_bind_param($stmt_get, "i", $id_toko);
+}
 mysqli_stmt_execute($stmt_get);
 $res = mysqli_stmt_get_result($stmt_get);
 $toko = mysqli_fetch_assoc($res);
 mysqli_stmt_close($stmt_get);
 
 if (!$toko) {
-    header("Location: dashboard.php");
+    header("Location: " . ($is_pemilik ? "../pemilik/dashboard.php" : "dashboard.php"));
     exit;
 }
 
 $error = '';
 $kategori_list = ['Rumah Makan', 'Sate', 'Kopi', 'Oleh-oleh', 'Camilan'];
+if (!empty($toko['kategori']) && !in_array($toko['kategori'], $kategori_list, true)) {
+    $kategori_list[] = $toko['kategori'];
+}
+$result_pemilik = $is_pemilik ? null : mysqli_query($koneksi, "SELECT id_user, username FROM users WHERE role = 'pemilik' ORDER BY username ASC");
+$csrf_key = $is_pemilik ? 'csrf_edit_toko_pemilik' : 'csrf_edit_toko';
+$csrf_token = $_SESSION[$csrf_key] ?? bin2hex(random_bytes(32));
+$_SESSION[$csrf_key] = $csrf_token;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nama_toko = trim($_POST['nama_toko'] ?? '');
@@ -40,45 +56,89 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $deskripsi = trim($_POST['deskripsi'] ?? '');
     $latitude  = trim($_POST['latitude'] ?? '');
     $longitude = trim($_POST['longitude'] ?? '');
+    $no_wa     = trim($_POST['no_wa'] ?? '');
+    $jam_buka  = trim($_POST['jam_buka'] ?? '');
+    $id_pemilik = $is_pemilik ? $id_pemilik_login : (int)($_POST['id_pemilik'] ?? 0);
+    $latitude_number = filter_var($latitude, FILTER_VALIDATE_FLOAT);
+    $longitude_number = filter_var($longitude, FILTER_VALIDATE_FLOAT);
 
-    if (empty($nama_toko) || empty($latitude) || empty($longitude)) {
-        $error = 'Nama Toko, Latitude, dan Longitude wajib diisi!';
-    } else {
+    if (!isset($_POST['csrf_token']) || !hash_equals($csrf_token, $_POST['csrf_token'])) {
+        $error = 'Permintaan tidak valid. Muat ulang halaman dan coba lagi.';
+    } elseif ($nama_toko === '' || strlen($nama_toko) > 100) {
+        $error = 'Nama toko wajib diisi dan maksimal 100 karakter.';
+    } elseif (!in_array($kategori, $kategori_list, true)) {
+        $error = 'Pilih kategori toko yang tersedia.';
+    } elseif ($latitude_number === false || $latitude_number < -90 || $latitude_number > 90
+        || $longitude_number === false || $longitude_number < -180 || $longitude_number > 180) {
+        $error = 'Koordinat lokasi tidak valid. Pilih posisi toko pada peta.';
+    } elseif (strlen($alamat) > 255 || strlen($no_wa) > 20 || strlen($jam_buka) > 100) {
+        $error = 'Alamat, nomor WhatsApp, atau jam buka melebihi batas karakter.';
+    } elseif (!$is_pemilik && $id_pemilik > 0) {
+        $stmt_owner = mysqli_prepare($koneksi, "SELECT id_user FROM users WHERE id_user = ? AND role = 'pemilik'");
+        mysqli_stmt_bind_param($stmt_owner, "i", $id_pemilik);
+        mysqli_stmt_execute($stmt_owner);
+        $owner_exists = mysqli_stmt_get_result($stmt_owner);
+        if (mysqli_num_rows($owner_exists) === 0) {
+            $error = 'Akun pemilik toko yang dipilih tidak valid.';
+        }
+        mysqli_stmt_close($stmt_owner);
+    }
+
+    if (empty($error)) {
         $foto_nama = $toko['foto'];
 
-        // Cek jika upload foto baru
-        if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
-            $file_tmp  = $_FILES['foto']['tmp_name'];
-            $file_name = $_FILES['foto']['name'];
-            $file_size = $_FILES['foto']['size'];
-            $file_ext  = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-
-            $allowed_ext = ['jpg', 'jpeg', 'png'];
-
-            if (!in_array($file_ext, $allowed_ext)) {
-                $error = 'Format file foto harus JPG atau PNG!';
-            } elseif ($file_size > 2 * 1024 * 1024) {
-                $error = 'Ukuran file foto maksimal 2 MB!';
+        if (isset($_FILES['foto']) && $_FILES['foto']['error'] !== UPLOAD_ERR_NO_FILE) {
+            if ($_FILES['foto']['error'] !== UPLOAD_ERR_OK) {
+                $error = 'Foto gagal diunggah. Silakan coba lagi.';
             } else {
-                $foto_nama = 'toko_' . time() . '_' . rand(100, 999) . '.' . $file_ext;
-                $target_dir = '../assets/img/';
-                if (!is_dir($target_dir)) {
-                    mkdir($target_dir, 0777, true);
+                $file_tmp  = $_FILES['foto']['tmp_name'];
+                $file_size = $_FILES['foto']['size'];
+                $image_info = @getimagesize($file_tmp);
+                $allowed_mime = ['image/jpeg' => 'jpg', 'image/png' => 'png'];
+                $mime_type = $image_info['mime'] ?? '';
+                if (!isset($allowed_mime[$mime_type])) {
+                    $error = 'Format foto harus berupa gambar JPG atau PNG yang valid.';
+                } elseif ($file_size > 2 * 1024 * 1024) {
+                    $error = 'Ukuran file foto maksimal 2 MB!';
+                } else {
+                    $foto_nama = 'toko_' . bin2hex(random_bytes(8)) . '.' . $allowed_mime[$mime_type];
+                    $target_dir = '../assets/img/';
+                    if (!is_dir($target_dir) && !mkdir($target_dir, 0755, true)) {
+                        $error = 'Folder penyimpanan foto belum tersedia.';
+                    } elseif (!move_uploaded_file($file_tmp, $target_dir . $foto_nama)) {
+                        $error = 'Foto tidak dapat disimpan. Silakan coba lagi.';
+                    }
                 }
-                move_uploaded_file($file_tmp, $target_dir . $foto_nama);
             }
         }
 
         if (empty($error)) {
-            $stmt = mysqli_prepare($koneksi, "UPDATE toko SET nama_toko = ?, alamat = ?, kategori = ?, deskripsi = ?, latitude = ?, longitude = ?, foto = ? WHERE id_toko = ?");
-            mysqli_stmt_bind_param($stmt, "ssssddsi", $nama_toko, $alamat, $kategori, $deskripsi, $latitude, $longitude, $foto_nama, $id_toko);
+            if ($is_pemilik) {
+                $stmt = mysqli_prepare($koneksi, "UPDATE toko SET nama_toko = ?, alamat = ?, kategori = ?, deskripsi = ?, latitude = ?, longitude = ?, foto = ?, no_wa = ?, jam_buka = ? WHERE id_toko = ? AND id_pemilik = ?");
+                mysqli_stmt_bind_param($stmt, "ssssddsssii", $nama_toko, $alamat, $kategori, $deskripsi, $latitude_number, $longitude_number, $foto_nama, $no_wa, $jam_buka, $id_toko, $id_pemilik_login);
+            } else {
+                $stmt = mysqli_prepare($koneksi, "UPDATE toko SET nama_toko = ?, alamat = ?, kategori = ?, deskripsi = ?, latitude = ?, longitude = ?, foto = ?, no_wa = ?, jam_buka = ?, id_pemilik = NULLIF(?, 0) WHERE id_toko = ?");
+                mysqli_stmt_bind_param($stmt, "ssssddsssii", $nama_toko, $alamat, $kategori, $deskripsi, $latitude_number, $longitude_number, $foto_nama, $no_wa, $jam_buka, $id_pemilik, $id_toko);
+            }
 
             if (mysqli_stmt_execute($stmt)) {
-                $_SESSION['pesan'] = "Perubahan data toko '" . $nama_toko . "' berhasil disimpan!";
-                header("Location: dashboard.php");
+                if ($foto_nama !== $toko['foto'] && !empty($toko['foto']) && strpos($toko['foto'], 'toko_') === 0) {
+                    $foto_lama_path = '../assets/img/' . basename($toko['foto']);
+                    if (is_file($foto_lama_path)) {
+                        unlink($foto_lama_path);
+                    }
+                }
+                $_SESSION['pesan'] = "Perubahan profil toko '" . $nama_toko . "' berhasil disimpan!";
+                header("Location: " . ($is_pemilik ? "../pemilik/dashboard.php" : "dashboard.php"));
                 exit;
             } else {
-                $error = 'Gagal memperbarui data toko: ' . mysqli_error($koneksi);
+                $error = 'Gagal memperbarui data toko: ' . mysqli_stmt_error($stmt);
+                if ($foto_nama !== $toko['foto']) {
+                    $foto_baru_path = '../assets/img/' . basename($foto_nama);
+                    if (is_file($foto_baru_path)) {
+                        unlink($foto_baru_path);
+                    }
+                }
             }
             mysqli_stmt_close($stmt);
         }
@@ -90,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Toko — Panel Admin</title>
+    <title>Edit Profil Toko — <?= htmlspecialchars($toko['nama_toko']); ?></title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -102,11 +162,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="admin-nav-container">
             <div class="admin-brand">
                 <span class="gonjong-icon">🏛️</span>
-                <span class="admin-title">Panel Admin — Peta Rasa Padang</span>
+                <span class="admin-title">Panel <?= $is_pemilik ? 'Pemilik' : 'Admin'; ?> — Peta Rasa Padang</span>
             </div>
             <div class="admin-user-info">
                 <span>Halo, <strong><?= htmlspecialchars($_SESSION['username']); ?></strong></span>
-                <a href="dashboard.php" class="btn btn-outline-light btn-sm">← Kembali ke Dashboard</a>
+                <a href="<?= $is_pemilik ? '../pemilik/dashboard.php' : 'dashboard.php'; ?>" class="btn btn-outline-light btn-sm">← Kembali ke Dashboard</a>
             </div>
         </div>
     </header>
@@ -114,14 +174,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <main class="admin-main">
         <div class="admin-container form-container">
             <div class="form-card">
-                <h2 class="form-title">Edit Data Toko Kuliner</h2>
-                <p class="form-subtitle">Perbarui rincian toko "<?= htmlspecialchars($toko['nama_toko']); ?>".</p>
+                <h2 class="form-title">Edit Profil Toko</h2>
+                <p class="form-subtitle">Perbarui informasi toko "<?= htmlspecialchars($toko['nama_toko']); ?>", termasuk foto dan lokasi pada peta.</p>
 
                 <?php if (!empty($error)): ?>
                     <div class="alert alert-danger"><?= htmlspecialchars($error); ?></div>
                 <?php endif; ?>
 
                 <form action="edit.php?id=<?= $id_toko; ?>" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token); ?>">
                     <div class="form-row">
                         <div class="form-col">
                             <div class="form-group">
@@ -153,15 +214,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <textarea id="deskripsi" name="deskripsi" class="form-control" rows="3"><?= htmlspecialchars($_POST['deskripsi'] ?? $toko['deskripsi']); ?></textarea>
                             </div>
 
+                            <?php if (!$is_pemilik): ?>
                             <div class="form-group">
-                                <label for="foto">Ubah Foto Toko (JPG / PNG, maks 2MB)</label>
+                                <label for="id_pemilik">Akun Pemilik Toko</label>
+                                <select id="id_pemilik" name="id_pemilik" class="form-control">
+                                    <option value="0">Belum ditautkan</option>
+                                    <?php
+                                        $id_pemilik_terpilih = (int)($_POST['id_pemilik'] ?? $toko['id_pemilik'] ?? 0);
+                                        while ($pemilik = mysqli_fetch_assoc($result_pemilik)):
+                                    ?>
+                                        <option value="<?= (int)$pemilik['id_user']; ?>" <?= $id_pemilik_terpilih === (int)$pemilik['id_user'] ? 'selected' : ''; ?>>
+                                            <?= htmlspecialchars($pemilik['username']); ?>
+                                        </option>
+                                    <?php endwhile; ?>
+                                </select>
+                                <small class="text-muted">Hanya akun dengan peran Pemilik Toko yang dapat dipilih.</small>
+                            </div>
+                            <?php endif; ?>
+
+                            <div class="form-group">
+                                <label for="no_wa">Nomor WhatsApp</label>
+                                <input type="text" id="no_wa" name="no_wa" class="form-control" maxlength="20" placeholder="6281234567890" value="<?= htmlspecialchars($_POST['no_wa'] ?? $toko['no_wa'] ?? ''); ?>">
+                                <small class="text-muted">Format internasional tanpa tanda +, contoh 6281...</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="jam_buka">Jam Buka</label>
+                                <input type="text" id="jam_buka" name="jam_buka" class="form-control" maxlength="100" placeholder="Contoh: 08.00 - 21.00 WIB" value="<?= htmlspecialchars($_POST['jam_buka'] ?? $toko['jam_buka'] ?? ''); ?>">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="foto">Foto Toko (JPG / PNG, maks 2MB)</label>
                                 <div class="current-photo-preview" style="margin-bottom: 0.5rem;">
                                     <?php $foto_src = !empty($toko['foto']) ? '../assets/img/' . $toko['foto'] : '../assets/img/default.png'; ?>
                                     <small>Foto saat ini: </small><br>
                                     <img src="<?= htmlspecialchars($foto_src); ?>" alt="Preview" style="height: 60px; border-radius: 4px; object-fit: cover; border: 1px solid #ccc; margin-top: 4px;" onerror="this.src='https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=100&q=80'">
                                 </div>
                                 <input type="file" id="foto" name="foto" class="form-control" accept=".jpg, .jpeg, .png">
-                                <small class="text-muted">Biarkan kosong jika tidak ingin mengganti foto saat ini.</small>
+                                <small class="text-muted">Biarkan kosong untuk tetap menggunakan foto saat ini.</small>
                             </div>
                         </div>
 
@@ -187,7 +277,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">💾 Simpan Perubahan</button>
-                        <a href="dashboard.php" class="btn btn-secondary">Batal</a>
+                        <a href="<?= $is_pemilik ? '../pemilik/dashboard.php' : 'dashboard.php'; ?>" class="btn btn-secondary">Batal</a>
                     </div>
                 </form>
             </div>

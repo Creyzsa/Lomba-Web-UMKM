@@ -21,7 +21,7 @@ Folder aplikasi pada workspace ini berada di `C:\xampp1\htdocs\Lomba-Web-UMKM\ku
    - Buat database baru bernama `db_kuliner_padang` (atau langsung klik tab **Import**).
    - Pilih file: `database/db_kuliner.sql`
    - Klik **Go / Impor**.
-   - Jika memakai database dari versi sebelumnya, jalankan juga `database/migrate_umkm_features.sql` melalui tab **Import** agar kolom statistik/kurasi dan tabel makanan khas tersedia. Migrasi ini menambah struktur tanpa menghapus data toko.
+   - Jika memakai database dari versi sebelumnya, jalankan juga `database/migrate_umkm_features.sql` melalui tab **Import** agar peran pemilik, relasi pemilik toko, kolom statistik/kurasi, dan tabel makanan khas tersedia. Migrasi ini menambah struktur tanpa menghapus data toko dan memulihkan akun pemilik yang sebelumnya tersimpan dengan peran kosong.
 
 3. **Akses Website:**
    - **Halaman Pengunjung (Peta Kuliner):**
@@ -41,6 +41,7 @@ Folder aplikasi pada workspace ini berada di `C:\xampp1\htdocs\Lomba-Web-UMKM\ku
 - **Pengguna Biasa:**
   - Username: `user`
   - Password: `user123`
+- Akun pemilik dapat dibuat melalui **Daftar** dengan memilih peran **Pemilik Toko**. Pemilik dapat mendaftarkan sendiri profil toko dan lokasinya dari dashboard, kemudian langsung mengelola profil serta menu.
 
 ---
 
@@ -53,10 +54,13 @@ Folder aplikasi pada workspace ini berada di `C:\xampp1\htdocs\Lomba-Web-UMKM\ku
 2. **Filter & Pencarian Real-Time:**
    - Filter cepat berdasarkan kategori: *Rumah Makan, Sate, Kopi, Oleh-oleh, Camilan*.
    - Kotak pencarian responsif untuk mencari nama toko, menu, maupun alamat.
-3. **Panel Admin Terproteksi Session:**
+3. **Panel Admin dan Pemilik Terproteksi Session:**
    - Manajemen Toko (Tambah, Edit, Hapus dengan konfirmasi JS).
    - Form tambah & edit dilengkapi **peta mini** (klik peta otomatis mengisi latitude dan longitude).
-   - Manajemen Menu per Toko (tambah, edit, dan hapus menu makanan).
+   - Pemilik dapat mendaftarkan profil toko dan lokasinya sendiri; toko otomatis terhubung hanya ke akun pendaftarnya.
+   - Pemilik dapat mengubah nama, kategori, deskripsi, alamat, foto, nomor WhatsApp, jam buka, dan posisi peta hanya pada tokonya sendiri.
+   - Pemilik dapat menambah, mengubah, dan menghapus menu hanya pada tokonya sendiri.
+   - Penghapusan menu menggunakan POST dengan token CSRF.
    - Relasi database aman dengan `ON DELETE CASCADE`.
 4. **Keamanan Kode:**
    - Seluruh query menggunakan **Prepared Statements** (`mysqli_prepare`).
@@ -77,7 +81,7 @@ Folder aplikasi pada workspace ini berada di `C:\xampp1\htdocs\Lomba-Web-UMKM\ku
 - Utilitas filter budget, penyusun rute, format pesan, dan pencatatan klik WA berada di `assets/js/kuliner-utils.js`.
 
 ## Catatan Data dan Batas Demo
-Data toko/menu pada `database/db_kuliner.sql`, termasuk nomor WhatsApp, adalah data ilustrasi untuk demo dan bukan kontak usaha nyata. Ganti dengan data yang telah diverifikasi dan mendapat izin sebelum dipublikasikan. Pendaftaran pemilik dan dashboard analitik khusus pemilik belum tersedia; pengelolaan data saat ini hanya melalui panel admin.
+Data toko/menu pada `database/db_kuliner.sql`, termasuk nomor WhatsApp, adalah data ilustrasi untuk demo dan bukan kontak usaha nyata. Ganti dengan data yang telah diverifikasi dan mendapat izin sebelum dipublikasikan. Pemilik dapat langsung mendaftarkan profil toko setelah login tanpa penautan manual oleh admin.
 
 ## Alur Demo Singkat
 1. Buka **Kuliner Sesuai Budget**, aktifkan lokasi bila ingin menguji filter jarak, lalu cari menu dengan anggaran Rp15.000.

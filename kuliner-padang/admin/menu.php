@@ -1,83 +1,115 @@
 <?php
 /**
  * admin/menu.php — CRUD Menu Makanan/Minuman per Toko
- * Aturan: Proteksi admin, prepared statement, tampilkan nama toko di judul
+ * Aturan: Proteksi admin/pemilik, akses pemilik dibatasi ke toko miliknya
  */
 session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+$is_pemilik = isset($_SESSION['role']) && $_SESSION['role'] === 'pemilik';
+if ((!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['admin', 'pemilik'], true))
+    || ($is_pemilik && empty($_SESSION['id_user']))) {
     header("Location: ../login.php");
     exit;
 }
 
 require_once '../koneksi.php';
 
+$id_pemilik = $is_pemilik ? (int)$_SESSION['id_user'] : 0;
 $id_toko = (int)($_GET['id_toko'] ?? 0);
 if ($id_toko <= 0) {
-    header("Location: dashboard.php");
+    header("Location: " . ($is_pemilik ? "../pemilik/dashboard.php" : "dashboard.php"));
     exit;
 }
 
 // Ambil info detail toko
-$stmt_toko = mysqli_prepare($koneksi, "SELECT * FROM toko WHERE id_toko = ?");
-mysqli_stmt_bind_param($stmt_toko, "i", $id_toko);
+$query_toko = $is_pemilik
+    ? "SELECT * FROM toko WHERE id_toko = ? AND id_pemilik = ?"
+    : "SELECT * FROM toko WHERE id_toko = ?";
+$stmt_toko = mysqli_prepare($koneksi, $query_toko);
+if ($is_pemilik) {
+    mysqli_stmt_bind_param($stmt_toko, "ii", $id_toko, $id_pemilik);
+} else {
+    mysqli_stmt_bind_param($stmt_toko, "i", $id_toko);
+}
 mysqli_stmt_execute($stmt_toko);
 $res_toko = mysqli_stmt_get_result($stmt_toko);
 $toko = mysqli_fetch_assoc($res_toko);
 mysqli_stmt_close($stmt_toko);
 
 if (!$toko) {
-    header("Location: dashboard.php");
+    header("Location: " . ($is_pemilik ? "../pemilik/dashboard.php" : "dashboard.php"));
     exit;
 }
 
 $error = '';
 $pesan = '';
+$csrf_token = $_SESSION['csrf_menu'] ?? bin2hex(random_bytes(32));
+$_SESSION['csrf_menu'] = $csrf_token;
 
-// Proses Hapus Menu (via GET action=hapus)
-if (isset($_GET['action']) && $_GET['action'] === 'hapus') {
-    $id_menu_del = (int)($_GET['id_menu'] ?? 0);
-    if ($id_menu_del > 0) {
-        $stmt_del = mysqli_prepare($koneksi, "DELETE FROM menu WHERE id_menu = ? AND id_toko = ?");
-        mysqli_stmt_bind_param($stmt_del, "ii", $id_menu_del, $id_toko);
-        if (mysqli_stmt_execute($stmt_del)) {
-            $pesan = "Menu berhasil dihapus!";
+// Proses hapus menu.
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'hapus') {
+    if (!isset($_POST['csrf_token']) || !hash_equals($csrf_token, $_POST['csrf_token'])) {
+        $error = 'Permintaan tidak valid. Muat ulang halaman dan coba lagi.';
+    } else {
+        $id_menu_del = (int)($_POST['id_menu'] ?? 0);
+        if ($id_menu_del > 0) {
+            $stmt_del = mysqli_prepare($koneksi, "DELETE FROM menu WHERE id_menu = ? AND id_toko = ?");
+            mysqli_stmt_bind_param($stmt_del, "ii", $id_menu_del, $id_toko);
+            if (mysqli_stmt_execute($stmt_del) && mysqli_stmt_affected_rows($stmt_del) > 0) {
+                $pesan = "Menu berhasil dihapus!";
+            } elseif (mysqli_stmt_errno($stmt_del)) {
+                $error = "Gagal menghapus menu: " . mysqli_stmt_error($stmt_del);
+            } else {
+                $error = "Menu tidak ditemukan di toko ini.";
+            }
+            mysqli_stmt_close($stmt_del);
         } else {
-            $error = "Gagal menghapus menu: " . mysqli_error($koneksi);
+            $error = "Menu tidak valid.";
         }
-        mysqli_stmt_close($stmt_del);
     }
 }
 
-// Proses Tambah / Update Menu (via POST)
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id_menu_edit = (int)($_POST['id_menu'] ?? 0);
-    $nama_menu    = trim($_POST['nama_menu'] ?? '');
-    $harga        = (int)($_POST['harga'] ?? 0);
-    $deskripsi    = trim($_POST['deskripsi'] ?? '');
-
-    if (empty($nama_menu) || $harga <= 0) {
-        $error = "Nama menu dan harga (harus lebih dari 0) wajib diisi!";
+// Proses tambah atau ubah menu.
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') !== 'hapus') {
+    if (!isset($_POST['csrf_token']) || !hash_equals($csrf_token, $_POST['csrf_token'])) {
+        $error = 'Permintaan tidak valid. Muat ulang halaman dan coba lagi.';
     } else {
-        if ($id_menu_edit > 0) {
-            // Mode Update Menu
-            $stmt_up = mysqli_prepare($koneksi, "UPDATE menu SET nama_menu = ?, harga = ?, deskripsi = ? WHERE id_menu = ? AND id_toko = ?");
-            mysqli_stmt_bind_param($stmt_up, "sisii", $nama_menu, $harga, $deskripsi, $id_menu_edit, $id_toko);
-            if (mysqli_stmt_execute($stmt_up)) {
-                $pesan = "Menu '" . $nama_menu . "' berhasil diperbarui!";
-            } else {
-                $error = "Gagal memperbarui menu: " . mysqli_error($koneksi);
-            }
-            mysqli_stmt_close($stmt_up);
+        $id_menu_edit = (int)($_POST['id_menu'] ?? 0);
+        $nama_menu    = trim($_POST['nama_menu'] ?? '');
+        $harga        = filter_var($_POST['harga'] ?? null, FILTER_VALIDATE_INT);
+        $deskripsi    = trim($_POST['deskripsi'] ?? '');
+
+        if (empty($nama_menu) || $harga === false || $harga <= 0) {
+            $error = "Nama menu dan harga (harus lebih dari 0) wajib diisi!";
         } else {
-            // Mode Tambah Menu Baru
-            $stmt_in = mysqli_prepare($koneksi, "INSERT INTO menu (id_toko, nama_menu, harga, deskripsi) VALUES (?, ?, ?, ?)");
-            mysqli_stmt_bind_param($stmt_in, "isis", $id_toko, $nama_menu, $harga, $deskripsi);
-            if (mysqli_stmt_execute($stmt_in)) {
-                $pesan = "Menu baru '" . $nama_menu . "' berhasil ditambahkan!";
+            if ($id_menu_edit > 0) {
+                $stmt_check = mysqli_prepare($koneksi, "SELECT id_menu FROM menu WHERE id_menu = ? AND id_toko = ?");
+                mysqli_stmt_bind_param($stmt_check, "ii", $id_menu_edit, $id_toko);
+                mysqli_stmt_execute($stmt_check);
+                $menu_exists = mysqli_stmt_get_result($stmt_check);
+                mysqli_stmt_close($stmt_check);
+
+                if (mysqli_num_rows($menu_exists) === 0) {
+                    $error = "Menu tidak ditemukan di toko ini.";
+                } else {
+                    $stmt_up = mysqli_prepare($koneksi, "UPDATE menu SET nama_menu = ?, harga = ?, deskripsi = ? WHERE id_menu = ? AND id_toko = ?");
+                    mysqli_stmt_bind_param($stmt_up, "sisii", $nama_menu, $harga, $deskripsi, $id_menu_edit, $id_toko);
+                    if (mysqli_stmt_execute($stmt_up)) {
+                        $pesan = "Menu '" . $nama_menu . "' berhasil diperbarui!";
+                    } else {
+                        $error = "Gagal memperbarui menu: " . mysqli_stmt_error($stmt_up);
+                    }
+                    mysqli_stmt_close($stmt_up);
+                }
             } else {
-                $error = "Gagal menambahkan menu: " . mysqli_error($koneksi);
+                $stmt_in = mysqli_prepare($koneksi, "INSERT INTO menu (id_toko, nama_menu, harga, deskripsi) VALUES (?, ?, ?, ?)");
+                mysqli_stmt_bind_param($stmt_in, "isis", $id_toko, $nama_menu, $harga, $deskripsi);
+                if (mysqli_stmt_execute($stmt_in)) {
+                    $pesan = "Menu baru '" . $nama_menu . "' berhasil ditambahkan!";
+                } else {
+                    $error = "Gagal menambahkan menu: " . mysqli_stmt_error($stmt_in);
+                }
+                mysqli_stmt_close($stmt_in);
             }
-            mysqli_stmt_close($stmt_in);
         }
     }
 }
@@ -115,11 +147,11 @@ $res_menu = mysqli_stmt_get_result($stmt_list);
         <div class="admin-nav-container">
             <div class="admin-brand">
                 <span class="gonjong-icon">🏛️</span>
-                <span class="admin-title">Panel Admin — Peta Rasa Padang</span>
+                <span class="admin-title">Panel <?= $is_pemilik ? 'Pemilik' : 'Admin'; ?> — Peta Rasa Padang</span>
             </div>
             <div class="admin-user-info">
                 <span>Halo, <strong><?= htmlspecialchars($_SESSION['username']); ?></strong></span>
-                <a href="dashboard.php" class="btn btn-outline-light btn-sm">← Kembali ke Dashboard Toko</a>
+                <a href="<?= $is_pemilik ? '../pemilik/dashboard.php' : 'dashboard.php'; ?>" class="btn btn-outline-light btn-sm">← Kembali ke Dashboard Toko</a>
             </div>
         </div>
     </header>
@@ -132,7 +164,7 @@ $res_menu = mysqli_stmt_get_result($stmt_list);
                     <p class="section-desc">Kategori: <strong><?= htmlspecialchars($toko['kategori']); ?></strong> | Alamat: <?= htmlspecialchars($toko['alamat']); ?></p>
                 </div>
                 <div>
-                    <a href="dashboard.php" class="btn btn-secondary">← Kembali</a>
+                    <a href="<?= $is_pemilik ? '../pemilik/dashboard.php' : 'dashboard.php'; ?>" class="btn btn-secondary">← Kembali</a>
                 </div>
             </div>
 
@@ -151,6 +183,7 @@ $res_menu = mysqli_stmt_get_result($stmt_list);
                         <h3 class="form-title-sm"><?= $edit_item ? '✏️ Edit Menu' : '➕ Tambah Menu Baru'; ?></h3>
                         <form action="menu.php?id_toko=<?= $id_toko; ?>" method="POST">
                             <input type="hidden" name="id_menu" value="<?= $edit_item ? $edit_item['id_menu'] : 0; ?>">
+                            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token); ?>">
 
                             <div class="form-group">
                                 <label for="nama_menu">Nama Menu Makanan/Minuman <span class="required">*</span></label>
@@ -206,9 +239,12 @@ $res_menu = mysqli_stmt_get_result($stmt_list);
                                                         <a href="menu.php?id_toko=<?= $id_toko; ?>&edit=<?= $m['id_menu']; ?>" class="btn btn-sm btn-warning" title="Edit">
                                                             ✏️
                                                         </a>
-                                                        <a href="menu.php?id_toko=<?= $id_toko; ?>&action=hapus&id_menu=<?= $m['id_menu']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Hapus menu \'<?= addslashes(htmlspecialchars($m['nama_menu'])); ?>\'?');" title="Hapus">
-                                                            🗑️
-                                                        </a>
+                                                        <form action="menu.php?id_toko=<?= $id_toko; ?>" method="POST" style="display:inline; margin:0;" onsubmit="return confirm('Hapus menu ini?');">
+                                                            <input type="hidden" name="action" value="hapus">
+                                                            <input type="hidden" name="id_menu" value="<?= (int)$m['id_menu']; ?>">
+                                                            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_token); ?>">
+                                                            <button type="submit" class="btn btn-sm btn-danger" title="Hapus">🗑️</button>
+                                                        </form>
                                                     </div>
                                                 </td>
                                             </tr>

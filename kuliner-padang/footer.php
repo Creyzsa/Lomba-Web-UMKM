@@ -45,8 +45,8 @@
 
         <div class="footer-col">
             <h4 class="footer-heading">Akses Pengelola</h4>
-            <p class="text-sm">Bagi pemilik UMKM atau panitia yang ingin mengelola data toko:</p>
-            <a href="admin/dashboard.php" class="btn btn-gold btn-sm" style="display:inline-block; margin-top:10px;">Masuk ke Panel Admin</a>
+            <p class="text-sm">Pemilik UMKM dapat mengelola menu toko yang telah ditautkan oleh admin.</p>
+            <a href="pemilik/dashboard.php" class="btn btn-gold btn-sm" style="display:inline-block; margin-top:10px;">Kelola Toko</a>
         </div>
     </div>
 

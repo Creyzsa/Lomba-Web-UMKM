@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if (mysqli_stmt_execute($stmt_insert)) {
                 $sukses = ($role_input === 'pemilik')
-                    ? 'Akun Pemilik Toko berhasil dibuat! Silakan login untuk mendaftarkan usaha kamu.'
+                    ? 'Akun Pemilik Toko berhasil dibuat! Setelah login, minta admin menghubungkan akunmu ke toko yang dikelola.'
                     : 'Akun Pembeli berhasil dibuat! Silakan login untuk mulai menjelajah kuliner.';
             } else {
                 error_log('Register gagal: ' . mysqli_error($koneksi));

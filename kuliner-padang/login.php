@@ -6,9 +6,12 @@
 session_start();
 require_once 'koneksi.php';
 
-// Jika sudah login sebagai admin, langsung redirect ke dashboard
+// Jika sudah login, langsung arahkan ke halaman sesuai peran.
 if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
     header("Location: admin/dashboard.php");
+    exit;
+} elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'pemilik') {
+    header("Location: pemilik/dashboard.php");
     exit;
 } elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'user') {
     header("Location: index.php");
@@ -40,6 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Arahkan sesuai peran
                 if ($user['role'] === 'admin') {
                     header("Location: admin/dashboard.php");
+                } elseif ($user['role'] === 'pemilik') {
+                    header("Location: pemilik/dashboard.php");
                 } else {
                     header("Location: index.php");
                 }
