@@ -36,12 +36,12 @@ export type Chapter = {
 const MOTIF_RATIO = 1.49;
 
 /** File motif (sudah di-crop dan diperkecil) di /public */
-const SONGKET_SRC = "/images/songket-minangkabau.png";
+const SONGKET_SRC = "assets/img/songketminangkabau.png";
 
 /** Aset scene bawah (sudah di-crop): jalan + dua rangkiang yang tepi potongnya menempel di tepi layar. */
-const ROAD_SRC = "/images/jalan.webp";
-const RANGKIANG_LEFT_SRC = "/images/rangkiang-kiri.webp";
-const RANGKIANG_RIGHT_SRC = "/images/rangkiang-kanan.webp";
+const ROAD_SRC = "assets/img/jalan.png";
+const RANGKIANG_LEFT_SRC = "assets/img/rangkiang1.png";
+const RANGKIANG_RIGHT_SRC = "assets/img/rangkiang2.png";
 /** Rasio tinggi/lebar masing-masing file */
 const ROAD_RATIO = 152 / 2128;
 const LEFT_RATIO = 975 / 360;
@@ -154,7 +154,7 @@ type Props = {
  *  0.80 - 1.00  Rangkiang menepi, jalan turun, motif ditarik kembali ke atas saat hero selesai
  */
 export default function MinangScrollHero({
-  image = "/images/rumah-gadang.jpg",
+  image = "assets/img/rumah-gadang.jpg",
   children,
   items = DEFAULT_ITEMS,
   chapters = DEFAULT_CHAPTERS,
