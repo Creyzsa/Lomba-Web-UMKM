@@ -38,41 +38,8 @@ $active_nav = 'beranda';
     <!-- Navbar -->
     <?php include 'navbar.php'; ?>
 
-    <!-- Hero Section dengan Background Rumah Gadang -->
-    <section class="hero-section">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <div class="hero-badge"><i class="fa-solid fa-utensils"></i> Digitalisasi UMKM Kuliner Minangkabau</div>
-            <h1 class="hero-title"><span class="hero-title-gradient">Peta Rasa Padang</span></h1>
-            <p class="hero-tagline">Jelajahi Cita Rasa Autentik Ranah Minang Langsung dari Sentra Kuliner Kota Padang</p>
-            <p class="hero-subtext">Temukan rumah makan legendaris, sate kuah rempah khas Pariaman, seduhan kawa daun hangat, hingga oleh-oleh khas Padang dalam etalase digital interaktif modern.</p>
-            
-            <div class="hero-stats">
-                <div class="stat-item">
-                    <span class="stat-number" id="stat-toko"><?= $total_toko; ?></span>
-                    <span class="stat-label">Titik UMKM Kuliner</span>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <span class="stat-number" id="stat-menu"><?= $total_menu; ?></span>
-                    <span class="stat-label">Pilihan Menu Minang</span>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <span class="stat-number">5</span>
-                    <span class="stat-label">Kategori Kuliner</span>
-                </div>
-            </div>
-
-            <div class="hero-actions">
-                <a href="peta.php" class="btn btn-hero-primary"><i class="fa-solid fa-location-dot"></i> Buka Peta Interaktif</a>
-                <a href="toko.php" class="btn btn-hero-secondary"><i class="fa-solid fa-utensils"></i> Jelajahi Daftar Toko</a>
-            </div>
-        </div>
-
-        <!-- Ornamen Pembatas Songket -->
-        <div class="songket-border-bottom"></div>
-    </section>
+    <!-- Hero Section dengan MinangScrollHero (Scroll-Scrubbed Animasi Piring & Cerita) -->
+    <?php include 'components/minang-scroll-hero.php'; ?>
 
     <!-- Section Kategori Unggulan -->
     <section class="section-container">
