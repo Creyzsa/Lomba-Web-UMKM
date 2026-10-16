@@ -38,10 +38,13 @@ $active_nav = 'beranda';
     <!-- Navbar -->
     <?php include 'navbar.php'; ?>
 
-    <!-- Hero Section dengan Background Ikonik Masjid Raya Sumbar -->
-    <section class="hero-section">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
+    <!-- Hero Section dengan HeroBackground Ken Burns & Partikel Emas -->
+    <section class="hero-section relative isolate overflow-hidden">
+        <?php 
+            $hero_bg_image = 'assets/img/rumah-gadang.jpg';
+            include 'components/hero-background.php'; 
+        ?>
+        <div class="hero-content relative z-10">
             <div class="hero-badge"><i class="fa-solid fa-utensils"></i> Digitalisasi UMKM Kuliner Minangkabau</div>
             <h1 class="hero-title"><span class="hero-title-gradient">Peta Rasa Padang</span></h1>
             <p class="hero-tagline">Jelajahi Cita Rasa Autentik Ranah Minang Langsung dari Sentra Kuliner Kota Padang</p>

@@ -355,7 +355,7 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: url('../img/hero-padang.jpg') center center / cover no-repeat;
+    background-color: #2E0404;
     color: var(--putih);
     padding: 120px 24px 140px;
     text-align: center;
@@ -2096,6 +2096,16 @@ a:hover {
     color: var(--merah-utama);
     font-family: var(--font-heading);
 }
+
+/* Utility layout classes for HeroBackground */
+.relative { position: relative; }
+.absolute { position: absolute; }
+.inset-0 { inset: 0; }
+.isolate { isolation: isolate; }
+.overflow-hidden { overflow: hidden; }
+.pointer-events-none { pointer-events: none; }
+.-z-10 { z-index: -10; }
+.z-10 { z-index: 10; }
 
 /* Quick Location Buttons & Pickers */
 .btn-quick-loc,
