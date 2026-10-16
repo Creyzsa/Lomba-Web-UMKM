@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
   id_user INT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(50) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
-  role ENUM('admin','user') DEFAULT 'user'
+  role ENUM('admin','pemilik','user') NOT NULL DEFAULT 'user'
 );
 
 -- 2. Tabel toko
@@ -29,7 +29,9 @@ CREATE TABLE IF NOT EXISTS toko (
   is_khas TINYINT(1) DEFAULT 0,
   is_hidden_gem TINYINT(1) DEFAULT 0,
   visit_count INT DEFAULT 0,
-  whatsapp_views INT DEFAULT 0
+  whatsapp_views INT DEFAULT 0,
+  id_pemilik INT DEFAULT NULL,
+  CONSTRAINT fk_toko_pemilik FOREIGN KEY (id_pemilik) REFERENCES users(id_user) ON DELETE SET NULL
 );
 
 -- 3. Tabel menu
@@ -40,6 +42,22 @@ CREATE TABLE IF NOT EXISTS menu (
   harga INT,
   deskripsi VARCHAR(255),
   FOREIGN KEY (id_toko) REFERENCES toko(id_toko) ON DELETE CASCADE
+);
+
+-- 4. Tabel ulasan dan rating pembeli
+CREATE TABLE IF NOT EXISTS ulasan (
+  id_ulasan INT AUTO_INCREMENT PRIMARY KEY,
+  id_toko INT NOT NULL,
+  id_user INT NOT NULL,
+  rating TINYINT UNSIGNED NOT NULL,
+  komentar TEXT,
+  balasan TEXT DEFAULT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  replied_at TIMESTAMP NULL DEFAULT NULL,
+  UNIQUE KEY uq_ulasan_toko_user (id_toko, id_user),
+  CONSTRAINT chk_ulasan_rating CHECK (rating BETWEEN 1 AND 5),
+  FOREIGN KEY (id_toko) REFERENCES toko(id_toko) ON DELETE CASCADE,
+  FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE
 );
 
 -- 4. Tabel makanan_khas (untuk fitur kurasi kuliner khas daerah)

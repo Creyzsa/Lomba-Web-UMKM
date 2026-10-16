@@ -1,12 +1,51 @@
 USE db_kuliner_padang;
 
+ALTER TABLE users
+  MODIFY role ENUM('admin','pemilik','user') NOT NULL DEFAULT 'user';
+
+UPDATE users
+SET role = 'pemilik'
+WHERE role = '';
+
 ALTER TABLE toko
   ADD COLUMN IF NOT EXISTS no_wa VARCHAR(20) DEFAULT NULL,
   ADD COLUMN IF NOT EXISTS jam_buka VARCHAR(100) DEFAULT NULL,
   ADD COLUMN IF NOT EXISTS is_khas TINYINT(1) DEFAULT 0,
   ADD COLUMN IF NOT EXISTS is_hidden_gem TINYINT(1) DEFAULT 0,
   ADD COLUMN IF NOT EXISTS visit_count INT DEFAULT 0,
-  ADD COLUMN IF NOT EXISTS whatsapp_views INT DEFAULT 0;
+  ADD COLUMN IF NOT EXISTS whatsapp_views INT DEFAULT 0,
+  ADD COLUMN IF NOT EXISTS id_pemilik INT DEFAULT NULL;
+
+SET @fk_pemilik_exists = (
+  SELECT COUNT(*) FROM information_schema.TABLE_CONSTRAINTS
+  WHERE CONSTRAINT_SCHEMA = DATABASE()
+    AND TABLE_NAME = 'toko'
+    AND CONSTRAINT_NAME = 'fk_toko_pemilik'
+    AND CONSTRAINT_TYPE = 'FOREIGN KEY'
+);
+SET @fk_pemilik_sql = IF(
+  @fk_pemilik_exists = 0,
+  'ALTER TABLE toko ADD CONSTRAINT fk_toko_pemilik FOREIGN KEY (id_pemilik) REFERENCES users(id_user) ON DELETE SET NULL',
+  'SELECT 1'
+);
+PREPARE fk_pemilik_stmt FROM @fk_pemilik_sql;
+EXECUTE fk_pemilik_stmt;
+DEALLOCATE PREPARE fk_pemilik_stmt;
+
+CREATE TABLE IF NOT EXISTS ulasan (
+  id_ulasan INT AUTO_INCREMENT PRIMARY KEY,
+  id_toko INT NOT NULL,
+  id_user INT NOT NULL,
+  rating TINYINT UNSIGNED NOT NULL,
+  komentar TEXT,
+  balasan TEXT DEFAULT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  replied_at TIMESTAMP NULL DEFAULT NULL,
+  UNIQUE KEY uq_ulasan_toko_user (id_toko, id_user),
+  CONSTRAINT chk_ulasan_rating CHECK (rating BETWEEN 1 AND 5),
+  FOREIGN KEY (id_toko) REFERENCES toko(id_toko) ON DELETE CASCADE,
+  FOREIGN KEY (id_user) REFERENCES users(id_user) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS makanan_khas (
   id_makanan INT AUTO_INCREMENT PRIMARY KEY,

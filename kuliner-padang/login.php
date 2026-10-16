@@ -1,13 +1,16 @@
 <?php
 /**
- * login.php — Autentikasi Pengguna & Admin
- * Aturan: Prepared statement, password_verify(), session_start(), arahkan admin ke admin/dashboard.php
+ * login.php — Autentikasi Pengguna & Pemilik Toko
+ * Aturan: Prepared statement, password_verify(), session_start(), arahkan pemilik ke pemilik/dashboard.php
  */
 session_start();
 require_once 'koneksi.php';
 
-// Jika sudah login, langsung redirect ke index.php
-if (isset($_SESSION['username'])) {
+// Jika sudah login, langsung arahkan ke halaman sesuai peran.
+if (isset($_SESSION['role']) && $_SESSION['role'] === 'pemilik') {
+    header("Location: pemilik/dashboard.php");
+    exit;
+} elseif (isset($_SESSION['username'])) {
     header("Location: index.php");
     exit;
 }
@@ -34,7 +37,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['role']     = $user['role'];
 
-                header("Location: index.php");
+                // Arahkan sesuai peran
+                if ($user['role'] === 'pemilik') {
+                    header("Location: pemilik/dashboard.php");
+                } else {
+                    header("Location: index.php");
+                }
                 exit;
             } else {
                 $error = 'Password salah, silakan coba lagi!';
@@ -74,7 +82,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php endif; ?>
 
             <!-- Form Login -->
-
             <form action="login.php" method="POST" class="auth-form">
                 <div class="form-group">
                     <label for="username">Username</label>

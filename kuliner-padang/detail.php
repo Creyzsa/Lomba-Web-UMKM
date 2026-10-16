@@ -41,6 +41,78 @@ $foto = !empty($toko['foto']) ? 'assets/img/' . $toko['foto'] : 'assets/img/defa
 $maps_url = "https://www.google.com/maps?q=" . $toko['latitude'] . "," . $toko['longitude'];
 $no_wa = $toko['no_wa'] ?? '';
 
+$rating_error = '';
+$rating_pesan = $_SESSION['pesan_ulasan'] ?? '';
+unset($_SESSION['pesan_ulasan']);
+$csrf_ulasan = $_SESSION['csrf_ulasan'] ?? bin2hex(random_bytes(32));
+$_SESSION['csrf_ulasan'] = $csrf_ulasan;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'ulasan') {
+    if (($_SESSION['role'] ?? '') !== 'user' || empty($_SESSION['id_user'])) {
+        $rating_error = 'Masuk menggunakan akun pembeli untuk memberi atau mengubah ulasan.';
+    } elseif (!isset($_POST['csrf_token']) || !hash_equals($csrf_ulasan, $_POST['csrf_token'])) {
+        $rating_error = 'Permintaan tidak valid. Muat ulang halaman dan coba lagi.';
+    } else {
+        $rating_input = filter_var($_POST['rating'] ?? null, FILTER_VALIDATE_INT);
+        $komentar = trim($_POST['komentar'] ?? '');
+        if ($rating_input === false || $rating_input < 1 || $rating_input > 5) {
+            $rating_error = 'Pilih rating antara 1 sampai 5 bintang.';
+        } elseif (strlen($komentar) > 2000) {
+            $rating_error = 'Ulasan maksimal 2000 karakter.';
+        } else {
+            $id_user = (int)$_SESSION['id_user'];
+            $stmt_ulasan = mysqli_prepare(
+                $koneksi,
+                "INSERT INTO ulasan (id_toko, id_user, rating, komentar)
+                 VALUES (?, ?, ?, ?)
+                 ON DUPLICATE KEY UPDATE rating = VALUES(rating), komentar = VALUES(komentar),
+                   balasan = NULL, replied_at = NULL, created_at = CURRENT_TIMESTAMP"
+            );
+            mysqli_stmt_bind_param($stmt_ulasan, "iiis", $id_toko, $id_user, $rating_input, $komentar);
+            if (mysqli_stmt_execute($stmt_ulasan)) {
+                $_SESSION['pesan_ulasan'] = 'Terima kasih! Rating dan ulasan Anda berhasil disimpan.';
+                mysqli_stmt_close($stmt_ulasan);
+                header("Location: detail.php?id=" . $id_toko . "#ulasan");
+                exit;
+            }
+            $rating_error = 'Ulasan gagal disimpan: ' . mysqli_stmt_error($stmt_ulasan);
+            mysqli_stmt_close($stmt_ulasan);
+        }
+    }
+}
+
+$stmt_rating = mysqli_prepare(
+    $koneksi,
+    "SELECT COUNT(*) AS total_ulasan, COALESCE(AVG(rating), 0) AS rata_rating
+     FROM ulasan WHERE id_toko = ?"
+);
+mysqli_stmt_bind_param($stmt_rating, "i", $id_toko);
+mysqli_stmt_execute($stmt_rating);
+$ringkasan_rating = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_rating));
+mysqli_stmt_close($stmt_rating);
+
+$ulasan_saya = null;
+if (($_SESSION['role'] ?? '') === 'user' && !empty($_SESSION['id_user'])) {
+    $id_user = (int)$_SESSION['id_user'];
+    $stmt_saya = mysqli_prepare($koneksi, "SELECT rating, komentar FROM ulasan WHERE id_toko = ? AND id_user = ?");
+    mysqli_stmt_bind_param($stmt_saya, "ii", $id_toko, $id_user);
+    mysqli_stmt_execute($stmt_saya);
+    $ulasan_saya = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_saya));
+    mysqli_stmt_close($stmt_saya);
+}
+
+$stmt_ulasan_list = mysqli_prepare(
+    $koneksi,
+    "SELECT u.rating, u.komentar, u.balasan, u.created_at, u.replied_at, users.username
+     FROM ulasan u
+     INNER JOIN users ON users.id_user = u.id_user
+     WHERE u.id_toko = ?
+     ORDER BY u.created_at DESC"
+);
+mysqli_stmt_bind_param($stmt_ulasan_list, "i", $id_toko);
+mysqli_stmt_execute($stmt_ulasan_list);
+$res_ulasan = mysqli_stmt_get_result($stmt_ulasan_list);
+
 $badges = [];
 if (!empty($toko['is_khas'])) $badges[] = 'Khas Daerah';
 if (!empty($toko['is_hidden_gem'])) $badges[] = 'Hidden Gem';
@@ -156,6 +228,83 @@ $active_nav = 'toko';
             </div>
         </div>
 
+        <section class="review-section" id="ulasan">
+            <div class="review-heading">
+                <div>
+                    <span class="section-kicker">CERITA PENGUNJUNG</span>
+                    <h2 class="section-heading">Rating & Ulasan</h2>
+                    <p class="text-muted">Bagikan pengalaman Anda dan bantu pengunjung lain memilih.</p>
+                </div>
+                <div class="review-summary" aria-label="Rating rata-rata <?= number_format((float)$ringkasan_rating['rata_rating'], 1); ?> dari 5">
+                    <strong><?= number_format((float)$ringkasan_rating['rata_rating'], 1); ?></strong>
+                    <span class="review-stars" aria-hidden="true">★</span>
+                    <small><?= (int)$ringkasan_rating['total_ulasan']; ?> ulasan</small>
+                </div>
+            </div>
+
+            <?php if ($rating_pesan !== ''): ?>
+                <div class="alert alert-success"><?= htmlspecialchars($rating_pesan); ?></div>
+            <?php endif; ?>
+            <?php if ($rating_error !== ''): ?>
+                <div class="alert alert-danger"><?= htmlspecialchars($rating_error); ?></div>
+            <?php endif; ?>
+
+            <?php if (($_SESSION['role'] ?? '') === 'user' && !empty($_SESSION['id_user'])): ?>
+                <form method="POST" action="detail.php?id=<?= $id_toko; ?>#ulasan" class="review-form">
+                    <input type="hidden" name="action" value="ulasan">
+                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_ulasan); ?>">
+                    <label for="rating">Rating Anda</label>
+                    <select id="rating" name="rating" class="form-control" required>
+                        <option value="">Pilih bintang</option>
+                        <?php for ($bintang = 5; $bintang >= 1; $bintang--): ?>
+                            <option value="<?= $bintang; ?>" <?= (int)($ulasan_saya['rating'] ?? 0) === $bintang ? 'selected' : ''; ?>>
+                                <?= $bintang; ?> <?= $bintang === 1 ? 'bintang' : 'bintang'; ?>
+                            </option>
+                        <?php endfor; ?>
+                    </select>
+                    <label for="komentar">Ulasan (opsional)</label>
+                    <textarea id="komentar" name="komentar" class="form-control" rows="3" maxlength="2000" placeholder="Ceritakan pengalaman Anda..."><?= htmlspecialchars($ulasan_saya['komentar'] ?? ''); ?></textarea>
+                    <button type="submit" class="btn btn-primary">
+                        <?= $ulasan_saya ? 'Perbarui Ulasan' : 'Kirim Ulasan'; ?>
+                    </button>
+                    <?php if ($ulasan_saya): ?>
+                        <small class="text-muted">Anda sudah memberi rating. Menyimpan ulasan baru akan menggantikan rating sebelumnya.</small>
+                    <?php endif; ?>
+                </form>
+            <?php elseif (!isset($_SESSION['id_user'])): ?>
+                <p class="review-login-note">Ingin memberikan rating? <a href="login.php">Masuk sebagai pembeli</a> terlebih dahulu.</p>
+            <?php endif; ?>
+
+            <div class="review-list">
+                <?php if (mysqli_num_rows($res_ulasan) > 0): ?>
+                    <?php while ($ulasan = mysqli_fetch_assoc($res_ulasan)): ?>
+                        <article class="review-card">
+                            <div class="review-card-heading">
+                                <div>
+                                    <strong><?= htmlspecialchars($ulasan['username']); ?></strong>
+                                    <span class="review-stars" aria-label="<?= (int)$ulasan['rating']; ?> dari 5 bintang">
+                                        <?= str_repeat('★', (int)$ulasan['rating']); ?><span class="review-stars-muted"><?= str_repeat('★', 5 - (int)$ulasan['rating']); ?></span>
+                                    </span>
+                                </div>
+                                <time datetime="<?= htmlspecialchars($ulasan['created_at']); ?>"><?= date('d M Y', strtotime($ulasan['created_at'])); ?></time>
+                            </div>
+                            <?php if (trim((string)$ulasan['komentar']) !== ''): ?>
+                                <p class="review-comment"><?= nl2br(htmlspecialchars($ulasan['komentar'])); ?></p>
+                            <?php endif; ?>
+                            <?php if (!empty($ulasan['balasan'])): ?>
+                                <div class="review-reply">
+                                    <strong>Balasan pemilik</strong>
+                                    <p><?= nl2br(htmlspecialchars($ulasan['balasan'])); ?></p>
+                                </div>
+                            <?php endif; ?>
+                        </article>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <div class="review-empty">Belum ada ulasan. Jadilah yang pertama berbagi pengalaman.</div>
+                <?php endif; ?>
+            </div>
+        </section>
+
         <!-- Tombol Kembali -->
         <div style="text-align:center;margin-top:40px;">
             <a href="toko.php" class="btn btn-outline-gold">← Kembali ke Daftar Toko</a>
@@ -164,6 +313,7 @@ $active_nav = 'toko';
     </section>
 
     <?php include 'footer.php'; ?>
+    <?php mysqli_stmt_close($stmt_ulasan_list); ?>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script src="assets/js/kuliner-utils.js"></script>
