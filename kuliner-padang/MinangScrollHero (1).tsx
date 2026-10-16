@@ -39,17 +39,17 @@ export type Chapter = {
  * (tengah layar, sedikit di bawah titik tengah). Ubah jika pintu di fotomu
  * berada di posisi lain. Satuan: x vw, y vh.
  */
-const DOOR = { x: 0, y: 14 };
+const DOOR = { x: 0, y: -58 };
 
 const DEFAULT_ITEMS: FoodItem[] = [
-  { id: "rendang", label: "Rendang", src: "/images/makanan/rendang.jpg", size: 19, to: { x: -33, y: -16, r: -8, s: 1 }, window: [0.02, 0.26], depth: 1.2 },
-  { id: "sate", label: "Sate Padang", src: "/images/makanan/sate.jpg", size: 16, to: { x: 31, y: -22, r: 6, s: 1 }, window: [0.06, 0.3], depth: 0.8 },
-  { id: "ayam-pop", label: "Ayam Pop", src: "/images/makanan/ayam-pop.jpg", size: 15, to: { x: -37, y: 20, r: 5, s: 0.92 }, window: [0.1, 0.34], depth: 1.5 },
-  { id: "dendeng", label: "Dendeng Balado", src: "/images/makanan/dendeng.jpg", size: 17, to: { x: 35, y: 15, r: -6, s: 1.04 }, window: [0.14, 0.38], depth: 1.0 },
-  { id: "gulai", label: "Gulai", src: "/images/makanan/gulai.jpg", size: 13, to: { x: -18, y: 33, r: -4, s: 0.85 }, window: [0.16, 0.4], depth: 0.6 },
-  { id: "kawa", label: "Kawa Daun", src: "/images/makanan/kawa-daun.jpg", size: 12, to: { x: 17, y: 34, r: 7, s: 0.88 }, window: [0.18, 0.42], depth: 1.3 },
-  { id: "lamang", label: "Lamang", src: "/images/makanan/lamang.jpg", size: 12, to: { x: -22, y: -34, r: 10, s: 0.8 }, window: [0.2, 0.44], depth: 0.7 },
-  { id: "cabai", label: "Cabai", src: "/images/makanan/cabai.jpg", size: 10, to: { x: 14, y: -35, r: -10, s: 0.75 }, window: [0.22, 0.46], depth: 1.8 },
+  { id: "rendang", label: "Rendang", src: "/images/makanan/rendang.jpg", size: 19, to: { x: -22, y: -28, r: 0, s: 0.82 }, window: [0.02, 0.26], depth: 1.2 },
+  { id: "sate", label: "Sate Padang", src: "/images/makanan/sate.jpg", size: 16, to: { x: 22, y: -28, r: 0, s: 0.82 }, window: [0.06, 0.3], depth: 0.8 },
+  { id: "ayam-pop", label: "Ayam Pop", src: "/images/makanan/ayam-pop.jpg", size: 15, to: { x: -22, y: -9, r: 0, s: 0.82 }, window: [0.1, 0.34], depth: 1.5 },
+  { id: "dendeng", label: "Dendeng Balado", src: "/images/makanan/dendeng.jpg", size: 17, to: { x: 22, y: -9, r: 0, s: 0.82 }, window: [0.14, 0.38], depth: 1.0 },
+  { id: "gulai", label: "Gulai", src: "/images/makanan/gulai.jpg", size: 13, to: { x: -22, y: 10, r: 0, s: 0.82 }, window: [0.16, 0.4], depth: 0.6 },
+  { id: "kawa", label: "Kawa Daun", src: "/images/makanan/kawa-daun.jpg", size: 12, to: { x: 22, y: 10, r: 0, s: 0.82 }, window: [0.18, 0.42], depth: 1.3 },
+  { id: "lamang", label: "Lamang", src: "/images/makanan/lamang.jpg", size: 12, to: { x: -22, y: 29, r: 0, s: 0.82 }, window: [0.2, 0.44], depth: 0.7 },
+  { id: "cabai", label: "Cabai", src: "/images/makanan/cabai.jpg", size: 10, to: { x: 22, y: 29, r: 0, s: 0.82 }, window: [0.22, 0.46], depth: 1.8 },
 ];
 
 const DEFAULT_CHAPTERS: Chapter[] = [
@@ -148,7 +148,7 @@ type Props = {
  * Hero "scroll-scrubbed": layar terkunci (sticky), seluruh animasi
  * dikendalikan posisi scroll (maju saat turun, mundur saat naik).
  *
- *  0.00 - 0.26  Konten hero memudar; makanan keluar satu per satu dari pintu Rumah Gadang
+ *  0.00 - 0.26  Konten hero memudar; makanan turun dari atas lalu tersusun rapi
  *  0.00 - 1.00  Rumah Gadang zoom ke arah pintu, latar menggelap bertahap
  *  0.34 - 0.94  Tiga bab bergantian; bab terakhir bertahan dan tombolnya bisa diklik
  *  0.86 - 1.00  Makanan memudar saat hero selesai
@@ -225,17 +225,14 @@ export default function MinangScrollHero({
         const t = reduced ? 1 : raw;
         const pp = reduced ? 0 : p;
 
-        /* x cepat, y menyusul: lintasan jadi lengkung, bukan garis lurus */
-        const tx = easeOutCubic(t);
-        const ty = easeOutBack(clamp(t * 1.05));
-        const ts = easeOutBack(clamp(t * 1.1));
+        /* Muncul dari atas ke bawah, lalu berhenti dalam susunan dua kolom */
+        const drop = easeOutBack(clamp(t * 1.05));
+        const settle = easeOutCubic(t);
 
-        const fromR = it.to.r + (it.to.x < 0 ? -35 : 35);
-
-        const x = (lerp(DOOR.x, it.to.x, tx) * vw) / 100;
-        const y = ((lerp(DOOR.y, it.to.y, ty) - pp * it.depth * 22) * vh) / 100;
-        const r = lerp(fromR, it.to.r, tx) + pp * it.depth * 14;
-        const s = lerp(0.06, it.to.s, ts) * (1 + pp * 0.1 * it.depth);
+        const x = (it.to.x * settle * vw) / 100;
+        const y = ((lerp(DOOR.y, it.to.y, drop) - pp * it.depth * 4) * vh) / 100;
+        const r = lerp(-4, it.to.r, settle);
+        const s = lerp(0.06, it.to.s, easeOutBack(clamp(t * 1.1)));
 
         const outro = 1 - easeInOut(clamp((p - 0.86) / 0.14));
         el.style.opacity = String(clamp(t * 3) * (reduced ? 1 : outro));
