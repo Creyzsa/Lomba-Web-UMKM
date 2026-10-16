@@ -27,18 +27,6 @@ if (!isset($active_nav)) {
             <a href="kuliner-budget.php" class="nav-link <?= ($active_nav === 'budget') ? 'active-link' : ''; ?>">Sesuai Budget</a>
             <a href="smart-route.php" class="nav-link <?= ($active_nav === 'route') ? 'active-link' : ''; ?>">Rute Pintar</a>
             <a href="tentang.php" class="nav-link <?= ($active_nav === 'tentang') ? 'active-link' : ''; ?>">Tentang</a>
-            
-            <?php if (isset($_SESSION['role'])): ?>
-                <?php if ($_SESSION['role'] === 'admin'): ?>
-                    <a href="admin/dashboard.php" class="btn btn-gold btn-sm"><i class="fa-solid fa-gear"></i> Panel Admin</a>
-                <?php else: ?>
-                    <span class="user-greeting">Halo, <?= htmlspecialchars($_SESSION['username']); ?></span>
-                <?php endif; ?>
-                <a href="logout.php" class="btn btn-outline-gold btn-sm">Keluar</a>
-            <?php else: ?>
-                <a href="login.php" class="btn btn-outline-gold btn-sm">Masuk</a>
-                <a href="register.php" class="btn btn-gold btn-sm">Daftar</a>
-            <?php endif; ?>
         </nav>
     </div>
 </header>

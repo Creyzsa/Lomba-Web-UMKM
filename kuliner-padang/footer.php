@@ -47,15 +47,14 @@
         <div class="footer-col">
             <h4 class="footer-heading">Hubungi Admin</h4>
             <p class="text-sm" style="margin-bottom:8px;">Bantuan & pendaftaran UMKM dapat menghubungi admin via WhatsApp:</p>
-            <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:12px;">
-                <a href="https://wa.me/6282286908467?text=<?= urlencode('Halo Admin Nindy, saya ingin bertanya seputar platform Peta Rasa Padang.'); ?>" target="_blank" style="color:var(--emas-terang); text-decoration:none; font-size:0.88rem; display:inline-flex; align-items:center; gap:6px;">
-                    <i class="fa-brands fa-whatsapp" style="color:#22c55e;"></i> Nindy: +62 822-8690-8467
+            <div style="display:flex; flex-direction:column; gap:8px; margin-top:10px;">
+                <a href="https://wa.me/6282286908467?text=<?= urlencode('Halo Admin Nindy, saya ingin bertanya seputar platform Peta Rasa Padang.'); ?>" target="_blank" style="color:var(--emas-terang); text-decoration:none; font-size:0.9rem; display:inline-flex; align-items:center; gap:8px;">
+                    <i class="fa-brands fa-whatsapp" style="color:#22c55e; font-size:1.1rem;"></i> Nindy: +62 822-8690-8467
                 </a>
-                <a href="https://wa.me/6282285417709?text=<?= urlencode('Halo Admin Cha, saya ingin bertanya seputar platform Peta Rasa Padang.'); ?>" target="_blank" style="color:var(--emas-terang); text-decoration:none; font-size:0.88rem; display:inline-flex; align-items:center; gap:6px;">
-                    <i class="fa-brands fa-whatsapp" style="color:#22c55e;"></i> Cha: +62 822-8541-7709
+                <a href="https://wa.me/6282285417709?text=<?= urlencode('Halo Admin Cha, saya ingin bertanya seputar platform Peta Rasa Padang.'); ?>" target="_blank" style="color:var(--emas-terang); text-decoration:none; font-size:0.9rem; display:inline-flex; align-items:center; gap:8px;">
+                    <i class="fa-brands fa-whatsapp" style="color:#22c55e; font-size:1.1rem;"></i> Cha: +62 822-8541-7709
                 </a>
             </div>
-            <a href="admin/dashboard.php" class="btn btn-gold btn-sm" style="display:inline-block;">Panel Admin</a>
         </div>
     </div>
 

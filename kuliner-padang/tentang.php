@@ -57,7 +57,7 @@ $active_nav = 'tentang';
                         <div class="feature-badge"><i class="fa-solid fa-check text-gold"></i> Peta Interaktif Presisi Geospasial</div>
                         <div class="feature-badge"><i class="fa-solid fa-check text-gold"></i> Katalog Menu & Transparansi Harga</div>
                         <div class="feature-badge"><i class="fa-solid fa-check text-gold"></i> UI/UX Bernuansa Minangkabau Modern</div>
-                        <div class="feature-badge"><i class="fa-solid fa-check text-gold"></i> Panel CRUD Pengelolaan UMKM Terpadu</div>
+                        <div class="feature-badge"><i class="fa-solid fa-check text-gold"></i> Rekomendasi Rute & Budget Otomatis</div>
                     </div>
 
                     <!-- Kontak Admin WhatsApp -->
