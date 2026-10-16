@@ -407,9 +407,33 @@ a:hover {
 }
 
 .hero-title-gradient {
-    background: linear-gradient(135deg, #FFF 30%, var(--emas-terang) 100%);
+    background: linear-gradient(
+        120deg,
+        #FFFFFF 0%,
+        #FFF6D6 25%,
+        #F7D070 45%,
+        #FFFFFF 55%,
+        #E5A922 75%,
+        #FFFFFF 100%
+    );
+    background-size: 250% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    animation: goldShimmer 5s ease-in-out infinite;
+    display: inline-block;
+    filter: drop-shadow(0 4px 22px rgba(247, 208, 112, 0.4));
+}
+
+@keyframes goldShimmer {
+    0% {
+        background-position: 200% center;
+    }
+    50% {
+        background-position: 0% center;
+    }
+    100% {
+        background-position: -200% center;
+    }
 }
 
 .hero-tagline {
