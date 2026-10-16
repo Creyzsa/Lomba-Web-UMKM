@@ -1,8 +1,7 @@
 <?php
 /**
  * index.php — Beranda Peta Kuliner Padang
- * Tema: Minang (Peta Rasa Padang)
- * Fitur: Hero siluet Rumah Gadang, Leaflet Map 1.9.4, Filter Kategori, Search Box, Grid Kartu Toko, Modal Menu, Footer Minang
+ * Tema: Minang Modern Luxury (Peta Rasa Padang)
  */
 session_start();
 require_once 'koneksi.php';
@@ -13,6 +12,11 @@ $total_toko = ($res_stat_toko) ? mysqli_fetch_assoc($res_stat_toko)['total'] : 0
 
 $res_stat_menu = mysqli_query($koneksi, "SELECT COUNT(*) as total FROM menu");
 $total_menu = ($res_stat_menu) ? mysqli_fetch_assoc($res_stat_menu)['total'] : 0;
+
+// Ambil 6 toko unggulan untuk preview beranda
+$res_toko_preview = mysqli_query($koneksi, "SELECT * FROM toko ORDER BY id_toko ASC LIMIT 6");
+
+$active_nav = 'beranda';
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -21,50 +25,19 @@ $total_menu = ($res_stat_menu) ? mysqli_fetch_assoc($res_stat_menu)['total'] : 0
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Peta Rasa Padang — Etalase Digital Kuliner Minangkabau</title>
     
-    <!-- Google Fonts: Cinzel (Heading Klasik/Minang vibe) & Plus Jakarta Sans (Body modern) -->
+    <!-- Google Fonts: Cinzel & Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Leaflet CSS 1.9.4 -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    
-    <!-- CSS Utama Tema Minang -->
+    <!-- CSS Utama Tema Minang Modern -->
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <!-- Navbar Interaktif Minang -->
-    <header class="navbar" id="main-navbar">
-        <div class="nav-container">
-            <a href="index.php" class="brand">
-                <span class="brand-icon">🏛️</span>
-                <div class="brand-text">
-                    <span class="brand-title">Peta Rasa Padang</span>
-                    <span class="brand-tagline">Etalase Kuliner Ranah Minang</span>
-                </div>
-            </a>
-            
-            <nav class="nav-links">
-                <a href="#peta-section" class="nav-link">Peta Kuliner</a>
-                <a href="#toko-section" class="nav-link">Daftar Toko</a>
-                <a href="#tentang-section" class="nav-link">Tentang</a>
-                
-                <?php if (isset($_SESSION['role'])): ?>
-                    <?php if ($_SESSION['role'] === 'admin'): ?>
-                        <a href="admin/dashboard.php" class="btn btn-gold btn-sm">⚙️ Panel Admin</a>
-                    <?php else: ?>
-                        <span class="user-greeting">Halo, <?= htmlspecialchars($_SESSION['username']); ?></span>
-                    <?php endif; ?>
-                    <a href="logout.php" class="btn btn-outline-gold btn-sm">Keluar</a>
-                <?php else: ?>
-                    <a href="login.php" class="btn btn-outline-gold btn-sm">Masuk</a>
-                    <a href="register.php" class="btn btn-gold btn-sm">Daftar</a>
-                <?php endif; ?>
-            </nav>
-        </div>
-    </header>
+    <!-- Navbar -->
+    <?php include 'navbar.php'; ?>
 
-    <!-- Hero Section dengan Siluet Gonjong Rumah Gadang -->
+    <!-- Hero Section dengan Background Ikonik Masjid Raya Sumbar -->
     <section class="hero-section">
         <div class="hero-overlay"></div>
         <div class="hero-content">
@@ -91,163 +64,112 @@ $total_menu = ($res_stat_menu) ? mysqli_fetch_assoc($res_stat_menu)['total'] : 0
             </div>
 
             <div class="hero-actions">
-                <a href="#peta-section" class="btn btn-hero-primary">📍 Eksplorasi Peta Sekarang</a>
-                <a href="#toko-section" class="btn btn-hero-secondary">🍽️ Lihat Semua Toko</a>
+                <a href="peta.php" class="btn btn-hero-primary">📍 Buka Peta Interaktif</a>
+                <a href="toko.php" class="btn btn-hero-secondary">🍽️ Jelajahi Daftar Toko</a>
             </div>
         </div>
 
-        <!-- Ornamen Pembatas Songket / Gonjong -->
+        <!-- Ornamen Pembatas Songket -->
         <div class="songket-border-bottom"></div>
     </section>
 
-    <!-- Section Peta Interaktif -->
-    <section class="section-container" id="peta-section">
+    <!-- Section Kategori Unggulan -->
+    <section class="section-container">
         <div class="section-header text-center">
-            <span class="section-kicker">INTERACTIVE CULINARY MAP</span>
-            <h2 class="section-heading">Peta Interaktif Kuliner Kota Padang</h2>
+            <span class="section-kicker">KATEGORI PILIHAN</span>
+            <h2 class="section-heading">Kekayaan Rasa Ranah Minang</h2>
             <div class="minang-divider">
                 <span>◆</span><span>◆</span><span class="center-diamond">❖</span><span>◆</span><span>◆</span>
             </div>
-            <p class="section-subtext">Klik pin di peta untuk melihat nama toko, ulasan menu andalan, dan rincian harga. Gunakan tombol filter di bawah untuk memudahkan pencarian.</p>
+            <p class="section-subtext">Pilih kategori kuliner untuk menelusuri lokasi toko dan menu favorit Anda langsung di peta interaktif.</p>
         </div>
 
-        <!-- Filter & Search Bar Kontrol -->
-        <div class="map-controls-card">
-            <div class="search-box-wrapper">
-                <span class="search-icon">🔍</span>
-                <input type="text" id="input-search" class="search-input" placeholder="Cari nama toko, menu (rendang, sate, kopi...), atau alamat...">
-            </div>
-
-            <div class="category-filters" id="category-filter-group">
-                <button class="filter-btn active" data-category="Semua">Semua Kategori</button>
-                <button class="filter-btn" data-category="Rumah Makan">🍛 Rumah Makan</button>
-                <button class="filter-btn" data-category="Sate">🍢 Sate</button>
-                <button class="filter-btn" data-category="Kopi">☕ Kopi & Kawa</button>
-                <button class="filter-btn" data-category="Oleh-oleh">🎁 Oleh-oleh</button>
-                <button class="filter-btn" data-category="Camilan">🥮 Camilan</button>
-            </div>
-        </div>
-
-        <!-- Container Peta Leaflet -->
-        <div class="map-wrapper">
-            <div id="map" class="main-map"></div>
-            <div class="map-legend">
-                <div class="legend-item"><span class="legend-icon rm-icon">🍛</span> Rumah Makan</div>
-                <div class="legend-item"><span class="legend-icon sate-icon">🍢</span> Sate Padang</div>
-                <div class="legend-item"><span class="legend-icon kopi-icon">☕</span> Kedai Kopi</div>
-                <div class="legend-item"><span class="legend-icon oleh-icon">🎁</span> Oleh-oleh</div>
-                <div class="legend-item"><span class="legend-icon camilan-icon">🥮</span> Camilan</div>
-            </div>
+        <div class="category-cards-grid">
+            <a href="peta.php?kategori=Rumah+Makan" class="category-feature-card">
+                <span class="cat-card-icon">🍛</span>
+                <h3>Rumah Makan</h3>
+                <p>Rendang daging legendaris, gulai tunjang, dendeng batokok, dan ayam pop khas Padang.</p>
+                <span class="cat-card-link">Lihat di Peta →</span>
+            </a>
+            <a href="peta.php?kategori=Sate" class="category-feature-card">
+                <span class="cat-card-icon">🍢</span>
+                <h3>Sate Padang</h3>
+                <p>Sate daging dan lidah sapi beraroma bakaran arang dengan kuah rempah kuning dan cokelat.</p>
+                <span class="cat-card-link">Lihat di Peta →</span>
+            </a>
+            <a href="peta.php?kategori=Kopi" class="category-feature-card">
+                <span class="cat-card-icon">☕</span>
+                <h3>Kopi & Kawa Daun</h3>
+                <p>Sensasi seduhan daun kopi kering di tempurung kelapa dan biji kopi arabika dataran tinggi Solok.</p>
+                <span class="cat-card-link">Lihat di Peta →</span>
+            </a>
+            <a href="peta.php?kategori=Oleh-oleh" class="category-feature-card">
+                <span class="cat-card-icon">🎁</span>
+                <h3>Oleh-Oleh Khas</h3>
+                <p>Keripik sanjai balado pedas manis, karak kaliang, kerupuk jangek, hingga rendang vakum.</p>
+                <span class="cat-card-link">Lihat di Peta →</span>
+            </a>
         </div>
     </section>
 
     <!-- Ornamen Songket Strip -->
     <div class="songket-strip"></div>
 
-    <!-- Section Grid Kartu Toko -->
-    <section class="section-container" id="toko-section">
+    <!-- Section Highlight Preview Toko -->
+    <section class="section-container">
         <div class="section-header">
             <div class="header-left">
-                <span class="section-kicker">DAFTAR ETALASE UMKM</span>
-                <h2 class="section-heading">Jelajahi Toko & Kedai Pilihan</h2>
-                <p class="section-subtext">Klik pada salah satu kartu toko untuk menyorot lokasinya langsung di peta (Fly-to).</p>
+                <span class="section-kicker">ETALASE UNGGULAN</span>
+                <h2 class="section-heading">Destinasi Kuliner Populer</h2>
+                <p class="section-subtext">Beberapa pilihan kedai dan rumah makan favorit wisatawan di Kota Padang.</p>
             </div>
             <div class="header-right">
-                <span id="counter-toko-tampil" class="badge-total-view">Memuat toko...</span>
+                <a href="toko.php" class="btn btn-outline-gold btn-sm" style="color:var(--merah-utama); border-color:var(--merah-utama);">Lihat Semua Toko (<?= $total_toko; ?>) →</a>
             </div>
         </div>
 
-        <!-- Grid Container Toko (akan diisi dinamis via JavaScript dari api_toko.php) -->
-        <div class="toko-grid" id="toko-grid-container">
-            <!-- Loading Skeleton -->
-            <div class="skeleton-card"></div>
-            <div class="skeleton-card"></div>
-            <div class="skeleton-card"></div>
+        <div class="toko-grid">
+            <?php while ($t = mysqli_fetch_assoc($res_toko_preview)): ?>
+                <?php 
+                    $foto = !empty($t['foto']) ? 'assets/img/' . $t['foto'] : 'assets/img/default.png'; 
+                ?>
+                <div class="toko-card" onclick="window.location.href='peta.php?toko=<?= $t['id_toko']; ?>'">
+                    <div class="card-img-wrapper">
+                        <img src="<?= htmlspecialchars($foto); ?>" alt="<?= htmlspecialchars($t['nama_toko']); ?>" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=500&q=80'">
+                        <span class="card-badge"><?= htmlspecialchars($t['kategori']); ?></span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title"><?= htmlspecialchars($t['nama_toko']); ?></h3>
+                        <p class="card-address">📍 <?= htmlspecialchars($t['alamat']); ?></p>
+                        <p class="card-desc"><?= htmlspecialchars($t['deskripsi']); ?></p>
+                        <div class="card-actions">
+                            <a href="peta.php?toko=<?= $t['id_toko']; ?>" class="btn btn-primary btn-sm btn-block">
+                                📍 Lihat Lokasi di Peta
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <?php endwhile; ?>
+        </div>
+
+        <div class="text-center" style="margin-top: 40px;">
+            <a href="toko.php" class="btn btn-gold">Lihat Seluruh Daftar Toko & Menu Lengkap ↗</a>
         </div>
     </section>
 
-    <!-- Section Tentang & Profil Singkat Project -->
-    <section class="section-container about-section" id="tentang-section">
-        <div class="about-card">
-            <div class="about-grid">
-                <div class="about-info">
-                    <span class="section-kicker text-gold">TENTANG INOVASI KAMI</span>
-                    <h2 class="about-title">Digitalisasi UMKM Kuliner Tradisional Padang</h2>
-                    <div class="minang-divider-left">
-                        <span>◆</span><span>◆</span><span class="center-diamond">❖</span>
-                    </div>
-                    <p><strong>Peta Rasa Padang</strong> dirancang sebagai solusi etalase digital interaktif yang menjembatani para pelaku usaha kuliner lokal dengan wisatawan dan masyarakat pecinta kuliner Ranah Minang.</p>
-                    <p>Melalui integrasi OpenStreetMap dan Leaflet, pengguna dapat menemukan lokasi presisi kedai legendaris, mencermati ragam menu beserta transparansi harga, serta langsung mendapatkan panduan navigasi Google Maps maupun kontak WhatsApp pemesanan.</p>
-                    <div class="features-list">
-                        <div class="feature-badge">✓ Peta Interaktif Presisi Geografis</div>
-                        <div class="feature-badge">✓ Katalog Menu & Transparansi Harga</div>
-                        <div class="feature-badge">✓ Desain Kebudayaan Minangkabau Modern</div>
-                        <div class="feature-badge">✓ Panel Pengelolaan Data UMKM Terpadu</div>
-                    </div>
-                </div>
-                <div class="about-visual">
-                    <div class="gonjong-box">
-                        <div class="gonjong-roof">🏛️</div>
-                        <h3>Peta Rasa Padang</h3>
-                        <p>Karya Inovasi Lomba IT FEST 2026<br>Web Programming Competition<br><strong>UIN Mahmud Yunus Batusangkar</strong></p>
-                        <div class="badge-award">Tema: Digitalisasi UMKM</div>
-                    </div>
-                </div>
+    <!-- Banner Ajakan Eksplorasi Peta -->
+    <section class="section-container" style="margin-bottom: 80px;">
+        <div class="cta-banner">
+            <div class="cta-content">
+                <span class="section-kicker text-gold">PANDUAN LOKASI GEOGRAFIS</span>
+                <h2>Jelajahi Lewat Peta Interaktif</h2>
+                <p>Buka peta presisi Kota Padang dengan titik sebaran rumah makan, koordinat akurat, rute Google Maps, serta daftar harga transparan.</p>
+                <a href="peta.php" class="btn btn-hero-primary" style="margin-top: 14px;">Buka Peta Kuliner Sekarang ↗</a>
             </div>
         </div>
     </section>
 
-    <!-- Footer Nuansa Minang -->
-    <footer class="footer-minang">
-        <div class="footer-songket-top"></div>
-        <div class="footer-container">
-            <div class="footer-col brand-col">
-                <div class="brand footer-brand">
-                    <span class="brand-icon">🏛️</span>
-                    <div>
-                        <h3 class="footer-logo">Peta Rasa Padang</h3>
-                        <small>Warisan Cita Rasa di Ujung Jari</small>
-                    </div>
-                </div>
-                <p class="footer-bio">Mendukung digitalisasi dan kemandirian pelaku UMKM kuliner di Kota Padang dan sekitarnya melalui teknologi web terbuka.</p>
-            </div>
-
-            <div class="footer-col">
-                <h4 class="footer-heading">Navigasi Utama</h4>
-                <ul class="footer-links">
-                    <li><a href="#main-navbar">Beranda</a></li>
-                    <li><a href="#peta-section">Peta Kuliner</a></li>
-                    <li><a href="#toko-section">Katalog Toko</a></li>
-                    <li><a href="#tentang-section">Tentang Inovasi</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-col">
-                <h4 class="footer-heading">Kategori Kuliner</h4>
-                <ul class="footer-links">
-                    <li><a href="#peta-section" onclick="filterByCat('Rumah Makan')">Rumah Makan Padang</a></li>
-                    <li><a href="#peta-section" onclick="filterByCat('Sate')">Sate Padang & Pariaman</a></li>
-                    <li><a href="#peta-section" onclick="filterByCat('Kopi')">Kedai Kawa & Kopi Solok</a></li>
-                    <li><a href="#peta-section" onclick="filterByCat('Oleh-oleh')">Sanjai & Kerupuk Jangek</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-col">
-                <h4 class="footer-heading">Akses Pengelola</h4>
-                <p class="text-sm">Bagi pemilik UMKM atau panitia yang ingin mengelola data toko:</p>
-                <a href="admin/dashboard.php" class="btn btn-gold btn-sm" style="display:inline-block; margin-top:8px;">Masuk ke Panel Admin</a>
-            </div>
-        </div>
-
-        <div class="footer-bottom">
-            <p>&copy; 2026 <strong>Peta Rasa Padang</strong> — Peserta IT FEST 2026 Web Programming UIN Mahmud Yunus Batusangkar.</p>
-        </div>
-    </footer>
-
-    <!-- Leaflet JS 1.9.4 -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    
-    <!-- Script Interaktif Peta & Filter -->
-    <script src="assets/js/peta.js"></script>
+    <!-- Footer -->
+    <?php include 'footer.php'; ?>
 </body>
 </html>

@@ -1566,6 +1566,167 @@ a:hover {
 }
 
 /* ==========================================================================
+   MULTI-PAGE WEBSITE (MPA) STYLES
+   ========================================================================== */
+.active-link {
+    color: var(--emas-terang) !important;
+    font-weight: 700 !important;
+}
+
+.active-link::after {
+    width: 100% !important;
+    background: var(--emas-terang) !important;
+}
+
+/* Page Banner untuk Sub-Halaman (Peta, Toko, Tentang) */
+.page-banner {
+    position: relative;
+    padding: 70px 24px 80px;
+    background: url('../img/hero-padang.jpg') center center / cover no-repeat;
+    color: #FFF;
+    text-align: center;
+    overflow: hidden;
+}
+
+.page-banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(30, 4, 4, 0.90) 0%, rgba(66, 8, 8, 0.84) 60%, rgba(20, 2, 2, 0.95) 100%);
+    backdrop-filter: blur(2px);
+    z-index: 1;
+}
+
+.page-banner-content {
+    position: relative;
+    z-index: 2;
+    max-width: 820px;
+    margin: 0 auto;
+}
+
+.page-banner-title {
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    font-weight: 900;
+    color: #FFF;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+}
+
+.page-banner-desc {
+    font-size: 1.05rem;
+    color: rgba(255, 253, 249, 0.88);
+    line-height: 1.65;
+}
+
+/* Kategori Feature Cards di Beranda */
+.category-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+    margin-top: 36px;
+}
+
+.category-feature-card {
+    background: var(--putih);
+    border: 1px solid rgba(212, 160, 23, 0.25);
+    border-radius: var(--radius-md);
+    padding: 30px 24px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--teks-utama);
+}
+
+.category-feature-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--emas-utama);
+    box-shadow: var(--shadow-md);
+}
+
+.cat-card-icon {
+    font-size: 2.8rem;
+    margin-bottom: 14px;
+    display: inline-block;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+}
+
+.category-feature-card h3 {
+    font-size: 1.3rem;
+    color: var(--merah-gelap);
+    margin-bottom: 10px;
+}
+
+.category-feature-card p {
+    font-size: 0.88rem;
+    color: var(--teks-muted);
+    line-height: 1.6;
+    margin-bottom: 16px;
+    flex: 1;
+}
+
+.cat-card-link {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--merah-utama);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* CTA Banner di Beranda */
+.cta-banner {
+    background: linear-gradient(135deg, rgba(74, 10, 10, 0.95) 0%, rgba(25, 4, 4, 0.98) 100%),
+                url('../img/rumah-gadang.jpg') center center / cover no-repeat;
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--emas-terang);
+    padding: 60px 40px;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-banner .cta-content {
+    position: relative;
+    z-index: 2;
+    max-width: 680px;
+    margin: 0 auto;
+    color: #FFF;
+}
+
+.cta-banner h2 {
+    font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+    color: var(--emas-terang);
+    margin-bottom: 12px;
+}
+
+.cta-banner p {
+    font-size: 1rem;
+    color: rgba(255, 253, 249, 0.9);
+    line-height: 1.65;
+    margin-bottom: 20px;
+}
+
+/* Search Form Flex di Halaman Toko */
+.search-form-flex {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.error-msg-box {
+    background: #FFFDF7;
+    border: 1.5px dashed var(--emas-utama);
+    border-radius: var(--radius-md);
+    padding: 36px 24px;
+    text-align: center;
+    color: #64748B;
+}
+
+/* ==========================================================================
    RESPONSIVE (MOBILE & TABLET)
    ========================================================================== */
 @media (max-width: 992px) {
