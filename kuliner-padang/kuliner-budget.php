@@ -500,9 +500,33 @@ $active_nav = 'budget';
                 <button type="button" id="btn-cari-budget" class="bgt-submit"><i class="fa-solid fa-magnifying-glass"></i> Cari Menu</button>
             </div>
 
-            <div class="bgt-location" id="lokasi-row">
-                <span id="status-lokasi"><i class="fa-solid fa-location-dot"></i> Gunakan lokasi saya untuk urutkan berdasarkan jarak terdekat</span>
-                <button type="button" id="btn-ambil-lokasi"><i class="fa-solid fa-location-dot"></i> Aktifkan Lokasi</button>
+            <div class="bgt-location" id="lokasi-row" style="display:flex; flex-direction:column; gap:10px; align-items:stretch;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <span id="status-lokasi"><i class="fa-solid fa-location-dot"></i> <strong>Titik Acuan Jarak:</strong> Belum ditentukan (hitung dari seluruh kota)</span>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <button type="button" id="btn-ambil-lokasi"><i class="fa-solid fa-crosshairs"></i> GPS Saya</button>
+                        <button type="button" id="btn-pilih-peta" style="background:var(--merah-utama); color:#fff; border-color:var(--merah-utama);"><i class="fa-solid fa-map-pin"></i> Tentukan Titik di Peta</button>
+                    </div>
+                </div>
+                <!-- Opsi Cepat Titik Lokasi Populer Padang -->
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-size:0.82rem; border-top:1px dashed rgba(212,160,23,0.3); padding-top:8px;">
+                    <span style="color:var(--merah-utama); font-weight:700;"><i class="fa-solid fa-compass"></i> Titik Cepat:</span>
+                    <button type="button" class="btn-quick-loc" data-lat="-0.9525" data-lng="100.3585" data-name="Pasar Raya / Pusat Kota">Pasar Raya</button>
+                    <button type="button" class="btn-quick-loc" data-lat="-0.9324" data-lng="100.3541" data-name="Pantai Padang (Taplau)">Pantai Padang</button>
+                    <button type="button" class="btn-quick-loc" data-lat="-0.8985" data-lng="100.3585" data-name="Air Tawar / UNP">Air Tawar (UNP)</button>
+                    <button type="button" class="btn-quick-loc" data-lat="-0.8842" data-lng="100.3654" data-name="Tunggul Hitam">Tunggul Hitam</button>
+                    <button type="button" class="btn-quick-loc" data-lat="-0.8685" data-lng="100.3582" data-name="Bungo Pasang">Bungo Pasang</button>
+                    <button type="button" class="btn-quick-loc" data-lat="-0.8355" data-lng="100.3290" data-name="Lubuk Buaya">Lubuk Buaya</button>
+                    <button type="button" class="btn-quick-loc" data-lat="-0.8652" data-lng="100.3885" data-name="Aia Pacah / Balai Kota">Aia Pacah</button>
+                </div>
+                <!-- Interactive Mini Map Picker -->
+                <div id="box-picker-peta" style="display:none; margin-top:8px; border:1.5px solid var(--emas-utama); border-radius:8px; overflow:hidden;">
+                    <div style="background:#2E0404; color:#fff; padding:6px 12px; font-size:0.8rem; display:flex; justify-content:space-between; align-items:center;">
+                        <span><i class="fa-solid fa-map-pin" style="color:var(--emas-terang);"></i> <strong>Klik pada peta</strong> atau geser pin merah untuk memindahkan titik awal kamu</span>
+                        <button type="button" id="btn-tutup-picker" style="background:transparent; border:none; color:#fff; font-size:1rem; cursor:pointer;">&times; Tutup</button>
+                    </div>
+                    <div id="map-picker-budget" style="height:220px; width:100%;"></div>
+                </div>
             </div>
 
             <div id="budget-error" class="bgt-error" role="alert" hidden></div>
@@ -573,24 +597,110 @@ $active_nav = 'budget';
                 .then(res => { if (res.status === 'success') semuaToko = res.data; })
                 .catch(e => { console.error(e); tampilError('Gagal memuat data UMKM. Muat ulang halaman.'); });
 
-            // Tombol lokasi
+            // Variabel lokasi acuan (bisa dari GPS, Peta, atau Quick Loc)
+            let pickerMap = null;
+            let pickerMarker = null;
+
+            function setAcuanLokasi(lat, lng, nama) {
+                userLat = lat;
+                userLng = lng;
+                document.getElementById('status-lokasi').innerHTML = `<i class="fa-solid fa-circle-check text-success"></i> <strong>Titik Acuan Aktif:</strong> ${nama} (${userLat.toFixed(4)}, ${userLng.toFixed(4)})`;
+                hapusError();
+
+                // Update marker picker jika ada
+                if (pickerMap) {
+                    if (pickerMarker) {
+                        pickerMarker.setLatLng([lat, lng]);
+                    } else {
+                        pickerMarker = L.marker([lat, lng], { draggable: true }).addTo(pickerMap);
+                        pickerMarker.on('dragend', function(e) {
+                            const p = e.target.getLatLng();
+                            setAcuanLokasi(p.lat, p.lng, 'Titik Pilihan Peta');
+                        });
+                    }
+                    pickerMap.panTo([lat, lng]);
+                }
+
+                // Tandai tombol quick loc aktif
+                document.querySelectorAll('.btn-quick-loc').forEach(btn => {
+                    if (btn.dataset.name === nama) {
+                        btn.style.background = 'var(--merah-utama)';
+                        btn.style.color = '#fff';
+                        btn.style.borderColor = 'var(--merah-utama)';
+                    } else {
+                        btn.style.background = '#fff';
+                        btn.style.color = 'var(--teks-utama)';
+                        btn.style.borderColor = 'var(--border-halus)';
+                    }
+                });
+            }
+
+            // Quick Loc buttons
+            document.querySelectorAll('.btn-quick-loc').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const lat = parseFloat(this.dataset.lat);
+                    const lng = parseFloat(this.dataset.lng);
+                    const name = this.dataset.name;
+                    setAcuanLokasi(lat, lng, name);
+                });
+            });
+
+            // Toggle Map Picker
+            document.getElementById('btn-pilih-peta').addEventListener('click', function() {
+                const box = document.getElementById('box-picker-peta');
+                if (box.style.display === 'none' || box.style.display === '') {
+                    box.style.display = 'block';
+                    initPickerMap();
+                } else {
+                    box.style.display = 'none';
+                }
+            });
+
+            document.getElementById('btn-tutup-picker').addEventListener('click', function() {
+                document.getElementById('box-picker-peta').style.display = 'none';
+            });
+
+            function initPickerMap() {
+                if (!pickerMap) {
+                    const initialLat = userLat || -0.9324;
+                    const initialLng = userLng || 100.3541;
+                    pickerMap = L.map('map-picker-budget').setView([initialLat, initialLng], 13);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 19, attribution: '&copy; OpenStreetMap'
+                    }).addTo(pickerMap);
+
+                    pickerMarker = L.marker([initialLat, initialLng], { draggable: true }).addTo(pickerMap);
+                    pickerMarker.bindPopup('Geser pin ini ke lokasi acuan kamu').openPopup();
+
+                    pickerMap.on('click', function(e) {
+                        pickerMarker.setLatLng(e.latlng);
+                        setAcuanLokasi(e.latlng.lat, e.latlng.lng, 'Titik Pilihan Peta');
+                    });
+
+                    pickerMarker.on('dragend', function(e) {
+                        const p = e.target.getLatLng();
+                        setAcuanLokasi(p.lat, p.lng, 'Titik Pilihan Peta');
+                    });
+                }
+                setTimeout(() => pickerMap.invalidateSize(), 200);
+            }
+
+            // Tombol GPS
             document.getElementById('btn-ambil-lokasi').addEventListener('click', function () {
                 if (!navigator.geolocation) {
                     document.getElementById('status-lokasi').innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Geolokasi tidak didukung browser Anda.';
                     return;
                 }
+                const btn = this;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mendeteksi...';
                 navigator.geolocation.getCurrentPosition(
                     function (pos) {
-                        userLat = pos.coords.latitude;
-                        userLng = pos.coords.longitude;
-                        document.getElementById('status-lokasi').innerHTML = `<i class="fa-solid fa-location-dot"></i> Lokasi aktif (${userLat.toFixed(4)}, ${userLng.toFixed(4)}) — jarak dihitung otomatis.`;
-                        const b = document.getElementById('btn-ambil-lokasi');
-                        b.innerHTML = '<i class="fa-solid fa-circle-check text-success"></i> Lokasi Aktif';
-                        b.disabled = true;
-                        hapusError();
+                        setAcuanLokasi(pos.coords.latitude, pos.coords.longitude, 'Lokasi GPS Saya');
+                        btn.innerHTML = '<i class="fa-solid fa-circle-check text-success"></i> GPS Aktif';
                     },
                     function () {
-                        document.getElementById('status-lokasi').innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Tidak dapat mengakses lokasi. Izin lokasi tidak diberikan.';
+                        btn.innerHTML = '<i class="fa-solid fa-crosshairs"></i> GPS Saya';
+                        document.getElementById('status-lokasi').innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Izin GPS ditolak. Silakan gunakan <strong>Titik Cepat</strong> atau <strong>Tentukan di Peta</strong>.';
                     }
                 );
             });
@@ -613,10 +723,12 @@ $active_nav = 'budget';
                 }
 
                 const opts = {};
-                if (jarakMaks > 0 && userLat !== null) {
-                    opts.jarakMaks = jarakMaks;
+                if (userLat !== null) {
                     opts.userLat = userLat;
                     opts.userLng = userLng;
+                    if (jarakMaks > 0) {
+                        opts.jarakMaks = jarakMaks;
+                    }
                 }
 
                 let dataFilter = semuaToko;

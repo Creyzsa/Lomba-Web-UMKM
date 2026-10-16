@@ -2073,6 +2073,29 @@ a:hover {
     font-family: var(--font-heading);
 }
 
+/* Quick Location Buttons & Pickers */
+.btn-quick-loc,
+.btn-quick-loc-route {
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--teks-utama);
+    background: #FFFFFF;
+    border: 1px solid var(--border-halus);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-quick-loc:hover,
+.btn-quick-loc-route:hover {
+    background: var(--emas-terang);
+    color: var(--merah-gelap);
+    border-color: var(--emas-utama);
+    transform: translateY(-1px);
+}
+
 /* Utility colors */
 .text-success {
     color: #16A34A !important;
