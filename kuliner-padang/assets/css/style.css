@@ -518,33 +518,29 @@ a:hover {
 }
 
 /* Songket Pattern Border Bawah */
+.songket-strip {
+    height: 38px;
+    background-image: url('../img/songket-clean.png');
+    background-repeat: repeat-x;
+    background-size: auto 38px;
+    background-position: center;
+    margin: 45px 0;
+    opacity: 0.95;
+    filter: drop-shadow(0 2px 6px rgba(212, 160, 23, 0.25));
+}
+
 .songket-border-bottom {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 12px;
-    background: repeating-linear-gradient(
-        45deg,
-        var(--emas-utama),
-        var(--emas-utama) 10px,
-        var(--merah-gelap) 10px,
-        var(--merah-gelap) 20px
-    );
-    border-top: 1.5px solid var(--emas-terang);
+    height: 28px;
+    background-image: url('../img/songket-clean.png');
+    background-repeat: repeat-x;
+    background-size: auto 28px;
+    background-position: top center;
     z-index: 2;
-}
-
-.songket-strip {
-    height: 8px;
-    background: repeating-linear-gradient(
-        -45deg,
-        var(--merah-utama),
-        var(--merah-utama) 12px,
-        var(--emas-utama) 12px,
-        var(--emas-utama) 24px
-    );
-    margin: 50px 0;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
 }
 
 /* ==========================================================================
@@ -1172,14 +1168,12 @@ a:hover {
     top: 0;
     left: 0;
     right: 0;
-    height: 6px;
-    background: repeating-linear-gradient(
-        90deg,
-        var(--merah-utama),
-        var(--merah-utama) 16px,
-        var(--emas-utama) 16px,
-        var(--emas-utama) 32px
-    );
+    height: 24px;
+    background-image: url('../img/songket-clean.png');
+    background-repeat: repeat-x;
+    background-size: auto 24px;
+    background-position: top center;
+    opacity: 0.9;
 }
 
 .footer-container {
