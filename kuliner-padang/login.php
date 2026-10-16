@@ -81,10 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="alert alert-danger"><?= htmlspecialchars($error); ?></div>
             <?php endif; ?>
 
-            <div class="demo-account-hint">
-                <small><strong>Info Akun Uji Coba:</strong></small><br>
-                <small>Admin: <code>admin</code> / <code>admin123</code></small>
-            </div>
+            <!-- Form Login -->
 
             <form action="login.php" method="POST" class="auth-form">
                 <div class="form-group">

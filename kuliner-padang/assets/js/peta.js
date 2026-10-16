@@ -281,7 +281,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function applyFilter() {
         const filtered = semuaToko.filter(toko => {
-            const matchCat = (currentCategory === 'Semua') || (toko.kategori === currentCategory);
+            let matchCat = false;
+            if (currentCategory === 'Semua') {
+                matchCat = true;
+            } else if (currentCategory === 'Modern') {
+                matchCat = parseInt(toko.id_toko) >= 16;
+            } else {
+                matchCat = (toko.kategori === currentCategory);
+            }
 
             let matchSearch = true;
             if (searchQuery !== '') {

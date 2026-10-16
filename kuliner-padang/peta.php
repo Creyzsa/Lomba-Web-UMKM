@@ -55,9 +55,10 @@ $active_nav = 'peta';
                 <button class="filter-btn active" data-category="Semua">Semua Kategori</button>
                 <button class="filter-btn" data-category="Rumah Makan"><i class="fa-solid fa-bowl-rice"></i> Rumah Makan</button>
                 <button class="filter-btn" data-category="Sate"><i class="fa-solid fa-stroopwafel"></i> Sate</button>
-                <button class="filter-btn" data-category="Kopi"><i class="fa-solid fa-mug-hot"></i> Kopi & Kawa</button>
+                <button class="filter-btn" data-category="Kopi"><i class="fa-solid fa-mug-hot"></i> Kopi &amp; Kawa</button>
                 <button class="filter-btn" data-category="Oleh-oleh"><i class="fa-solid fa-gift"></i> Oleh-oleh</button>
                 <button class="filter-btn" data-category="Camilan"><i class="fa-solid fa-cookie-bite"></i> Camilan</button>
+                <button class="filter-btn" data-category="Modern"><i class="fa-solid fa-sparkles"></i> Modern &amp; Fusion</button>
             </div>
         </div>
 

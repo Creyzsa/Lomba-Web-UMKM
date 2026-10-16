@@ -21,9 +21,13 @@ $params = [];
 $types = "";
 
 if (!empty($kategori_filter) && $kategori_filter !== 'Semua') {
-    $where_clauses[] = "t.kategori = ?";
-    $params[] = $kategori_filter;
-    $types .= "s";
+    if ($kategori_filter === 'Modern & Inovasi') {
+        $where_clauses[] = "t.id_toko >= 16";
+    } else {
+        $where_clauses[] = "t.kategori = ?";
+        $params[] = $kategori_filter;
+        $types .= "s";
+    }
 }
 
 if (!empty($search_query)) {
@@ -50,7 +54,7 @@ if (count($params) > 0) {
     $res_toko = mysqli_query($koneksi, $query);
 }
 
-$kategori_list = ['Semua', 'Rumah Makan', 'Sate', 'Kopi', 'Oleh-oleh', 'Camilan'];
+$kategori_list = ['Semua', 'Rumah Makan', 'Sate', 'Kopi', 'Oleh-oleh', 'Camilan', 'Modern & Inovasi'];
 ?>
 <!DOCTYPE html>
 <html lang="id">

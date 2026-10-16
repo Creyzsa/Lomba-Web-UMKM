@@ -59,6 +59,22 @@ $active_nav = 'tentang';
                         <div class="feature-badge"><i class="fa-solid fa-check text-gold"></i> UI/UX Bernuansa Minangkabau Modern</div>
                         <div class="feature-badge"><i class="fa-solid fa-check text-gold"></i> Panel CRUD Pengelolaan UMKM Terpadu</div>
                     </div>
+
+                    <!-- Kontak Admin WhatsApp -->
+                    <div style="margin-top:28px; padding:18px; background:#FAF8F2; border-left:4px solid var(--emas-utama); border-radius:8px;">
+                        <h4 style="font-family:var(--font-heading); color:var(--merah-utama); margin-bottom:6px; font-size:1.05rem;">
+                            <i class="fa-brands fa-whatsapp" style="color:#22c55e;"></i> Layanan Bantuan &amp; Pendaftaran UMKM
+                        </h4>
+                        <p style="font-size:0.88rem; color:#475569; margin-bottom:12px;">Untuk pendaftaran toko baru, verifikasi data, atau informasi kemitraan, silakan hubungi tim pengelola:</p>
+                        <div style="display:flex; flex-wrap:wrap; gap:12px;">
+                            <a href="https://wa.me/6282286908467?text=<?= urlencode('Halo Admin Nindy, saya ingin mendaftarkan toko kuliner di Peta Rasa Padang.'); ?>" target="_blank" class="btn btn-sm" style="background:#16a34a; color:#fff;">
+                                <i class="fa-brands fa-whatsapp"></i> Chat Nindy (+62 822-8690-8467)
+                            </a>
+                            <a href="https://wa.me/6282285417709?text=<?= urlencode('Halo Admin Cha, saya ingin mendaftarkan toko kuliner di Peta Rasa Padang.'); ?>" target="_blank" class="btn btn-sm" style="background:#16a34a; color:#fff;">
+                                <i class="fa-brands fa-whatsapp"></i> Chat Cha (+62 822-8541-7709)
+                            </a>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="about-visual">
