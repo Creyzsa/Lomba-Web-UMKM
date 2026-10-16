@@ -477,18 +477,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 road.style.visibility = (roadIn <= 0 || roadOut >= 1) ? 'hidden' : 'visible';
             }
 
-            const leftIn = reduced ? 1 : easeInOutCubic(clamp((p - 0.08) / 0.22));
-            const rightIn = reduced ? 1 : easeInOutCubic(clamp((p - 0.12) / 0.22));
+            // Rangkiang kiri masuk dari tepi luar kiri layar dan menempel di tepi kiri
+            const leftIn = reduced ? 1 : easeInOutCubic(clamp(p / 0.22));
             const leftOut = reduced ? 0 : easeInOutCubic(clamp((p - 0.8) / 0.12));
-            const rightOut = reduced ? 0 : easeInOutCubic(clamp((p - 0.82) / 0.12));
-
             if (rangLeft) {
-                const x = -(wl + 16) * (1 - leftIn + leftOut);
+                const x = -(wl + 16) * (1 - leftIn) - (wl + 16) * leftOut;
                 rangLeft.style.transform = `translate3d(${x}px, 0, 0)`;
                 rangLeft.style.visibility = (leftIn <= 0 || leftOut >= 1) ? 'hidden' : 'visible';
             }
+
+            // Rangkiang kanan masuk dari tepi luar kanan layar dan menempel di tepi kanan
+            const rightIn = reduced ? 1 : easeInOutCubic(clamp(p / 0.22));
+            const rightOut = reduced ? 0 : easeInOutCubic(clamp((p - 0.8) / 0.12));
             if (rangRight) {
-                const x = (wr + 16) * (1 - rightIn + rightOut);
+                const x = (wr + 16) * (1 - rightIn) + (wr + 16) * rightOut;
                 rangRight.style.transform = `translate3d(${x}px, 0, 0)`;
                 rangRight.style.visibility = (rightIn <= 0 || rightOut >= 1) ? 'hidden' : 'visible';
             }

@@ -263,17 +263,22 @@ export default function MinangScrollHero({
           roadRef.current.style.visibility = roadIn <= 0 || roadOut >= 1 ? "hidden" : "visible";
         }
 
-        const leftIn = reduced ? 1 : ease(clamp((p - 0.08) / 0.22));
-        const rightIn = reduced ? 1 : ease(clamp((p - 0.12) / 0.22));
+        /* Rangkiang kiri masuk dari tepi luar kiri layar dan berhenti menempel di tepi kiri.
+           Saat keluar, kembali keluar ke arah kiri luar layar. */
+        const leftIn = reduced ? 1 : ease(clamp(p / 0.22));
         const leftOut = reduced ? 0 : ease(clamp((p - 0.8) / 0.12));
-        const rightOut = reduced ? 0 : ease(clamp((p - 0.82) / 0.12));
         if (leftRef.current) {
-          const x = -(wl + 16) * (1 - leftIn + leftOut);
+          const x = -(wl + 16) * (1 - leftIn) - (wl + 16) * leftOut;
           leftRef.current.style.transform = `translate3d(${x}px, 0, 0)`;
           leftRef.current.style.visibility = leftIn <= 0 || leftOut >= 1 ? "hidden" : "visible";
         }
+
+        /* Rangkiang kanan masuk dari tepi luar kanan layar dan berhenti menempel di tepi kanan.
+           Saat keluar, kembali keluar ke arah kanan luar layar. */
+        const rightIn = reduced ? 1 : ease(clamp(p / 0.22));
+        const rightOut = reduced ? 0 : ease(clamp((p - 0.8) / 0.12));
         if (rightRef.current) {
-          const x = (wr + 16) * (1 - rightIn + rightOut);
+          const x = (wr + 16) * (1 - rightIn) + (wr + 16) * rightOut;
           rightRef.current.style.transform = `translate3d(${x}px, 0, 0)`;
           rightRef.current.style.visibility = rightIn <= 0 || rightOut >= 1 ? "hidden" : "visible";
         }
