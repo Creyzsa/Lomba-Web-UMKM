@@ -162,7 +162,7 @@ $kategori_list = ['Semua', 'Rumah Makan', 'Sate', 'Kopi', 'Oleh-oleh', 'Camilan'
                                     <span class="text-muted" style="font-size:0.8rem;">Belum ada data menu.</span>
                                 <?php endif; ?>
                                 <?php if (($_SESSION['role'] ?? '') === 'pemilik' && (int)($toko['id_pemilik'] ?? 0) === (int)($_SESSION['id_user'] ?? 0)): ?>
-                                    <a href="pemilik/kelola-menu.php?id_toko=<?= (int)$id_t; ?>" class="btn btn-secondary btn-sm" style="margin-top:10px;">
+                                    <a href="pemilik/menu.php?id_toko=<?= (int)$id_t; ?>" class="btn btn-secondary btn-sm" style="margin-top:10px;">
                                         <i class="fa-solid fa-utensils"></i> Kelola Menu Toko Ini
                                     </a>
                                 <?php endif; ?>

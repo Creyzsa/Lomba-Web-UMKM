@@ -135,10 +135,10 @@ while ($toko = mysqli_fetch_assoc($result)) {
                                     <span>🕒 <?= htmlspecialchars($toko['jam_buka'] ?: 'Jam buka belum diisi'); ?></span>
                                 </div>
                                 <div class="owner-store-actions">
-                                    <a href="edit-toko.php?id=<?= $id_toko; ?>" class="btn btn-secondary">
+                                    <a href="edit.php?id=<?= $id_toko; ?>" class="btn btn-secondary">
                                         <i class="fa-solid fa-pen-to-square"></i> Edit Profil
                                     </a>
-                                    <a href="kelola-menu.php?id_toko=<?= $id_toko; ?>" class="btn btn-primary">
+                                    <a href="menu.php?id_toko=<?= $id_toko; ?>" class="btn btn-primary">
                                         <i class="fa-solid fa-utensils"></i> Kelola Menu
                                     </a>
                                     <a href="ulasan.php?id_toko=<?= $id_toko; ?>" class="btn btn-secondary">
