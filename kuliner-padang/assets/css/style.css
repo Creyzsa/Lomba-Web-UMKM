@@ -355,7 +355,7 @@ a:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #2E0404;
+    background: url('../img/rumah-gadang.jpg') center center / cover no-repeat;
     color: var(--putih);
     padding: 120px 24px 140px;
     text-align: center;
