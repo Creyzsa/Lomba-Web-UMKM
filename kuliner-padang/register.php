@@ -16,8 +16,8 @@ require_once 'koneksi.php';
 
 // Daftar peran yang boleh dipilih saat mendaftar (whitelist). 'admin' sengaja tidak ada.
 $role_tersedia = [
-    'user'    => ['label' => 'Pembeli',       'ikon' => '🛍️', 'desc' => 'Cari kuliner, filter sesuai budget, dan pesan lewat WhatsApp.'],
-    'pemilik' => ['label' => 'Pemilik Toko',  'ikon' => '🏪', 'desc' => 'Daftarkan usaha, kelola menu & harga, dan lihat statistik toko.'],
+    'user'    => ['label' => 'Pembeli',       'ikon' => '<i class="fa-solid fa-bag-shopping"></i>', 'desc' => 'Cari kuliner, filter sesuai budget, dan pesan lewat WhatsApp.'],
+    'pemilik' => ['label' => 'Pemilik Toko',  'ikon' => '<i class="fa-solid fa-store"></i>', 'desc' => 'Daftarkan usaha, kelola menu & harga, dan lihat statistik toko.'],
 ];
 
 $error = '';
@@ -110,13 +110,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .role-option input:focus-visible + .role-card { outline: 3px solid rgba(201, 151, 28, .6); outline-offset: 2px; }
         @media (max-width: 480px) { .role-options { grid-template-columns: 1fr; } }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body class="auth-page">
     <div class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
                 <a href="index.php" class="brand-link">
-                    <span class="gonjong-icon">🏛️</span>
+                    <span class="brand-icon"><img src="assets/img/logo-minang.svg" alt="Logo Peta Rasa Padang" style="width:48px;height:48px;"></span>
                     <h1 class="brand-title">Peta Rasa Padang</h1>
                 </a>
                 <p class="auth-subtitle">Daftarkan akun untuk menjelajahi kekayaan kuliner Minang</p>

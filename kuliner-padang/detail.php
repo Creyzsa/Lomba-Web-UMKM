@@ -58,6 +58,7 @@ $active_nav = 'toko';
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <?php include 'navbar.php'; ?>
@@ -86,20 +87,20 @@ $active_nav = 'toko';
                     <?php endforeach; ?>
                 </div>
                 <h1 class="detail-title"><?= htmlspecialchars($toko['nama_toko']); ?></h1>
-                <p class="detail-alamat">📍 <?= htmlspecialchars($toko['alamat']); ?></p>
+                <p class="detail-alamat"><i class="fa-solid fa-location-dot"></i> <?= htmlspecialchars($toko['alamat']); ?></p>
                 <?php if (!empty($toko['jam_buka'])): ?>
-                    <p class="detail-jam">🕐 <?= htmlspecialchars($toko['jam_buka']); ?></p>
+                    <p class="detail-jam"><i class="fa-regular fa-clock"></i> <?= htmlspecialchars($toko['jam_buka']); ?></p>
                 <?php endif; ?>
                 <p class="detail-deskripsi"><?= htmlspecialchars($toko['deskripsi']); ?></p>
 
                 <div class="detail-stat-row">
-                    <span>👁️ <?= (int)$toko['visit_count']; ?> kunjungan profil</span>
+                    <span><i class="fa-solid fa-eye"></i> <?= (int)$toko['visit_count']; ?> kunjungan profil</span>
                 </div>
 
                 <div class="detail-actions">
-                    <a href="<?= $maps_url; ?>" target="_blank" class="btn btn-primary">🗺️ Buka Google Maps</a>
+                    <a href="<?= $maps_url; ?>" target="_blank" class="btn btn-primary"><i class="fa-solid fa-map-location-dot"></i> Buka Google Maps</a>
                     <?php if (!empty($no_wa)): ?>
-                        <a href="https://wa.me/<?= htmlspecialchars($no_wa); ?>?text=<?= urlencode("Halo " . $toko['nama_toko'] . ", saya melihat profil Anda di Peta Rasa Padang."); ?>" target="_blank" class="btn" style="background:#16a34a;color:#fff;">💬 Hubungi via WhatsApp</a>
+                        <a href="https://wa.me/<?= htmlspecialchars($no_wa); ?>?text=<?= urlencode("Halo " . $toko['nama_toko'] . ", saya melihat profil Anda di Peta Rasa Padang."); ?>" target="_blank" class="btn" style="background:#16a34a;color:#fff;"><i class="fa-brands fa-whatsapp"></i> Hubungi via WhatsApp</a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -108,18 +109,22 @@ $active_nav = 'toko';
             <div class="detail-right">
                 <!-- Map -->
                 <div class="map-wrapper" style="margin-bottom:28px;">
-                    <div id="detail-map" class="main-map" style="height:300px;"></div>
+                    <div id="detail-map" class="main-map" style="height:260px;"></div>
                 </div>
 
                 <!-- Daftar Menu -->
                 <div class="detail-menu-section">
-                    <h2 class="detail-menu-title">🍽️ Daftar Menu & Harga</h2>
+                    <h2 class="detail-menu-title"><i class="fa-solid fa-utensils"></i> Daftar Menu & Harga</h2>
                     <?php if (mysqli_num_rows($res_menu) > 0): ?>
                         <div class="detail-menu-list">
                             <?php while ($m = mysqli_fetch_assoc($res_menu)): 
                                 $harga_fmt = 'Rp' . number_format($m['harga'], 0, ',', '.');
+                                $foto_m = !empty($m['foto_menu']) ? 'assets/img/' . $m['foto_menu'] : 'assets/img/default.png';
                             ?>
                                 <div class="detail-menu-item" data-id_menu="<?= $m['id_menu']; ?>" data-nama="<?= htmlspecialchars($m['nama_menu']); ?>" data-harga="<?= $m['harga']; ?>" data-nama_toko="<?= htmlspecialchars($toko['nama_toko']); ?>" data-no_wa="<?= htmlspecialchars($no_wa); ?>">
+                                    <div class="menu-thumb-box">
+                                        <img src="<?= htmlspecialchars($foto_m); ?>" alt="<?= htmlspecialchars($m['nama_menu']); ?>" class="menu-thumb-img" onerror="this.src='assets/img/default.png'">
+                                    </div>
                                     <div class="menu-item-info">
                                         <strong><?= htmlspecialchars($m['nama_menu']); ?></strong>
                                         <?php if (!empty($m['deskripsi'])): ?>
@@ -135,7 +140,7 @@ $active_nav = 'toko';
                                                 <button class="qty-btn qty-plus">+</button>
                                             </div>
                                             <button class="btn btn-sm btn-wa-menu" style="background:#16a34a;color:#fff;white-space:nowrap;">
-                                                💬 Pesan
+                                                <i class="fa-brands fa-whatsapp"></i> Pesan
                                             </button>
                                         <?php else: ?>
                                             <span class="text-muted" style="font-size:0.78rem;">WA tidak tersedia</span>
@@ -154,7 +159,7 @@ $active_nav = 'toko';
         <!-- Tombol Kembali -->
         <div style="text-align:center;margin-top:40px;">
             <a href="toko.php" class="btn btn-outline-gold">← Kembali ke Daftar Toko</a>
-            <a href="peta.php?toko=<?= $id_toko; ?>" class="btn btn-primary">📍 Lihat di Peta Interaktif</a>
+            <a href="peta.php?toko=<?= $id_toko; ?>" class="btn btn-primary"><i class="fa-solid fa-location-dot"></i> Lihat di Peta Interaktif</a>
         </div>
     </section>
 
@@ -175,7 +180,7 @@ $active_nav = 'toko';
             }).addTo(map);
 
             // Marker
-            const iconSymbol = '<?= $toko['kategori'] === 'Rumah Makan' ? '🍛' : ($toko['kategori'] === 'Sate' ? '🍢' : ($toko['kategori'] === 'Kopi' ? '☕' : ($toko['kategori'] === 'Oleh-oleh' ? '🎁' : '🥮'))); ?>';
+            const iconSymbol = '<?= $toko['kategori'] === 'Rumah Makan' ? '<i class="fa-solid fa-bowl-rice"></i>' : ($toko['kategori'] === 'Sate' ? '<i class="fa-solid fa-stroopwafel"></i>' : ($toko['kategori'] === 'Kopi' ? '<i class="fa-solid fa-mug-hot"></i>' : ($toko['kategori'] === 'Oleh-oleh' ? '<i class="fa-solid fa-gift"></i>' : '<i class="fa-solid fa-cookie-bite"></i>'))); ?>';
             const marker = L.marker([<?= $toko['latitude']; ?>, <?= $toko['longitude']; ?>], {
                 icon: L.divIcon({
                     className: 'custom-gonjong-marker',

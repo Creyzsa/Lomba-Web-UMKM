@@ -66,6 +66,7 @@ $kategori_list = ['Semua', 'Rumah Makan', 'Sate', 'Kopi', 'Oleh-oleh', 'Camilan'
     
     <!-- CSS Utama Tema Minang Modern -->
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <!-- Navbar -->
@@ -88,7 +89,7 @@ $kategori_list = ['Semua', 'Rumah Makan', 'Sate', 'Kopi', 'Oleh-oleh', 'Camilan'
         <div class="map-controls-card">
             <form action="toko.php" method="GET" class="search-form-flex">
                 <div class="search-box-wrapper" style="flex:1;">
-                    <span class="search-icon">🔍</span>
+                    <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
                     <input type="text" name="q" class="search-input" placeholder="Cari nama toko kuliner, masakan, atau alamat..." value="<?= htmlspecialchars($search_query); ?>">
                 </div>
                 <button type="submit" class="btn btn-primary" style="padding: 14px 24px;">Cari Toko</button>
@@ -114,7 +115,7 @@ $kategori_list = ['Semua', 'Rumah Makan', 'Sate', 'Kopi', 'Oleh-oleh', 'Camilan'
         <?php if ($res_toko && mysqli_num_rows($res_toko) > 0): ?>
             <div style="margin-bottom: 20px; display:flex; justify-content:space-between; align-items:center;">
                 <span class="text-muted">Menampilkan <strong><?= mysqli_num_rows($res_toko); ?></strong> toko kuliner</span>
-                <a href="peta.php" class="btn btn-outline-gold btn-sm" style="color:var(--merah-utama); border-color:var(--merah-utama);">📍 Lihat Semua di Peta Interaktif ↗</a>
+                <a href="peta.php" class="btn btn-outline-gold btn-sm" style="color:var(--merah-utama); border-color:var(--merah-utama);"><i class="fa-solid fa-location-dot"></i> Lihat Semua di Peta Interaktif ↗</a>
             </div>
 
             <div class="toko-grid">
@@ -139,12 +140,12 @@ $kategori_list = ['Semua', 'Rumah Makan', 'Sate', 'Kopi', 'Oleh-oleh', 'Camilan'
                         </div>
                         <div class="card-body">
                             <h3 class="card-title"><?= htmlspecialchars($toko['nama_toko']); ?></h3>
-                            <p class="card-address">📍 <?= htmlspecialchars($toko['alamat']); ?></p>
+                            <p class="card-address"><i class="fa-solid fa-location-dot"></i> <?= htmlspecialchars($toko['alamat']); ?></p>
                             <p class="card-desc"><?= htmlspecialchars($toko['deskripsi']); ?></p>
 
                             <!-- Rincian Menu Makanan -->
                             <div class="card-menu-preview" style="background:#FAF8F2;">
-                                <strong style="color:var(--merah-utama); font-size:0.84rem; display:block; margin-bottom:6px;">🍽️ Menu & Harga:</strong>
+                                <strong style="color:var(--merah-utama); font-size:0.84rem; display:block; margin-bottom:6px;"><i class="fa-solid fa-utensils"></i> Menu & Harga:</strong>
                                 <?php if ($res_m && mysqli_num_rows($res_m) > 0): ?>
                                     <?php while ($m = mysqli_fetch_assoc($res_m)): ?>
                                         <div class="preview-menu-row">
@@ -158,14 +159,14 @@ $kategori_list = ['Semua', 'Rumah Makan', 'Sate', 'Kopi', 'Oleh-oleh', 'Camilan'
                             </div>
 
                             <div class="card-actions" style="margin-top:auto; display:flex; gap:8px;">
-                                <a href="peta.php?toko=<?= $id_t; ?>" class="btn btn-primary btn-sm" style="flex:1;">
-                                    📍 Peta
+                                <a href="detail.php?id=<?= $id_t; ?>" class="btn btn-gold btn-sm" style="flex:1.2;">
+                                    <i class="fa-solid fa-utensils"></i> Detail Menu
                                 </a>
-                                <a href="<?= $maps_link; ?>" target="_blank" class="btn btn-info btn-sm" style="flex:1;" title="Google Maps">
-                                    🗺️ Rute
+                                <a href="peta.php?toko=<?= $id_t; ?>" class="btn btn-outline-gold btn-sm" style="flex:1;" title="Lihat di Peta">
+                                    <i class="fa-solid fa-location-dot"></i> Peta
                                 </a>
                                 <a href="<?= $wa_link; ?>" target="_blank" class="btn btn-sm" style="background:#16a34a; color:#fff;" title="WhatsApp">
-                                    💬 WA
+                                    <i class="fa-brands fa-whatsapp"></i> WA
                                 </a>
                             </div>
                         </div>
@@ -175,7 +176,7 @@ $kategori_list = ['Semua', 'Rumah Makan', 'Sate', 'Kopi', 'Oleh-oleh', 'Camilan'
             </div>
         <?php else: ?>
             <div class="error-msg-box" style="margin-top:20px;">
-                <p>⚠️ Tidak ada toko kuliner yang ditemukan untuk kriteria pencarian ini.</p>
+                <p><i class="fa-solid fa-triangle-exclamation"></i> Tidak ada toko kuliner yang ditemukan untuk kriteria pencarian ini.</p>
                 <a href="toko.php" class="btn btn-primary btn-sm" style="margin-top:10px;">Lihat Semua Toko</a>
             </div>
         <?php endif; ?>

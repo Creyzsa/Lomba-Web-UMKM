@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF2A3"/>
+      <stop offset="45%" stop-color="#E5A922"/>
+      <stop offset="100%" stop-color="#9E6B08"/>
+    </linearGradient>
+    <linearGradient id="maroonGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#6E0D0D"/>
+      <stop offset="100%" stop-color="#3A0505"/>
+    </linearGradient>
+    <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#F7D070" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Lingkaran Luar / Emblem Ring -->
+  <circle cx="50" cy="50" r="46" fill="url(#maroonGrad)" stroke="url(#goldGrad)" stroke-width="2.5" filter="url(#goldGlow)"/>
+  <circle cx="50" cy="50" r="42" fill="none" stroke="url(#goldGrad)" stroke-width="1" stroke-dasharray="2,3" opacity="0.6"/>
+
+  <!-- Ornamen Gonjong Rumah Gadang (Khas Minangkabau Mewah) -->
+  <g fill="url(#goldGrad)">
+    <!-- Gonjong Kiri Luar (Melengkung Runcing) -->
+    <path d="M16 38 C 22 45, 27 50, 32 54 C 29 48, 25 40, 24 35 C 23 31, 20 25, 16 23 C 18 29, 18 34, 16 38 Z"/>
+    
+    <!-- Gonjong Kiri Tengah -->
+    <path d="M28 32 C 34 40, 38 46, 42 50 C 39 44, 36 36, 35 30 C 34 26, 31 18, 27 15 C 29 22, 30 27, 28 32 Z"/>
+
+    <!-- Gonjong Kanan Luar (Melengkung Runcing) -->
+    <path d="M84 38 C 78 45, 73 50, 68 54 C 71 48, 75 40, 76 35 C 77 31, 80 25, 84 23 C 82 29, 82 34, 84 38 Z"/>
+
+    <!-- Gonjong Kanan Tengah -->
+    <path d="M72 32 C 66 40, 62 46, 58 50 C 61 44, 64 36, 65 30 C 66 26, 69 18, 73 15 C 71 22, 70 27, 72 32 Z"/>
+
+    <!-- Gonjong Puncak Utama Tengah -->
+    <path d="M50 10 C 47 18, 45 28, 43 36 C 46 36, 50 37, 50 37 C 50 37, 54 36, 57 36 C 55 28, 53 18, 50 10 Z"/>
+
+    <!-- Lengkungan Atap Utama -->
+    <path d="M22 51 C 36 58, 64 58, 78 51 L 75 56 C 62 62, 38 62, 25 56 Z"/>
+
+    <!-- Dinding / Badan Rumah Gadang Berukir -->
+    <path d="M28 57 L 72 57 L 69 70 L 31 70 Z" opacity="0.95"/>
+    <rect x="34" y="60" width="6" height="7" rx="1" fill="#2E0404" stroke="url(#goldGrad)" stroke-width="0.8"/>
+    <rect x="44" y="60" width="12" height="10" rx="1" fill="#2E0404" stroke="url(#goldGrad)" stroke-width="0.8"/>
+    <rect x="60" y="60" width="6" height="7" rx="1" fill="#2E0404" stroke="url(#goldGrad)" stroke-width="0.8"/>
+
+    <!-- Tiang & Tangga Bawah -->
+    <path d="M29 70 L 71 70 L 68 76 L 32 76 Z"/>
+    
+    <!-- Piring Cita Rasa / Lidah Api Kuliner Bawah -->
+    <path d="M38 82 C 45 86, 55 86, 62 82 C 58 84, 42 84, 38 82 Z" stroke="url(#goldGrad)" stroke-width="1"/>
+    <!-- Bintang Tradisi Emas -->
+    <polygon points="50,78 51.5,81 54.5,81 52,83 53,86 50,84 47,86 48,83 45.5,81 48.5,81" fill="#FFF2A3"/>
+  </g>
+</svg>

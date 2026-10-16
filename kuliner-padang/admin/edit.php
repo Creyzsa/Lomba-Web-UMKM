@@ -96,12 +96,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body class="admin-body">
     <header class="admin-nav">
         <div class="admin-nav-container">
             <div class="admin-brand">
-                <span class="gonjong-icon">🏛️</span>
+                <span class="brand-icon"><img src="../assets/img/logo-minang.svg" alt="Logo Peta Rasa Padang" style="width:48px;height:48px;"></span>
                 <span class="admin-title">Panel Admin — Peta Rasa Padang</span>
             </div>
             <div class="admin-user-info">
@@ -186,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
 
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">💾 Simpan Perubahan</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan</button>
                         <a href="dashboard.php" class="btn btn-secondary">Batal</a>
                     </div>
                 </form>

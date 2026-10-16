@@ -253,7 +253,7 @@ function formatWaPesan(namaToko, namaMenu, jumlah, hargaSatuan, totalHarga) {
         '',
         `Saya ingin memesan *${namaMenu}* melalui Peta Rasa Padang.`,
         '',
-        `📋 Detail Pesanan:`,
+        `<i class="fa-solid fa-clipboard-list"></i> Detail Pesanan:`,
         `   Menu   : ${namaMenu}`,
         `   Jumlah : ${jumlahValid}`,
         `   Harga  : ${fmtRupiah(hargaValid)} × ${jumlahValid}`,

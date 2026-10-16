@@ -25,6 +25,7 @@ $active_nav = 'peta';
     
     <!-- CSS Utama Tema Minang Modern -->
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <!-- Navbar -->
@@ -46,17 +47,17 @@ $active_nav = 'peta';
         <!-- Filter & Search Bar Kontrol -->
         <div class="map-controls-card">
             <div class="search-box-wrapper">
-                <span class="search-icon">🔍</span>
+                <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
                 <input type="text" id="input-search" class="search-input" placeholder="Cari nama toko, menu (rendang, sate, kopi...), atau alamat...">
             </div>
 
             <div class="category-filters" id="category-filter-group">
                 <button class="filter-btn active" data-category="Semua">Semua Kategori</button>
-                <button class="filter-btn" data-category="Rumah Makan">🍛 Rumah Makan</button>
-                <button class="filter-btn" data-category="Sate">🍢 Sate</button>
-                <button class="filter-btn" data-category="Kopi">☕ Kopi & Kawa</button>
-                <button class="filter-btn" data-category="Oleh-oleh">🎁 Oleh-oleh</button>
-                <button class="filter-btn" data-category="Camilan">🥮 Camilan</button>
+                <button class="filter-btn" data-category="Rumah Makan"><i class="fa-solid fa-bowl-rice"></i> Rumah Makan</button>
+                <button class="filter-btn" data-category="Sate"><i class="fa-solid fa-stroopwafel"></i> Sate</button>
+                <button class="filter-btn" data-category="Kopi"><i class="fa-solid fa-mug-hot"></i> Kopi & Kawa</button>
+                <button class="filter-btn" data-category="Oleh-oleh"><i class="fa-solid fa-gift"></i> Oleh-oleh</button>
+                <button class="filter-btn" data-category="Camilan"><i class="fa-solid fa-cookie-bite"></i> Camilan</button>
             </div>
         </div>
 
@@ -64,11 +65,11 @@ $active_nav = 'peta';
         <div class="map-wrapper">
             <div id="map" class="main-map"></div>
             <div class="map-legend">
-                <div class="legend-item"><span class="legend-icon rm-icon">🍛</span> Rumah Makan</div>
-                <div class="legend-item"><span class="legend-icon sate-icon">🍢</span> Sate Padang</div>
-                <div class="legend-item"><span class="legend-icon kopi-icon">☕</span> Kedai Kopi</div>
-                <div class="legend-item"><span class="legend-icon oleh-icon">🎁</span> Oleh-oleh</div>
-                <div class="legend-item"><span class="legend-icon camilan-icon">🥮</span> Camilan</div>
+                <div class="legend-item"><span class="legend-icon rm-icon"><i class="fa-solid fa-bowl-rice"></i></span> Rumah Makan</div>
+                <div class="legend-item"><span class="legend-icon sate-icon"><i class="fa-solid fa-stroopwafel"></i></span> Sate Padang</div>
+                <div class="legend-item"><span class="legend-icon kopi-icon"><i class="fa-solid fa-mug-hot"></i></span> Kedai Kopi</div>
+                <div class="legend-item"><span class="legend-icon oleh-icon"><i class="fa-solid fa-gift"></i></span> Oleh-oleh</div>
+                <div class="legend-item"><span class="legend-icon camilan-icon"><i class="fa-solid fa-cookie-bite"></i></span> Camilan</div>
             </div>
         </div>
 

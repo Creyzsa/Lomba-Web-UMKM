@@ -109,12 +109,13 @@ $res_menu = mysqli_stmt_get_result($stmt_list);
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body class="admin-body">
     <header class="admin-nav">
         <div class="admin-nav-container">
             <div class="admin-brand">
-                <span class="gonjong-icon">🏛️</span>
+                <span class="brand-icon"><img src="../assets/img/logo-minang.svg" alt="Logo Peta Rasa Padang" style="width:48px;height:48px;"></span>
                 <span class="admin-title">Panel Admin — Peta Rasa Padang</span>
             </div>
             <div class="admin-user-info">
@@ -148,7 +149,7 @@ $res_menu = mysqli_stmt_get_result($stmt_list);
                 <!-- Kolom Kiri: Form Tambah/Edit Menu -->
                 <div class="col-form">
                     <div class="form-card">
-                        <h3 class="form-title-sm"><?= $edit_item ? '✏️ Edit Menu' : '➕ Tambah Menu Baru'; ?></h3>
+                        <h3 class="form-title-sm"><?= $edit_item ? '<i class="fa-solid fa-pen-to-square"></i> Edit Menu' : '<i class="fa-solid fa-plus"></i> Tambah Menu Baru'; ?></h3>
                         <form action="menu.php?id_toko=<?= $id_toko; ?>" method="POST">
                             <input type="hidden" name="id_menu" value="<?= $edit_item ? $edit_item['id_menu'] : 0; ?>">
 
@@ -169,7 +170,7 @@ $res_menu = mysqli_stmt_get_result($stmt_list);
 
                             <div class="form-actions">
                                 <button type="submit" class="btn btn-primary">
-                                    <?= $edit_item ? '💾 Simpan Perubahan' : '➕ Tambah Menu'; ?>
+                                    <?= $edit_item ? '<i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan' : '<i class="fa-solid fa-plus"></i> Tambah Menu'; ?>
                                 </button>
                                 <?php if ($edit_item): ?>
                                     <a href="menu.php?id_toko=<?= $id_toko; ?>" class="btn btn-secondary">Batal Edit</a>
@@ -204,10 +205,10 @@ $res_menu = mysqli_stmt_get_result($stmt_list);
                                                 <td style="text-align: center;">
                                                     <div class="btn-group">
                                                         <a href="menu.php?id_toko=<?= $id_toko; ?>&edit=<?= $m['id_menu']; ?>" class="btn btn-sm btn-warning" title="Edit">
-                                                            ✏️
+                                                            <i class="fa-solid fa-pen-to-square"></i>
                                                         </a>
                                                         <a href="menu.php?id_toko=<?= $id_toko; ?>&action=hapus&id_menu=<?= $m['id_menu']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Hapus menu \'<?= addslashes(htmlspecialchars($m['nama_menu'])); ?>\'?');" title="Hapus">
-                                                            🗑️
+                                                            <i class="fa-solid fa-trash-can"></i>
                                                         </a>
                                                     </div>
                                                 </td>
@@ -228,7 +229,7 @@ $res_menu = mysqli_stmt_get_result($stmt_list);
     </main>
 
     <footer class="admin-footer">
-        <p>&copy; 2026 Peta Rasa Padang — IT FEST 2026 UIN Mahmud Yunus Batusangkar</p>
+        <p>&copy; 2026 Peta Rasa Padang — Portal Admin Pengelola UMKM</p>
     </footer>
 </body>
 </html>

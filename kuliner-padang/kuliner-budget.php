@@ -449,6 +449,7 @@ $active_nav = 'budget';
         .bgt-card:hover, .bgt-submit:hover { transform: none; }
     }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body class="budget-page">
     <?php include 'navbar.php'; ?>
@@ -456,7 +457,7 @@ $active_nav = 'budget';
     <section class="page-banner">
         <div class="page-banner-overlay"></div>
         <div class="page-banner-content">
-            <span class="hero-badge">💰 MAKAN ENAK TANPA BONCOS</span>
+            <span class="hero-badge"><i class="fa-solid fa-wallet"></i> MAKAN ENAK TANPA BONCOS</span>
             <h1 class="page-banner-title">Kuliner Sesuai Budget</h1>
             <p class="page-banner-desc">Masukkan anggaran kamu, dan kami akan menampilkan menu UMKM yang harganya pas di kantong — lengkap dengan lokasi di peta.</p>
         </div>
@@ -468,7 +469,7 @@ $active_nav = 'budget';
         <div class="bgt-form">
             <div class="bgt-form-grid">
                 <div class="bgt-field bgt-field-budget">
-                    <label for="budget-input">💰 Anggaran Kamu</label>
+                    <label for="budget-input"><i class="fa-solid fa-wallet"></i> Anggaran Kamu</label>
                     <div class="bgt-money">
                         <span>Rp</span>
                         <input type="number" id="budget-input" inputmode="numeric" placeholder="15000" min="1000" step="1000" value="15000">
@@ -476,7 +477,7 @@ $active_nav = 'budget';
                     <small class="bgt-hint">Minimal Rp1.000 — cari menu yang sesuai kantong</small>
                 </div>
                 <div class="bgt-field">
-                    <label for="jarak-input">📍 Jarak (opsional)</label>
+                    <label for="jarak-input"><i class="fa-solid fa-location-dot"></i> Jarak (opsional)</label>
                     <select id="jarak-input" class="bgt-control">
                         <option value="">Tanpa batas jarak</option>
                         <option value="1">Dalam 1 km</option>
@@ -486,7 +487,7 @@ $active_nav = 'budget';
                     </select>
                 </div>
                 <div class="bgt-field">
-                    <label for="kategori-budget">🍽️ Kategori</label>
+                    <label for="kategori-budget"><i class="fa-solid fa-utensils"></i> Kategori</label>
                     <select id="kategori-budget" class="bgt-control">
                         <option value="">Semua Kategori</option>
                         <option value="Rumah Makan">Rumah Makan</option>
@@ -496,12 +497,12 @@ $active_nav = 'budget';
                         <option value="Oleh-oleh">Oleh-oleh</option>
                     </select>
                 </div>
-                <button type="button" id="btn-cari-budget" class="bgt-submit">🔍 Cari Menu</button>
+                <button type="button" id="btn-cari-budget" class="bgt-submit"><i class="fa-solid fa-magnifying-glass"></i> Cari Menu</button>
             </div>
 
             <div class="bgt-location" id="lokasi-row">
-                <span id="status-lokasi">📍 Gunakan lokasi saya untuk urutkan berdasarkan jarak terdekat</span>
-                <button type="button" id="btn-ambil-lokasi">📍 Aktifkan Lokasi</button>
+                <span id="status-lokasi"><i class="fa-solid fa-location-dot"></i> Gunakan lokasi saya untuk urutkan berdasarkan jarak terdekat</span>
+                <button type="button" id="btn-ambil-lokasi"><i class="fa-solid fa-location-dot"></i> Aktifkan Lokasi</button>
             </div>
 
             <div id="budget-error" class="bgt-error" role="alert" hidden></div>
@@ -525,14 +526,14 @@ $active_nav = 'budget';
             <div class="bgt-grid" id="budget-grid"></div>
 
             <div id="budget-empty" class="bgt-empty" style="display:none;">
-                <p>😕 Tidak ada menu yang sesuai dengan budget <strong>Rp<span id="empty-budget-val">0</span></strong>.</p>
+                <p><i class="fa-regular fa-face-frown"></i> Tidak ada menu yang sesuai dengan budget <strong>Rp<span id="empty-budget-val">0</span></strong>.</p>
                 <small>Coba naikkan anggaran atau hapus filter jarak.</small>
             </div>
         </div>
 
         <!-- Panduan -->
         <div id="budget-panduan" class="bgt-tip">
-            <div class="bgt-tip-icon" aria-hidden="true">💡</div>
+            <div class="bgt-tip-icon" aria-hidden="true"><i class="fa-solid fa-lightbulb"></i></div>
             <div>
                 <strong>Tips:</strong> Masukkan nominal anggaran makan kamu (contoh: Rp15.000 untuk sekali makan).
                 Sistem akan menampilkan UMKM yang memiliki menu dengan harga sesuai budget, diurutkan dari yang paling cocok.
@@ -553,7 +554,7 @@ $active_nav = 'budget';
             }).addTo(map);
 
             const markersLayer = L.layerGroup().addTo(map);
-            const kategoriIcons = { 'Rumah Makan': '🍛', 'Sate': '🍢', 'Kopi': '☕', 'Oleh-oleh': '🎁', 'Camilan': '🥮' };
+            const kategoriIcons = { 'Rumah Makan': '<i class="fa-solid fa-bowl-rice"></i>', 'Sate': '<i class="fa-solid fa-stroopwafel"></i>', 'Kopi': '<i class="fa-solid fa-mug-hot"></i>', 'Oleh-oleh': '<i class="fa-solid fa-gift"></i>', 'Camilan': '<i class="fa-solid fa-cookie-bite"></i>' };
             const rupiah = n => 'Rp' + Number(n).toLocaleString('id-ID');
             const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
             const errBox = document.getElementById('budget-error');
@@ -575,21 +576,21 @@ $active_nav = 'budget';
             // Tombol lokasi
             document.getElementById('btn-ambil-lokasi').addEventListener('click', function () {
                 if (!navigator.geolocation) {
-                    document.getElementById('status-lokasi').innerText = '⚠️ Geolokasi tidak didukung browser Anda.';
+                    document.getElementById('status-lokasi').innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Geolokasi tidak didukung browser Anda.';
                     return;
                 }
                 navigator.geolocation.getCurrentPosition(
                     function (pos) {
                         userLat = pos.coords.latitude;
                         userLng = pos.coords.longitude;
-                        document.getElementById('status-lokasi').innerHTML = `📍 Lokasi aktif (${userLat.toFixed(4)}, ${userLng.toFixed(4)}) — jarak dihitung otomatis.`;
+                        document.getElementById('status-lokasi').innerHTML = `<i class="fa-solid fa-location-dot"></i> Lokasi aktif (${userLat.toFixed(4)}, ${userLng.toFixed(4)}) — jarak dihitung otomatis.`;
                         const b = document.getElementById('btn-ambil-lokasi');
-                        b.innerText = '✅ Lokasi Aktif';
+                        b.innerHTML = '<i class="fa-solid fa-circle-check text-success"></i> Lokasi Aktif';
                         b.disabled = true;
                         hapusError();
                     },
                     function () {
-                        document.getElementById('status-lokasi').innerText = '⚠️ Tidak dapat mengakses lokasi. Izin lokasi tidak diberikan.';
+                        document.getElementById('status-lokasi').innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Tidak dapat mengakses lokasi. Izin lokasi tidak diberikan.';
                     }
                 );
             });
@@ -643,7 +644,7 @@ $active_nav = 'budget';
                 empty.style.display = 'none';
 
                 hasil.forEach(toko => {
-                    const iconSymbol = kategoriIcons[toko.kategori] || '🏛️';
+                    const iconSymbol = kategoriIcons[toko.kategori] || '<i class="fa-solid fa-utensils"></i>';
                     const markerIcon = L.divIcon({
                         className: 'custom-gonjong-marker',
                         html: `<div class="marker-pin"><span class="marker-roof">▲</span><span class="marker-symbol">${iconSymbol}</span></div>`,
@@ -651,7 +652,7 @@ $active_nav = 'budget';
                     });
                     const marker = L.marker([toko.latitude, toko.longitude], { icon: markerIcon });
 
-                    let menuHtml = '<div class="popup-menu-list"><strong>🍽️ Menu Sesuai Budget:</strong><ul>';
+                    let menuHtml = '<div class="popup-menu-list"><strong><i class="fa-solid fa-utensils"></i> Menu Sesuai Budget:</strong><ul>';
                     toko.menu_filtered.forEach(m => {
                         menuHtml += `<li><span class="menu-name">${esc(m.nama_menu)}</span><span class="menu-price">${esc(m.harga_fmt)}</span></li>`;
                     });
@@ -667,12 +668,12 @@ $active_nav = 'budget';
                                 <span class="popup-badge">${esc(toko.kategori)}</span>
                                 <h3 class="popup-title">${esc(toko.nama_toko)}</h3>
                             </div>
-                            <p class="popup-address">📍 ${esc(toko.alamat)}</p>
+                            <p class="popup-address"><i class="fa-solid fa-location-dot"></i> ${esc(toko.alamat)}</p>
                             ${menuHtml}
-                            <p style="font-size:0.82rem;color:#334155;"><strong>💰 Termurah:</strong> ${esc(termurah)} ${toko.jarakKm !== null ? '| 📍 ' + toko.jarakKm.toFixed(1) + ' km' : ''}</p>
+                            <p style="font-size:0.82rem;color:#334155;"><strong><i class="fa-solid fa-wallet"></i> Termurah:</strong> ${esc(termurah)} ${toko.jarakKm !== null ? '| <i class="fa-solid fa-location-dot"></i> ' + toko.jarakKm.toFixed(1) + ' km' : ''}</p>
                             <div class="popup-buttons">
-                                <a href="${toko.maps_url}" target="_blank" rel="noopener" class="btn-popup-maps">🗺️ Google Maps</a>
-                                ${waUrl !== '#' ? `<a href="${waUrl}" target="_blank" rel="noopener" class="btn-popup-wa">💬 Pesan WA</a>` : '<span class="btn-popup-wa" style="opacity:0.5;background:#999;">💬 WA tidak tersedia</span>'}
+                                <a href="${toko.maps_url}" target="_blank" rel="noopener" class="btn-popup-maps"><i class="fa-solid fa-map-location-dot"></i> Google Maps</a>
+                                ${waUrl !== '#' ? `<a href="${waUrl}" target="_blank" rel="noopener" class="btn-popup-wa"><i class="fa-brands fa-whatsapp"></i> Pesan WA</a>` : '<span class="btn-popup-wa" style="opacity:0.5;background:#999;"><i class="fa-brands fa-whatsapp"></i> WA tidak tersedia</span>'}
                             </div>
                         </div>
                     `, { maxWidth: 320 });
@@ -690,7 +691,7 @@ $active_nav = 'budget';
                         menuItems += `<li class="bgt-more">+${toko.menu_filtered.length - 3} menu lainnya</li>`;
                     }
 
-                    const jarakChip = toko.jarakKm !== null ? `<span class="bgt-dist">📍 ${toko.jarakKm.toFixed(1)} km</span>` : '';
+                    const jarakChip = toko.jarakKm !== null ? `<span class="bgt-dist"><i class="fa-solid fa-location-dot"></i> ${toko.jarakKm.toFixed(1)} km</span>` : '';
 
                     const aksiHtml = toko.no_wa
                         ? `<div class="bgt-order">
@@ -700,12 +701,12 @@ $active_nav = 'budget';
                                </label>
                            </div>
                            <div class="bgt-actions">
-                               <a href="detail.php?id=${toko.id_toko}" class="bgt-btn bgt-btn-detail">📄 Detail</a>
-                               <button type="button" class="bgt-btn bgt-btn-wa btn-wa-pesan" data-id-toko="${toko.id_toko}" data-nama="${esc(toko.nama_toko)}" data-nohp="${esc(toko.no_wa)}" data-menu="${esc(menuUtama.nama_menu)}" data-harga="${menuUtama.harga}">💬 Pesan via WhatsApp</button>
+                               <a href="detail.php?id=${toko.id_toko}" class="bgt-btn bgt-btn-detail"><i class="fa-regular fa-file-lines"></i> Detail</a>
+                               <button type="button" class="bgt-btn bgt-btn-wa btn-wa-pesan" data-id-toko="${toko.id_toko}" data-nama="${esc(toko.nama_toko)}" data-nohp="${esc(toko.no_wa)}" data-menu="${esc(menuUtama.nama_menu)}" data-harga="${menuUtama.harga}"><i class="fa-brands fa-whatsapp"></i> Pesan via WhatsApp</button>
                            </div>`
                         : `<div class="bgt-actions">
-                               <a href="detail.php?id=${toko.id_toko}" class="bgt-btn bgt-btn-detail">📄 Detail</a>
-                               <span class="bgt-btn bgt-btn-off">💬 WA tidak tersedia</span>
+                               <a href="detail.php?id=${toko.id_toko}" class="bgt-btn bgt-btn-detail"><i class="fa-regular fa-file-lines"></i> Detail</a>
+                               <span class="bgt-btn bgt-btn-off"><i class="fa-brands fa-whatsapp"></i> WA tidak tersedia</span>
                            </div>`;
 
                     const card = document.createElement('article');
@@ -721,9 +722,9 @@ $active_nav = 'budget';
                                 <h3 class="bgt-title">${esc(toko.nama_toko)}</h3>
                                 ${badgeHtml}
                             </div>
-                            <p class="bgt-addr">📍 ${esc(toko.alamat)}</p>
+                            <p class="bgt-addr"><i class="fa-solid fa-location-dot"></i> ${esc(toko.alamat)}</p>
                             <div class="bgt-menu">
-                                <p class="bgt-menu-title">✅ Menu sesuai budget</p>
+                                <p class="bgt-menu-title"><i class="fa-solid fa-circle-check text-success"></i> Menu sesuai budget</p>
                                 <ul>${menuItems}</ul>
                             </div>
                             <div class="bgt-from">Mulai <strong>${rupiah(toko.hargaTerendah)}</strong></div>

@@ -11,7 +11,7 @@ if (!isset($active_nav)) {
 <header class="navbar" id="main-navbar">
     <div class="nav-container">
         <a href="index.php" class="brand">
-            <span class="brand-icon">🏛️</span>
+            <span class="brand-icon"><img src="assets/img/logo-minang.svg" alt="Logo Peta Rasa Padang"></span>
             <div class="brand-text">
                 <span class="brand-title">Peta Rasa Padang</span>
                 <span class="brand-tagline">Etalase Kuliner Ranah Minang</span>
@@ -29,7 +29,7 @@ if (!isset($active_nav)) {
             
             <?php if (isset($_SESSION['role'])): ?>
                 <?php if ($_SESSION['role'] === 'admin'): ?>
-                    <a href="admin/dashboard.php" class="btn btn-gold btn-sm">⚙️ Panel Admin</a>
+                    <a href="admin/dashboard.php" class="btn btn-gold btn-sm"><i class="fa-solid fa-gear"></i> Panel Admin</a>
                 <?php else: ?>
                     <span class="user-greeting">Halo, <?= htmlspecialchars($_SESSION['username']); ?></span>
                 <?php endif; ?>

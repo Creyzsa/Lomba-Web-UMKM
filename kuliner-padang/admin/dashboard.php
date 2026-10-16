@@ -33,12 +33,13 @@ $result = mysqli_query($koneksi, $sql);
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body class="admin-body">
     <header class="admin-nav">
         <div class="admin-nav-container">
             <div class="admin-brand">
-                <span class="gonjong-icon">🏛️</span>
+                <span class="brand-icon"><img src="../assets/img/logo-minang.svg" alt="Logo Peta Rasa Padang" style="width:48px;height:48px;"></span>
                 <span class="admin-title">Panel Admin — Peta Rasa Padang</span>
             </div>
             <div class="admin-user-info">
@@ -105,13 +106,13 @@ $result = mysqli_query($koneksi, $sql);
                                         <td style="text-align: center;">
                                             <div class="btn-group">
                                                 <a href="menu.php?id_toko=<?= $toko['id_toko']; ?>" class="btn btn-sm btn-info" title="Kelola Menu">
-                                                    🍽️ Menu
+                                                    <i class="fa-solid fa-utensils"></i> Menu
                                                 </a>
                                                 <a href="edit.php?id=<?= $toko['id_toko']; ?>" class="btn btn-sm btn-warning" title="Edit Toko">
-                                                    ✏️ Edit
+                                                    <i class="fa-solid fa-pen-to-square"></i> Edit
                                                 </a>
                                                 <a href="hapus.php?id=<?= $toko['id_toko']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus toko \'<?= addslashes(htmlspecialchars($toko['nama_toko'])); ?>\' beserta seluruh menunya?');" title="Hapus Toko">
-                                                    🗑️ Hapus
+                                                    <i class="fa-solid fa-trash-can"></i> Hapus
                                                 </a>
                                             </div>
                                         </td>
@@ -130,7 +131,7 @@ $result = mysqli_query($koneksi, $sql);
     </main>
 
     <footer class="admin-footer">
-        <p>&copy; 2026 Peta Rasa Padang — IT FEST 2026 UIN Mahmud Yunus Batusangkar</p>
+        <p>&copy; 2026 Peta Rasa Padang — Portal Admin Pengelola UMKM</p>
     </footer>
 </body>
 </html>

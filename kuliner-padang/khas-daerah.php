@@ -23,6 +23,7 @@ $res_toko_khas = mysqli_query($koneksi, "SELECT * FROM toko WHERE is_khas = 1 OR
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <?php include 'navbar.php'; ?>
@@ -30,7 +31,7 @@ $res_toko_khas = mysqli_query($koneksi, "SELECT * FROM toko WHERE is_khas = 1 OR
     <section class="page-banner">
         <div class="page-banner-overlay"></div>
         <div class="page-banner-content">
-            <span class="hero-badge">🍜 WARISAN RASA NUSANTARA</span>
+            <span class="hero-badge"><i class="fa-solid fa-bowl-rice"></i> WARISAN RASA NUSANTARA</span>
             <h1 class="page-banner-title">Kuliner Khas Daerah</h1>
             <p class="page-banner-desc">Jelajahi cerita di balik makanan tradisional Minangkabau, dari rendang legendaris hingga sala lauak pesisir. Temukan juga UMKM yang menyajikannya.</p>
         </div>
@@ -43,39 +44,51 @@ $res_toko_khas = mysqli_query($koneksi, "SELECT * FROM toko WHERE is_khas = 1 OR
             <span class="section-kicker">MAKANAN IKONIK</span>
             <h2 class="section-heading">Khas Daerah Minangkabau</h2>
             <div class="minang-divider">
-                <span>◆</span><span>◆</span><span class="center-diamond">❖</span><span>◆</span><span>◆</span>
+                <span>◆</span><span>◆</span><span class="center-diamond"><i class="fa-solid fa-diamond text-gold"></i></span><span>◆</span><span>◆</span>
             </div>
             <p class="section-subtext">Setiap makanan memiliki cerita dan filosofi yang mencerminkan budaya masyarakat Minang.</p>
         </div>
 
         <?php if ($res_makanan && mysqli_num_rows($res_makanan) > 0): ?>
             <div class="khas-grid">
-                <?php while ($m = mysqli_fetch_assoc($res_makanan)): ?>
+                <?php while ($m = mysqli_fetch_assoc($res_makanan)): 
+                    $foto_m = !empty($m['foto']) ? 'assets/img/' . $m['foto'] : 'assets/img/default.png';
+                    
+                    // Ambil info toko dan lokasinya jika ada id_toko
+                    $toko_k = null;
+                    if (!empty($m['id_toko'])) {
+                        $stmt_t = mysqli_prepare($koneksi, "SELECT id_toko, nama_toko, alamat, latitude, longitude FROM toko WHERE id_toko = ?");
+                        mysqli_stmt_bind_param($stmt_t, "i", $m['id_toko']);
+                        mysqli_stmt_execute($stmt_t);
+                        $toko_k = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_t));
+                        mysqli_stmt_close($stmt_t);
+                    }
+                ?>
                     <div class="khas-card">
-                        <div class="khas-card-header">
-                            <span class="khas-icon">🍽️</span>
+                        <div class="khas-card-media">
+                            <img src="<?= htmlspecialchars($foto_m); ?>" alt="<?= htmlspecialchars($m['nama_makanan']); ?>" class="khas-img" onerror="this.src='assets/img/default.png'">
+                            <span class="khas-origin-badge"><i class="fa-solid fa-location-dot"></i> <?= htmlspecialchars($m['asal_daerah']); ?></span>
+                        </div>
+                        <div class="khas-card-content">
                             <h3 class="khas-nama"><?= htmlspecialchars($m['nama_makanan']); ?></h3>
-                            <span class="khas-daerah">📍 <?= htmlspecialchars($m['asal_daerah']); ?></span>
-                        </div>
-                        <div class="khas-card-body">
                             <p class="khas-cerita"><?= htmlspecialchars($m['cerita']); ?></p>
-                        </div>
-                        <?php if (!empty($m['id_toko'])): 
-                            // Ambil nama toko
-                            $stmt_t = mysqli_prepare($koneksi, "SELECT id_toko, nama_toko FROM toko WHERE id_toko = ?");
-                            mysqli_stmt_bind_param($stmt_t, "i", $m['id_toko']);
-                            mysqli_stmt_execute($stmt_t);
-                            $toko_k = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_t));
-                            mysqli_stmt_close($stmt_t);
-                        ?>
+
                             <?php if ($toko_k): ?>
-                                <div class="khas-card-footer">
-                                    <a href="detail.php?id=<?= $toko_k['id_toko']; ?>" class="btn btn-sm btn-outline-gold">
-                                        🏪 Kunjungi <?= htmlspecialchars($toko_k['nama_toko']); ?>
+                                <div class="khas-location-box">
+                                    <span class="khas-loc-title"><i class="fa-solid fa-store"></i> Rekomendasi Tempat Cicip:</span>
+                                    <strong class="khas-loc-name"><?= htmlspecialchars($toko_k['nama_toko']); ?></strong>
+                                    <p class="khas-loc-address"><i class="fa-solid fa-map-pin"></i> <?= htmlspecialchars($toko_k['alamat']); ?></p>
+                                </div>
+                                <div class="khas-card-actions">
+                                    <a href="detail.php?id=<?= $toko_k['id_toko']; ?>" class="btn btn-sm btn-gold">
+                                        <i class="fa-solid fa-utensils"></i> Kunjungi Toko
+                                    </a>
+                                    <a href="peta.php?toko=<?= $toko_k['id_toko']; ?>" class="btn btn-sm btn-outline-gold">
+                                        <i class="fa-solid fa-map-location-dot"></i> Lihat di Peta
                                     </a>
                                 </div>
                             <?php endif; ?>
-                        <?php endif; ?>
+                        </div>
                     </div>
                 <?php endwhile; ?>
             </div>
@@ -98,7 +111,7 @@ $res_toko_khas = mysqli_query($koneksi, "SELECT * FROM toko WHERE is_khas = 1 OR
                 <p class="section-subtext">UMKM yang telah mendapat badge "Khas Daerah" atau "Hidden Gem" — direkomendasikan untuk mencicipi cita rasa autentik.</p>
             </div>
             <div class="header-right">
-                <a href="peta.php" class="btn btn-outline-gold btn-sm">📍 Lihat di Peta</a>
+                <a href="peta.php" class="btn btn-outline-gold btn-sm"><i class="fa-solid fa-location-dot"></i> Lihat di Peta</a>
             </div>
         </div>
 
@@ -116,11 +129,11 @@ $res_toko_khas = mysqli_query($koneksi, "SELECT * FROM toko WHERE is_khas = 1 OR
                         </div>
                         <div class="card-body">
                             <h3 class="card-title"><?= htmlspecialchars($t['nama_toko']); ?></h3>
-                            <p class="card-address">📍 <?= htmlspecialchars($t['alamat']); ?></p>
+                            <p class="card-address"><i class="fa-solid fa-location-dot"></i> <?= htmlspecialchars($t['alamat']); ?></p>
                             <p class="card-desc"><?= htmlspecialchars($t['deskripsi']); ?></p>
                             <div class="card-actions">
-                                <a href="detail.php?id=<?= $t['id_toko']; ?>" class="btn btn-primary btn-sm" style="flex:1;">📄 Detail</a>
-                                <a href="peta.php?toko=<?= $t['id_toko']; ?>" class="btn btn-outline-gold btn-sm">📍 Peta</a>
+                                <a href="detail.php?id=<?= $t['id_toko']; ?>" class="btn btn-primary btn-sm" style="flex:1;"><i class="fa-regular fa-file-lines"></i> Detail</a>
+                                <a href="peta.php?toko=<?= $t['id_toko']; ?>" class="btn btn-outline-gold btn-sm"><i class="fa-solid fa-location-dot"></i> Peta</a>
                             </div>
                         </div>
                     </div>

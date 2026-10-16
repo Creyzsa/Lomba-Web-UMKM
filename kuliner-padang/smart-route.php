@@ -129,7 +129,7 @@ $active_nav = 'route';
         .rt-stat-label { font-size: .75rem; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; color: var(--r-muted); }
         .rt-stat-value { font-size: 1.1rem; font-weight: 700; color: var(--r-red); overflow-wrap: anywhere; }
         .rt-stat-value.rt-over { color: #b91c1c; }
-        .rt-stat-value.rt-over::before { content: "⚠️ "; }
+        .rt-stat-value.rt-over::before { content: "<i class="fa-solid fa-triangle-exclamation"></i> "; }
 
         .rt-note { margin: 14px 0 0; font-size: .8rem; line-height: 1.5; color: var(--r-muted); }
 
@@ -261,6 +261,7 @@ $active_nav = 'route';
             .rt-card:hover, .rt-submit:hover { transform: none; }
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body class="route-page">
     <?php include 'navbar.php'; ?>
@@ -268,7 +269,7 @@ $active_nav = 'route';
     <section class="page-banner">
         <div class="page-banner-overlay"></div>
         <div class="page-banner-content">
-            <span class="hero-badge">🗺️ WISATA KULINER CERDAS</span>
+            <span class="hero-badge"><i class="fa-solid fa-map-location-dot"></i> WISATA KULINER CERDAS</span>
             <h1 class="page-banner-title">Smart Culinary Route</h1>
             <p class="page-banner-desc">Masukkan total anggaran dan pilih preferensi — kami akan menyusun rute wisata kuliner 2–4 UMKM dengan total belanja yang pas di kantong.</p>
         </div>
@@ -280,7 +281,7 @@ $active_nav = 'route';
         <div class="rt-form">
             <div class="rt-form-grid">
                 <div class="rt-field rt-field-budget">
-                    <label for="route-budget">💰 Total Anggaran</label>
+                    <label for="route-budget"><i class="fa-solid fa-wallet"></i> Total Anggaran</label>
                     <div class="rt-money">
                         <span>Rp</span>
                         <input type="number" id="route-budget" inputmode="numeric" placeholder="50000" min="5000" step="5000" value="50000">
@@ -288,7 +289,7 @@ $active_nav = 'route';
                     <small class="rt-hint">Total budget untuk seluruh perjalanan</small>
                 </div>
                 <div class="rt-field">
-                    <label for="route-stops">🛑 Jumlah Pemberhentian</label>
+                    <label for="route-stops"><i class="fa-solid fa-circle-stop"></i> Jumlah Pemberhentian</label>
                     <select id="route-stops" class="rt-control">
                         <option value="2">2 Tempat</option>
                         <option value="3" selected>3 Tempat</option>
@@ -296,7 +297,7 @@ $active_nav = 'route';
                     </select>
                 </div>
                 <div class="rt-field">
-                    <label for="route-category">🍽️ Preferensi Kategori</label>
+                    <label for="route-category"><i class="fa-solid fa-utensils"></i> Preferensi Kategori</label>
                     <select id="route-category" class="rt-control">
                         <option value="">Semua Kategori (bervariasi)</option>
                         <option value="Rumah Makan">Makanan Utama</option>
@@ -307,12 +308,12 @@ $active_nav = 'route';
                     </select>
                     <small class="rt-hint">Pilih "Semua" untuk variasi maksimal</small>
                 </div>
-                <button type="button" id="btn-susun-rute" class="rt-submit">🗺️ Susun Rute</button>
+                <button type="button" id="btn-susun-rute" class="rt-submit"><i class="fa-solid fa-map-location-dot"></i> Susun Rute</button>
             </div>
 
             <div class="rt-location" id="lokasi-route-row">
-                <span id="status-lokasi-route">📍 Gunakan lokasi saya untuk optimasi jarak</span>
-                <button type="button" id="btn-ambil-lokasi-route">📍 Aktifkan Lokasi</button>
+                <span id="status-lokasi-route"><i class="fa-solid fa-location-dot"></i> Gunakan lokasi saya untuk optimasi jarak</span>
+                <button type="button" id="btn-ambil-lokasi-route"><i class="fa-solid fa-location-dot"></i> Aktifkan Lokasi</button>
             </div>
 
             <div id="route-error" class="rt-error" role="alert" hidden></div>
@@ -325,27 +326,27 @@ $active_nav = 'route';
                 <h2 class="section-heading">Rencana Wisata Kuliner</h2>
                 <div class="rt-stats">
                     <div class="rt-stat">
-                        <span class="rt-stat-icon" aria-hidden="true">💰</span>
+                        <span class="rt-stat-icon" aria-hidden="true"><i class="fa-solid fa-wallet"></i></span>
                         <span class="rt-stat-label">Anggaran</span>
                         <span class="rt-stat-value" id="rs-anggaran">Rp0</span>
                     </div>
                     <div class="rt-stat">
-                        <span class="rt-stat-icon" aria-hidden="true">🛑</span>
+                        <span class="rt-stat-icon" aria-hidden="true"><i class="fa-solid fa-circle-stop"></i></span>
                         <span class="rt-stat-label">Destinasi</span>
                         <span class="rt-stat-value" id="rs-destinasi">0</span>
                     </div>
                     <div class="rt-stat">
-                        <span class="rt-stat-icon" aria-hidden="true">💵</span>
+                        <span class="rt-stat-icon" aria-hidden="true"><i class="fa-solid fa-money-bill-wave"></i></span>
                         <span class="rt-stat-label">Estimasi Belanja</span>
                         <span class="rt-stat-value" id="rs-total">Rp0</span>
                     </div>
                     <div class="rt-stat">
-                        <span class="rt-stat-icon" aria-hidden="true">🔄</span>
+                        <span class="rt-stat-icon" aria-hidden="true"><i class="fa-solid fa-arrows-rotate"></i></span>
                         <span class="rt-stat-label">Sisa Budget</span>
                         <span class="rt-stat-value" id="rs-sisa">Rp0</span>
                     </div>
                     <div class="rt-stat">
-                        <span class="rt-stat-icon" aria-hidden="true">📍</span>
+                        <span class="rt-stat-icon" aria-hidden="true"><i class="fa-solid fa-location-dot"></i></span>
                         <span class="rt-stat-label">Jarak &amp; Waktu</span>
                         <span class="rt-stat-value" id="rs-jarak">0 km</span>
                     </div>
@@ -357,24 +358,24 @@ $active_nav = 'route';
                 <div id="route-map"></div>
             </div>
 
-            <h3 class="rt-list-title">📍 Destinasi &amp; Pesanan</h3>
+            <h3 class="rt-list-title"><i class="fa-solid fa-location-dot"></i> Destinasi &amp; Pesanan</h3>
             <div class="rt-list" id="route-destinasi-grid"></div>
 
             <div class="rt-cta">
                 <p>Untuk navigasi belokan demi belokan, buka rute di Google Maps:</p>
-                <a id="route-google-maps-all" href="#" target="_blank" rel="noopener" class="rt-btn">🗺️ Buka Rute di Google Maps</a>
+                <a id="route-google-maps-all" href="#" target="_blank" rel="noopener" class="rt-btn"><i class="fa-solid fa-map-location-dot"></i> Buka Rute di Google Maps</a>
             </div>
         </div>
 
         <!-- Empty State -->
         <div id="route-empty" class="rt-empty" style="display:none;">
-            <p>😕 Tidak dapat menyusun rute dengan kriteria tersebut.</p>
+            <p><i class="fa-regular fa-face-frown"></i> Tidak dapat menyusun rute dengan kriteria tersebut.</p>
             <small>Coba naikkan anggaran, kurangi jumlah destinasi, atau perluas preferensi kategori.</small>
         </div>
 
         <!-- Panduan -->
         <div id="route-panduan" class="rt-tip">
-            <div class="rt-tip-icon" aria-hidden="true">🗺️</div>
+            <div class="rt-tip-icon" aria-hidden="true"><i class="fa-solid fa-map-location-dot"></i></div>
             <div>
                 <strong>Cara kerja:</strong> Masukkan total budget dan jumlah tempat yang ingin dikunjungi.
                 Sistem akan menyusun rute 2–4 UMKM dengan menu yang sesuai budget dan diurutkan berdasarkan jarak terdekat. Cocok untuk "jadwal jalan-jalan kuliner"!
@@ -399,7 +400,7 @@ $active_nav = 'route';
             let rutePolyline = null;
             const markersLayer = L.layerGroup().addTo(map);
 
-            const kategoriIcons = { 'Rumah Makan': '🍛', 'Sate': '🍢', 'Kopi': '☕', 'Oleh-oleh': '🎁', 'Camilan': '🥮' };
+            const kategoriIcons = { 'Rumah Makan': '<i class="fa-solid fa-bowl-rice"></i>', 'Sate': '<i class="fa-solid fa-stroopwafel"></i>', 'Kopi': '<i class="fa-solid fa-mug-hot"></i>', 'Oleh-oleh': '<i class="fa-solid fa-gift"></i>', 'Camilan': '<i class="fa-solid fa-cookie-bite"></i>' };
             const rupiah = n => 'Rp' + Number(n).toLocaleString('id-ID');
             const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
             const errBox = document.getElementById('route-error');
@@ -416,19 +417,19 @@ $active_nav = 'route';
 
             document.getElementById('btn-ambil-lokasi-route').addEventListener('click', function () {
                 if (!navigator.geolocation) {
-                    document.getElementById('status-lokasi-route').innerText = '⚠️ Geolokasi tidak didukung.';
+                    document.getElementById('status-lokasi-route').innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Geolokasi tidak didukung.';
                     return;
                 }
                 navigator.geolocation.getCurrentPosition(
                     pos => {
                         userLat = pos.coords.latitude;
                         userLng = pos.coords.longitude;
-                        document.getElementById('status-lokasi-route').innerHTML = `📍 Lokasi aktif (${userLat.toFixed(4)}, ${userLng.toFixed(4)})`;
-                        this.innerText = '✅ Lokasi Aktif';
+                        document.getElementById('status-lokasi-route').innerHTML = `<i class="fa-solid fa-location-dot"></i> Lokasi aktif (${userLat.toFixed(4)}, ${userLng.toFixed(4)})`;
+                        this.innerHTML = '<i class="fa-solid fa-circle-check text-success"></i> Lokasi Aktif';
                         this.disabled = true;
                     },
                     () => {
-                        document.getElementById('status-lokasi-route').innerText = '⚠️ Izin lokasi tidak diberikan.';
+                        document.getElementById('status-lokasi-route').innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Izin lokasi tidak diberikan.';
                     }
                 );
             });
@@ -480,7 +481,7 @@ $active_nav = 'route';
                     latLngs.push([origin.lat, origin.lng]);
                     L.circleMarker([origin.lat, origin.lng], {
                         radius: 8, color: '#D4A017', fillColor: '#F7D070', fillOpacity: 0.7
-                    }).addTo(markersLayer).bindPopup('<strong>📍 Titik Awal</strong> (Lokasi Anda)');
+                    }).addTo(markersLayer).bindPopup('<strong><i class="fa-solid fa-location-dot"></i> Titik Awal</strong> (Lokasi Anda)');
                 }
 
                 const grid = document.getElementById('route-destinasi-grid');
@@ -491,7 +492,7 @@ $active_nav = 'route';
                     const menu = item.menuDipilih;
                     latLngs.push([t.latitude, t.longitude]);
 
-                    const iconSymbol = kategoriIcons[t.kategori] || '🏛️';
+                    const iconSymbol = kategoriIcons[t.kategori] || '<i class="fa-solid fa-utensils"></i>';
                     const markerI = L.divIcon({
                         className: 'custom-gonjong-marker',
                         html: `<div class="marker-pin"><span class="marker-roof">▲</span><span class="marker-symbol">${iconSymbol}</span></div>`,
@@ -506,13 +507,13 @@ $active_nav = 'route';
                     marker.bindPopup(`
                         <div class="minang-popup">
                             <div class="popup-header">
-                                <span class="popup-badge">🚩 Pemberhentian ${idx + 1}</span>
+                                <span class="popup-badge"><i class="fa-solid fa-flag-checkered"></i> Pemberhentian ${idx + 1}</span>
                                 <h3 class="popup-title">${esc(t.nama_toko)}</h3>
                             </div>
-                            <p class="popup-address">📍 ${esc(t.alamat)}</p>
-                            <p class="popup-desc"><strong>🍽️ ${esc(menu.nama_menu)}</strong> — ${esc(menu.harga_fmt)}</p>
+                            <p class="popup-address"><i class="fa-solid fa-location-dot"></i> ${esc(t.alamat)}</p>
+                            <p class="popup-desc"><strong><i class="fa-solid fa-utensils"></i> ${esc(menu.nama_menu)}</strong> — ${esc(menu.harga_fmt)}</p>
                             <div class="popup-buttons">
-                                <a href="${t.maps_url}" target="_blank" rel="noopener" class="btn-popup-maps">🗺️ Google Maps</a>
+                                <a href="${t.maps_url}" target="_blank" rel="noopener" class="btn-popup-maps"><i class="fa-solid fa-map-location-dot"></i> Google Maps</a>
                             </div>
                         </div>
                     `, { maxWidth: 320 });
@@ -522,9 +523,9 @@ $active_nav = 'route';
                     let legHtml = '';
                     if (idx > 0) {
                         const p = hasil.rute[idx - 1].toko;
-                        legHtml = `<span class="rt-leg">📍 ${window.kulinerUtils.hitungJarak(p.latitude, p.longitude, t.latitude, t.longitude).toFixed(1)} km dari sebelumnya</span>`;
+                        legHtml = `<span class="rt-leg"><i class="fa-solid fa-location-dot"></i> ${window.kulinerUtils.hitungJarak(p.latitude, p.longitude, t.latitude, t.longitude).toFixed(1)} km dari sebelumnya</span>`;
                     } else if (origin) {
-                        legHtml = `<span class="rt-leg">📍 ${window.kulinerUtils.hitungJarak(origin.lat, origin.lng, t.latitude, t.longitude).toFixed(1)} km dari lokasi Anda</span>`;
+                        legHtml = `<span class="rt-leg"><i class="fa-solid fa-location-dot"></i> ${window.kulinerUtils.hitungJarak(origin.lat, origin.lng, t.latitude, t.longitude).toFixed(1)} km dari lokasi Anda</span>`;
                     }
 
                     const aksiHtml = t.no_wa
@@ -532,12 +533,12 @@ $active_nav = 'route';
                                <input id="route-qty-${t.id_toko}" class="route-qty-input" type="number" min="1" max="99" step="1" value="1" data-harga="${menu.harga}" aria-label="Jumlah ${esc(menu.nama_menu)}">
                            </label>
                            <div class="rt-actions">
-                               <a href="${t.maps_url}" target="_blank" rel="noopener" class="rt-btn rt-btn-maps">🗺️ Buka Maps</a>
-                               <button type="button" class="rt-btn rt-btn-wa btn-wa-route" data-id-toko="${t.id_toko}" data-nama="${esc(t.nama_toko)}" data-nohp="${esc(t.no_wa)}" data-menu="${esc(menu.nama_menu)}" data-harga="${menu.harga}">💬 Pesan via WhatsApp</button>
+                               <a href="${t.maps_url}" target="_blank" rel="noopener" class="rt-btn rt-btn-maps"><i class="fa-solid fa-map-location-dot"></i> Buka Maps</a>
+                               <button type="button" class="rt-btn rt-btn-wa btn-wa-route" data-id-toko="${t.id_toko}" data-nama="${esc(t.nama_toko)}" data-nohp="${esc(t.no_wa)}" data-menu="${esc(menu.nama_menu)}" data-harga="${menu.harga}"><i class="fa-brands fa-whatsapp"></i> Pesan via WhatsApp</button>
                            </div>`
                         : `<div class="rt-actions">
-                               <a href="${t.maps_url}" target="_blank" rel="noopener" class="rt-btn rt-btn-maps">🗺️ Buka Maps</a>
-                               <span class="rt-btn rt-btn-off">💬 WA tidak tersedia</span>
+                               <a href="${t.maps_url}" target="_blank" rel="noopener" class="rt-btn rt-btn-maps"><i class="fa-solid fa-map-location-dot"></i> Buka Maps</a>
+                               <span class="rt-btn rt-btn-off"><i class="fa-brands fa-whatsapp"></i> WA tidak tersedia</span>
                            </div>`;
 
                     const stop = document.createElement('div');
@@ -551,7 +552,7 @@ $active_nav = 'route';
                                     <span class="rt-cat">${iconSymbol} ${esc(t.kategori)}</span>
                                     <h4 class="rt-name">${esc(t.nama_toko)}</h4>
                                     ${badgesHtml}
-                                    <p class="rt-addr">📍 ${esc(t.alamat)}</p>
+                                    <p class="rt-addr"><i class="fa-solid fa-location-dot"></i> ${esc(t.alamat)}</p>
                                 </div>
                             </div>
                             ${legHtml}

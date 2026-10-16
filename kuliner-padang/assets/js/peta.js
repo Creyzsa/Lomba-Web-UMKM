@@ -34,16 +34,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Kategori & Emoji Icon
     const kategoriIcons = {
-        'Rumah Makan': '🍛',
-        'Sate': '🍢',
-        'Kopi': '☕',
-        'Oleh-oleh': '🎁',
-        'Camilan': '🥮'
+        'Rumah Makan': '<i class="fa-solid fa-bowl-rice"></i>',
+        'Sate': '<i class="fa-solid fa-stroopwafel"></i>',
+        'Kopi': '<i class="fa-solid fa-mug-hot"></i>',
+        'Oleh-oleh': '<i class="fa-solid fa-gift"></i>',
+        'Camilan': '<i class="fa-solid fa-cookie-bite"></i>'
     };
 
     // Fungsi membuat custom icon pin gonjong Minang
     function createGonjongIcon(kategori) {
-        const iconSymbol = kategoriIcons[kategori] || '🏛️';
+        const iconSymbol = kategoriIcons[kategori] || '<i class="fa-solid fa-utensils"></i>';
         return L.divIcon({
             className: 'custom-gonjong-marker',
             html: `
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (grid) {
                 grid.innerHTML = `
                     <div class="error-msg-box">
-                        <p>⚠️ Gagal memuat data toko dari database.</p>
+                        <p><i class="fa-solid fa-triangle-exclamation"></i> Gagal memuat data toko dari database.</p>
                         <small>Pastikan web server Apache & MySQL XAMPP aktif serta database <code>db_kuliner_padang</code> telah diimpor.</small>
                     </div>
                 `;
@@ -138,9 +138,9 @@ document.addEventListener('DOMContentLoaded', function () {
             let waHtml = '';
             if (noWa) {
                 const waText = encodeURIComponent(`Halo ${toko.nama_toko}, saya melihat etalase Anda di Peta Rasa Padang dan ingin memesan.`);
-                waHtml = `<a href="https://wa.me/${noWa}?text=${waText}" target="_blank" class="btn-popup-wa">💬 Hubungi via WA</a>`;
+                waHtml = `<a href="https://wa.me/${noWa}?text=${waText}" target="_blank" class="btn-popup-wa"><i class="fa-brands fa-whatsapp"></i> Hubungi via WA</a>`;
             } else {
-                waHtml = '<span class="btn-popup-wa" style="background:#94A3B8;cursor:not-allowed;">💬 WA tidak tersedia</span>';
+                waHtml = '<span class="btn-popup-wa" style="background:#94A3B8;cursor:not-allowed;"><i class="fa-brands fa-whatsapp"></i> WA tidak tersedia</span>';
             }
 
             // Badge
@@ -155,12 +155,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         <span class="popup-badge">${escapeHtml(toko.kategori)}</span>
                         <h3 class="popup-title">${escapeHtml(toko.nama_toko)} ${badgeHtml}</h3>
                     </div>
-                    <p class="popup-address">📍 ${escapeHtml(toko.alamat)}</p>
-                    ${toko.jam_buka ? `<p class="popup-address">🕐 ${escapeHtml(toko.jam_buka)}</p>` : ''}
+                    <p class="popup-address"><i class="fa-solid fa-location-dot"></i> ${escapeHtml(toko.alamat)}</p>
+                    ${toko.jam_buka ? `<p class="popup-address"><i class="fa-regular fa-clock"></i> ${escapeHtml(toko.jam_buka)}</p>` : ''}
                     <p class="popup-desc">${escapeHtml(toko.deskripsi)}</p>
                     ${menuHtml}
                     <div class="popup-buttons">
-                        <a href="${toko.maps_url}" target="_blank" class="btn-popup-maps">🗺️ Buka Google Maps</a>
+                        <a href="${toko.maps_url}" target="_blank" class="btn-popup-maps"><i class="fa-solid fa-map-location-dot"></i> Buka Google Maps</a>
                         ${waHtml}
                     </div>
                 </div>
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Kartu badge
             let cardBadgeHtml = escapeHtml(toko.kategori);
             if (toko.badges && toko.badges.length > 0) {
-                cardBadgeHtml += ' ' + toko.badges.map(b => `<span style="margin-left:4px;">${b === 'Khas Daerah' ? '🏅' : '💎'}</span>`).join('');
+                cardBadgeHtml += ' ' + toko.badges.map(b => `<span style="margin-left:4px;">${b === 'Khas Daerah' ? '<i class="fa-solid fa-medal"></i>' : '<i class="fa-solid fa-gem"></i>'}</span>`).join('');
             }
 
             card.innerHTML = `
@@ -202,17 +202,17 @@ document.addEventListener('DOMContentLoaded', function () {
                     <span class="card-badge">${cardBadgeHtml}</span>
                 </div>
                 <div class="card-body">
-                    <h3 class="card-title">${escapeHtml(toko.nama_toko)} ${toko.badges ? toko.badges.map(b => b === 'Khas Daerah' ? '<span style="font-size:0.7rem;background:rgba(212,160,23,0.12);color:#8C6500;padding:2px 8px;border-radius:999px;font-weight:600;vertical-align:middle;">🏅 Khas Daerah</span>' : '<span style="font-size:0.7rem;background:rgba(147,51,234,0.08);color:#7C3AED;padding:2px 8px;border-radius:999px;font-weight:600;vertical-align:middle;">💎 Hidden Gem</span>').join(' ') : ''}</h3>
-                    <p class="card-address">📍 ${escapeHtml(toko.alamat)}</p>
+                    <h3 class="card-title">${escapeHtml(toko.nama_toko)} ${toko.badges ? toko.badges.map(b => b === 'Khas Daerah' ? '<span style="font-size:0.7rem;background:rgba(212,160,23,0.12);color:#8C6500;padding:2px 8px;border-radius:999px;font-weight:600;vertical-align:middle;"><i class="fa-solid fa-medal"></i> Khas Daerah</span>' : '<span style="font-size:0.7rem;background:rgba(147,51,234,0.08);color:#7C3AED;padding:2px 8px;border-radius:999px;font-weight:600;vertical-align:middle;"><i class="fa-solid fa-gem"></i> Hidden Gem</span>').join(' ') : ''}</h3>
+                    <p class="card-address"><i class="fa-solid fa-location-dot"></i> ${escapeHtml(toko.alamat)}</p>
                     <p class="card-desc">${escapeHtml(toko.deskripsi)}</p>
                     ${previewMenuHtml}
                     <div class="card-actions">
-                        <a href="detail.php?id=${toko.id_toko}" class="btn btn-sm" style="background:#1E293B;color:#FFF;flex:1;">📄 Detail</a>
+                        <a href="detail.php?id=${toko.id_toko}" class="btn btn-sm" style="background:#1E293B;color:#FFF;flex:1;"><i class="fa-regular fa-file-lines"></i> Detail</a>
                         <button class="btn btn-primary btn-sm btn-fly" data-id="${toko.id_toko}">
-                            🎯 Sorot di Peta
+                            <i class="fa-solid fa-bullseye"></i> Sorot di Peta
                         </button>
                         <a href="${toko.maps_url}" target="_blank" class="btn btn-outline-gold btn-sm" title="Google Maps">
-                            🗺️ Rute
+                            <i class="fa-solid fa-map-location-dot"></i> Rute
                         </a>
                     </div>
                 </div>

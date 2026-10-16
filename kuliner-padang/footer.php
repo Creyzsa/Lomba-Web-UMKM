@@ -9,7 +9,7 @@
     <div class="footer-container">
         <div class="footer-col brand-col">
             <div class="brand footer-brand">
-                <span class="brand-icon">🏛️</span>
+                <span class="brand-icon"><img src="assets/img/logo-minang.svg" alt="Logo Peta Rasa Padang"></span>
                 <div>
                     <h3 class="footer-logo">Peta Rasa Padang</h3>
                     <small>Warisan Cita Rasa di Ujung Jari</small>
@@ -51,6 +51,6 @@
     </div>
 
     <div class="footer-bottom">
-        <p>&copy; 2026 <strong>Peta Rasa Padang</strong> — Peserta IT FEST 2026 Web Programming UIN Mahmud Yunus Batusangkar.</p>
+        <p>&copy; 2026 <strong>Peta Rasa Padang</strong> — Platform Digitalisasi UMKM Kuliner Minangkabau.</p>
     </div>
 </footer>
