@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const noWa = toko.no_wa || '';
             let waHtml = '';
             if (noWa) {
-                const waText = encodeURIComponent(`Halo ${toko.nama_toko}, saya melihat etalase Anda di Peta Rasa Padang dan ingin memesan.`);
+                const waText = encodeURIComponent(`Halo *${toko.nama_toko}*, saya ingin bertanya seputar menu & pemesanan via Peta Rasa Padang.`);
                 waHtml = `<a href="https://wa.me/${noWa}?text=${waText}" target="_blank" class="btn-popup-wa"><i class="fa-brands fa-whatsapp"></i> Hubungi via WA</a>`;
             } else {
                 waHtml = '<span class="btn-popup-wa" style="background:#94A3B8;cursor:not-allowed;"><i class="fa-brands fa-whatsapp"></i> WA tidak tersedia</span>';

@@ -128,8 +128,9 @@ $kategori_list = ['Semua', 'Rumah Makan', 'Sate', 'Kopi', 'Oleh-oleh', 'Camilan'
                         $id_t = $toko['id_toko'];
                         $foto_src = !empty($toko['foto']) ? 'assets/img/' . $toko['foto'] : 'assets/img/default.png';
                         $maps_link = "https://www.google.com/maps?q=" . $toko['latitude'] . "," . $toko['longitude'];
-                        $wa_text = urlencode("Halo " . $toko['nama_toko'] . ", saya melihat menu Anda di website Peta Rasa Padang.");
-                        $wa_link = "https://wa.me/6281234567890?text=" . $wa_text;
+                        $no_wa_toko = !empty($toko['no_wa']) ? preg_replace('/[^0-9]/', '', $toko['no_wa']) : '6282286908467';
+                        $wa_text = urlencode("Halo *" . $toko['nama_toko'] . "*, saya ingin bertanya seputar menu & pemesanan via Peta Rasa Padang.");
+                        $wa_link = "https://wa.me/" . $no_wa_toko . "?text=" . $wa_text;
 
                         // Ambil daftar menu toko ini
                         $stmt_m = mysqli_prepare($koneksi, "SELECT * FROM menu WHERE id_toko = ? ORDER BY id_menu ASC");

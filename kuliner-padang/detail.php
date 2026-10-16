@@ -172,7 +172,7 @@ $active_nav = 'toko';
                 <div class="detail-actions">
                     <a href="<?= $maps_url; ?>" target="_blank" class="btn btn-primary"><i class="fa-solid fa-map-location-dot"></i> Buka Google Maps</a>
                     <?php if (!empty($no_wa)): ?>
-                        <a href="https://wa.me/<?= htmlspecialchars($no_wa); ?>?text=<?= urlencode("Halo " . $toko['nama_toko'] . ", saya melihat profil Anda di Peta Rasa Padang."); ?>" target="_blank" class="btn" style="background:#16a34a;color:#fff;"><i class="fa-brands fa-whatsapp"></i> Hubungi via WhatsApp</a>
+                        <a href="https://wa.me/<?= htmlspecialchars($no_wa); ?>?text=<?= urlencode("Halo *" . $toko['nama_toko'] . "*, saya ingin bertanya seputar menu & pemesanan via Peta Rasa Padang."); ?>" target="_blank" class="btn" style="background:#16a34a;color:#fff;"><i class="fa-brands fa-whatsapp"></i> Hubungi via WhatsApp</a>
                     <?php endif; ?>
                 </div>
             </div>

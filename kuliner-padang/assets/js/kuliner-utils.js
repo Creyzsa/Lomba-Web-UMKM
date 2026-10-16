@@ -249,17 +249,14 @@ function formatWaPesan(namaToko, namaMenu, jumlah, hargaSatuan, totalHarga) {
     const fmtRupiah = (nom) => 'Rp' + Number(nom).toLocaleString('id-ID');
 
     const teks = [
-        `Halo *${namaToko}*,`,
+        `Halo *${namaToko}*, saya ingin pesan via Peta Rasa Padang:`,
         '',
-        `Saya ingin memesan *${namaMenu}* melalui Peta Rasa Padang.`,
+        `• *Menu:* ${namaMenu}`,
+        `• *Jumlah:* ${jumlahValid} porsi`,
+        `• *Harga:* ${fmtRupiah(hargaValid)}`,
+        `• *Total:* *${fmtRupiah(total)}*`,
         '',
-        `<i class="fa-solid fa-clipboard-list"></i> Detail Pesanan:`,
-        `   Menu   : ${namaMenu}`,
-        `   Jumlah : ${jumlahValid}`,
-        `   Harga  : ${fmtRupiah(hargaValid)} × ${jumlahValid}`,
-        `   *Total : ${fmtRupiah(total)}*`,
-        '',
-        'Mohon info ketersediaan dan estimasi waktu pesanan. Terima kasih!'
+        'Mohon info ketersediaan & estimasi waktu pesanan. Terima kasih!'
     ].join('\n');
 
     return encodeURIComponent(teks);
