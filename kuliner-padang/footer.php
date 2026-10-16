@@ -22,31 +22,31 @@
         <div class="footer-col">
             <h4 class="footer-heading">Halaman</h4>
             <ul class="footer-links">
-                <li><a href="index.php">Beranda</a></li>
-                <li><a href="peta.php">Peta Kuliner Interaktif</a></li>
-                <li><a href="kuliner-budget.php">Kuliner Sesuai Budget</a></li>
-                <li><a href="smart-route.php">Rute Kuliner Pintar</a></li>
-                <li><a href="toko.php">Daftar Toko & Menu</a></li>
-                <li><a href="khas-daerah.php">Kuliner Khas Daerah</a></li>
-                <li><a href="tentang.php">Tentang Inovasi</a></li>
+                <li><a href="<?= $nav_prefix ?? ''; ?>index.php">Beranda</a></li>
+                <li><a href="<?= $nav_prefix ?? ''; ?>peta.php">Peta Kuliner Interaktif</a></li>
+                <li><a href="<?= $nav_prefix ?? ''; ?>kuliner-budget.php">Kuliner Sesuai Budget</a></li>
+                <li><a href="<?= $nav_prefix ?? ''; ?>smart-route.php">Rute Kuliner Pintar</a></li>
+                <li><a href="<?= $nav_prefix ?? ''; ?>toko.php">Daftar Toko & Menu</a></li>
+                <li><a href="<?= $nav_prefix ?? ''; ?>khas-daerah.php">Kuliner Khas Daerah</a></li>
+                <li><a href="<?= $nav_prefix ?? ''; ?>tentang.php">Tentang Inovasi</a></li>
             </ul>
         </div>
 
         <div class="footer-col">
             <h4 class="footer-heading">Kategori Kuliner</h4>
             <ul class="footer-links">
-                <li><a href="peta.php?kategori=Rumah+Makan">Rumah Makan Padang</a></li>
-                <li><a href="peta.php?kategori=Sate">Sate Padang & Pariaman</a></li>
-                <li><a href="peta.php?kategori=Kopi">Kedai Kawa & Kopi Solok</a></li>
-                <li><a href="peta.php?kategori=Oleh-oleh">Sanjai & Kerupuk Jangek</a></li>
-                <li><a href="peta.php?kategori=Camilan">Camilan & Minuman Tradisional</a></li>
+                <li><a href="<?= $nav_prefix ?? ''; ?>peta.php?kategori=Rumah+Makan">Rumah Makan Padang</a></li>
+                <li><a href="<?= $nav_prefix ?? ''; ?>peta.php?kategori=Sate">Sate Padang & Pariaman</a></li>
+                <li><a href="<?= $nav_prefix ?? ''; ?>peta.php?kategori=Kopi">Kedai Kawa & Kopi Solok</a></li>
+                <li><a href="<?= $nav_prefix ?? ''; ?>peta.php?kategori=Oleh-oleh">Sanjai & Kerupuk Jangek</a></li>
+                <li><a href="<?= $nav_prefix ?? ''; ?>peta.php?kategori=Camilan">Camilan & Minuman Tradisional</a></li>
             </ul>
         </div>
 
         <div class="footer-col">
             <h4 class="footer-heading">Akses Pengelola</h4>
-            <p class="text-sm">Pemilik UMKM dapat mengelola menu toko yang telah ditautkan oleh admin.</p>
-            <a href="pemilik/dashboard.php" class="btn btn-gold btn-sm" style="display:inline-block; margin-top:10px;">Kelola Toko</a>
+            <p class="text-sm">Pemilik UMKM dapat mendaftarkan dan mengelola profil toko serta menu secara mandiri.</p>
+            <a href="<?= $nav_prefix ?? ''; ?>pemilik/dashboard.php" class="btn btn-gold btn-sm" style="display:inline-block; margin-top:10px;">Kelola Toko</a>
         </div>
     </div>
 
