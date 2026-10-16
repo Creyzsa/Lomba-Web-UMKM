@@ -38,8 +38,8 @@ $active_nav = 'beranda';
     <!-- Navbar -->
     <?php include 'navbar.php'; ?>
 
-    <!-- Hero Section dengan MinangScrollHero (Scroll-Scrubbed Animasi Piring & Cerita) -->
-    <?php include 'components/minang-scroll-hero.php'; ?>
+    <!-- Hero Section dengan MinangScrollHero Songket (Scroll-Scrubbed Kain Songket & Rangkiang) -->
+    <?php include 'components/minang-scroll-hero-songket.php'; ?>
 
     <!-- Section Kategori Unggulan -->
     <section class="section-container">
