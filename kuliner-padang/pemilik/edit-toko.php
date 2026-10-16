@@ -157,16 +157,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="admin-body">
-    <header class="admin-nav">
-        <div class="admin-nav-container">
-            <div class="admin-brand">
-                <span class="gonjong-icon">🏛️</span>
-                <span class="admin-title">Panel <?= $is_pemilik ? 'Pemilik' : 'Admin'; ?> — Peta Rasa Padang</span>
-            </div>
-            <div class="admin-user-info">
-                <span>Halo, <strong><?= htmlspecialchars($_SESSION['username']); ?></strong></span>
-                <a href="<?= $is_pemilik ? '../pemilik/dashboard.php' : 'dashboard.php'; ?>" class="btn btn-outline-light btn-sm">← Kembali ke Dashboard</a>
+<body class="owner-page">
+    <header class="navbar" id="main-navbar">
+        <div class="nav-container">
+            <a href="../index.php" class="brand">
+                <span class="brand-icon"><img src="../assets/img/logo-minang.svg" alt="Logo Peta Rasa Padang"></span>
+                <div class="brand-text">
+                    <span class="brand-title">Peta Rasa Padang</span>
+                    <span class="brand-tagline">Portal Pemilik Toko</span>
+                </div>
+            </a>
+            <div class="nav-links">
+                <span class="user-greeting" style="color:var(--emas-terang); font-size:0.85rem; font-weight:600;">
+                    <i class="fa-solid fa-user"></i> <?= htmlspecialchars($_SESSION['username']); ?>
+                </span>
+                <a href="dashboard.php" class="btn btn-outline-gold btn-sm"><i class="fa-solid fa-arrow-left"></i> Dashboard Toko</a>
             </div>
         </div>
     </header>
