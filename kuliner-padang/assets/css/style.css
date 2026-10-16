@@ -1,31 +1,44 @@
 /* ==========================================================================
-   STYLE.CSS — PETA RASA PADANG (Tema Minang IT FEST 2026)
-   Warna Dasar:
-   - Merah Tua: #8B1A1A (Marun Minangkabau)
-   - Emas:      #D4A017 (Ukiran Songket / Kemewahan Adat)
-   - Hitam:     #1A1A1A (Kekuatan & Karakter Minang)
-   - Krem:      #FFF6E5 (Kertas Naskah Kuno / Lembut Bersahaja)
+   STYLE.CSS — PETA RASA PADANG (Tema Minang Modern IT FEST 2026)
+   Konsep: Modern Glassmorphism + Luxury Deep Marun & Emas Warisan Minangkabau
+   
+   Palette:
+   - Deep Marun:     #4A0A0A (Elegan, premium)
+   - Accent Crimson:   #8B1A1A (Minang identity)
+   - Radiant Gold:     #F3C64F & #D4A017 (Songket luxury)
+   - Charcoal Noir:    #121316 (Modern dark base)
+   - Warm Pearl Cream: #FAF7F0 (Background bersih & modern)
+   - Glass White:      rgba(255, 255, 255, 0.85)
    ========================================================================== */
 
 :root {
-    --merah: #8B1A1A;
-    --merah-gelap: #6b1414;
-    --merah-terang: #a82323;
-    --emas: #D4A017;
-    --emas-muda: #f5c842;
-    --hitam: #1A1A1A;
-    --abu-gelap: #2a2a2a;
-    --krem: #FFF6E5;
-    --krem-muda: #fcf9f2;
-    --putih: #ffffff;
-    --border-emas: rgba(212, 160, 23, 0.35);
-    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
-    --shadow-hover: 0 10px 30px rgba(139, 26, 26, 0.15);
-    --font-heading: 'Cinzel', serif, Georgia;
-    --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --radius-sm: 6px;
-    --radius-md: 12px;
-    --radius-lg: 20px;
+    --merah-utama: #7A1414;
+    --merah-gelap: #420808;
+    --merah-terang: #9E1F1F;
+    --emas-utama: #D4A017;
+    --emas-terang: #F7D070;
+    --emas-glow: rgba(247, 208, 112, 0.4);
+    --hitam-modern: #131518;
+    --hitam-kartu: #1B1E23;
+    --krem-latar: #F9F7F2;
+    --krem-halus: #FFFDF9;
+    --putih: #FFFFFF;
+    --teks-utama: #1F242D;
+    --teks-muted: #64748B;
+    --border-halus: rgba(212, 160, 23, 0.22);
+    --border-glass: rgba(255, 255, 255, 0.2);
+    --shadow-sm: 0 4px 12px rgba(18, 19, 22, 0.05);
+    --shadow-md: 0 10px 28px rgba(74, 10, 10, 0.08);
+    --shadow-lg: 0 20px 40px rgba(18, 19, 22, 0.12);
+    --shadow-gold: 0 8px 24px rgba(212, 160, 23, 0.25);
+    
+    --font-heading: 'Cinzel', 'Playfair Display', Georgia, serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-pill: 999px;
 }
 
 * {
@@ -40,37 +53,37 @@ html {
 
 body {
     font-family: var(--font-body);
-    color: var(--hitam);
-    background-color: var(--krem-muda);
-    line-height: 1.6;
+    color: var(--teks-utama);
+    background-color: var(--krem-latar);
+    line-height: 1.65;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
 }
 
 /* ==========================================================================
-   TYPOGRAPHY & UTILITIES
+   TYPOGRAPHY & ACCENTS
    ========================================================================== */
 h1, h2, h3, h4, .brand-title, .section-heading {
     font-family: var(--font-heading);
-    color: var(--merah);
-    letter-spacing: 0.5px;
+    letter-spacing: -0.01em;
 }
 
 a {
-    color: var(--merah);
+    color: var(--merah-utama);
     text-decoration: none;
-    transition: all 0.25s ease;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 a:hover {
-    color: var(--emas);
+    color: var(--emas-utama);
 }
 
 .text-gold {
-    color: var(--emas) !important;
+    color: var(--emas-terang) !important;
 }
 
 .text-muted {
-    color: #666;
+    color: var(--teks-muted);
 }
 
 .text-center {
@@ -78,109 +91,116 @@ a:hover {
 }
 
 .required {
-    color: #dc3545;
+    color: #E11D48;
 }
 
 /* ==========================================================================
-   BUTTONS & BADGES
+   BUTTONS (Modern Glass & Luxury Gradient)
    ========================================================================== */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    padding: 10px 20px;
-    font-size: 0.95rem;
+    gap: 8px;
+    padding: 11px 22px;
+    font-size: 0.92rem;
     font-weight: 600;
     border-radius: var(--radius-sm);
-    border: 2px solid transparent;
+    border: 1px solid transparent;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     font-family: var(--font-body);
+    text-decoration: none;
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--merah) 0%, var(--merah-gelap) 100%);
-    color: var(--putih);
-    border-color: var(--merah-gelap);
+    background: linear-gradient(135deg, #8B1A1A 0%, #4A0808 100%);
+    color: var(--krem-halus);
+    border: 1px solid rgba(247, 208, 112, 0.3);
+    box-shadow: 0 4px 16px rgba(74, 8, 8, 0.25);
 }
 
 .btn-primary:hover {
-    background: linear-gradient(135deg, var(--merah-terang) 0%, var(--merah) 100%);
-    color: var(--emas-muda);
+    background: linear-gradient(135deg, #A82424 0%, #680E0E 100%);
+    color: #FFF;
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(139, 26, 26, 0.3);
+    box-shadow: 0 8px 24px rgba(122, 20, 20, 0.35);
 }
 
 .btn-gold {
-    background: linear-gradient(135deg, var(--emas) 0%, #b3850e 100%);
-    color: var(--hitam);
+    background: linear-gradient(135deg, #E6B422 0%, #B8860B 100%);
+    color: #1A1202;
     font-weight: 700;
+    box-shadow: 0 4px 14px rgba(212, 160, 23, 0.3);
 }
 
 .btn-gold:hover {
-    background: linear-gradient(135deg, var(--emas-muda) 0%, var(--emas) 100%);
-    color: var(--hitam);
+    background: linear-gradient(135deg, #FAD565 0%, #D4A017 100%);
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(212, 160, 23, 0.35);
+    box-shadow: 0 8px 22px rgba(247, 208, 112, 0.45);
+    color: #1A1202;
 }
 
 .btn-outline-gold {
-    background: transparent;
-    color: var(--emas-muda);
-    border: 1.5px solid var(--emas);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--emas-terang);
+    border: 1.5px solid var(--emas-utama);
+    backdrop-filter: blur(8px);
 }
 
 .btn-outline-gold:hover {
-    background: var(--emas);
-    color: var(--hitam);
+    background: var(--emas-utama);
+    color: var(--hitam-modern);
+    border-color: var(--emas-utama);
     transform: translateY(-2px);
 }
 
 .btn-outline-light {
-    background: transparent;
-    color: #fff;
-    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.08);
+    color: #FFF;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(6px);
 }
 
 .btn-outline-light:hover {
-    background: #fff;
-    color: var(--merah);
+    background: #FFF;
+    color: var(--merah-utama);
 }
 
 .btn-secondary {
-    background: #e2e8f0;
+    background: #E2E8F0;
     color: #334155;
 }
 
 .btn-secondary:hover {
-    background: #cbd5e1;
-    color: #1e293b;
+    background: #CBD5E1;
+    color: #0F172A;
 }
 
 .btn-danger {
-    background: #dc2626;
-    color: #fff;
+    background: #DC2626;
+    color: #FFF;
 }
 
 .btn-danger:hover {
-    background: #b91c1c;
-    color: #fff;
+    background: #B91C1C;
+    color: #FFF;
 }
 
 .btn-warning {
-    background: #d97706;
-    color: #fff;
+    background: #D97706;
+    color: #FFF;
 }
 
 .btn-info {
-    background: #0284c7;
-    color: #fff;
+    background: #0284C7;
+    color: #FFF;
 }
 
 .btn-sm {
-    padding: 6px 14px;
-    font-size: 0.85rem;
+    padding: 7px 14px;
+    font-size: 0.82rem;
+    border-radius: 6px;
 }
 
 .btn-block {
@@ -189,48 +209,50 @@ a:hover {
 
 .badge {
     display: inline-block;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.8rem;
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    font-size: 0.78rem;
     font-weight: 600;
 }
 
 .badge-gold {
-    background-color: var(--krem);
-    color: var(--merah);
-    border: 1px solid var(--emas);
+    background-color: rgba(212, 160, 23, 0.12);
+    color: #8C6500;
+    border: 1px solid rgba(212, 160, 23, 0.35);
 }
 
 .badge-count {
-    background-color: #f1f5f9;
+    background-color: #F1F5F9;
     color: #475569;
-    border: 1px solid #cbd5e1;
+    border: 1px solid #CBD5E1;
 }
 
 /* ==========================================================================
-   NAVBAR (Animasi Hover Garis Bawah Emas & Efek Scroll)
+   NAVBAR (Glassmorphism Modern Minang)
    ========================================================================== */
 .navbar {
     position: sticky;
     top: 0;
     z-index: 1000;
-    background-color: var(--merah);
-    border-bottom: 3px solid var(--emas);
-    transition: all 0.35s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    background: rgba(66, 8, 8, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1.5px solid rgba(247, 208, 112, 0.3);
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
 
 .navbar.scrolled {
-    background-color: rgba(139, 26, 26, 0.96);
-    backdrop-filter: blur(8px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    background: rgba(45, 5, 5, 0.96);
+    border-bottom-color: var(--emas-utama);
     padding: 2px 0;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
 }
 
 .nav-container {
-    max-width: 1240px;
+    max-width: 1280px;
     margin: 0 auto;
-    padding: 12px 24px;
+    padding: 14px 28px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -240,44 +262,46 @@ a:hover {
     display: flex;
     align-items: center;
     gap: 12px;
+    text-decoration: none;
 }
 
 .brand-icon {
-    font-size: 1.8rem;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    font-size: 2rem;
+    filter: drop-shadow(0 2px 8px rgba(247, 208, 112, 0.5));
 }
 
 .brand-title {
-    font-size: 1.4rem;
+    font-size: 1.45rem;
     font-weight: 800;
-    color: var(--emas-muda);
+    color: var(--emas-terang);
     display: block;
-    line-height: 1.2;
+    line-height: 1.1;
+    letter-spacing: 0.5px;
 }
 
 .brand-tagline {
-    font-size: 0.75rem;
-    color: var(--krem);
-    letter-spacing: 1px;
+    font-size: 0.72rem;
+    color: rgba(255, 253, 249, 0.75);
+    letter-spacing: 1.5px;
     text-transform: uppercase;
     display: block;
+    font-weight: 500;
 }
 
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 24px;
 }
 
 .nav-link {
-    color: var(--krem);
+    color: rgba(255, 253, 249, 0.88);
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     position: relative;
     padding: 6px 0;
 }
 
-/* Animasi hover garis emas */
 .nav-link::after {
     content: '';
     position: absolute;
@@ -285,12 +309,12 @@ a:hover {
     left: 0;
     width: 0;
     height: 2px;
-    background-color: var(--emas);
-    transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    background: linear-gradient(90deg, var(--emas-terang), transparent);
+    transition: width 0.3s ease;
 }
 
 .nav-link:hover {
-    color: var(--emas-muda);
+    color: var(--emas-terang);
 }
 
 .nav-link:hover::after {
@@ -298,19 +322,23 @@ a:hover {
 }
 
 .user-greeting {
-    color: var(--krem);
-    font-size: 0.9rem;
+    color: var(--emas-terang);
+    font-size: 0.88rem;
     font-weight: 600;
 }
 
 /* ==========================================================================
-   HERO SECTION (Siluet Minang & Tagline)
+   HERO SECTION (Foto Ikonik Padang + Modern Gradient Overlay)
    ========================================================================== */
 .hero-section {
     position: relative;
-    background: linear-gradient(135deg, #1a0505 0%, #4a0d0d 50%, #8B1A1A 100%);
+    min-height: 82vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url('../img/hero-padang.jpg') center center / cover no-repeat;
     color: var(--putih);
-    padding: 100px 24px 120px;
+    padding: 120px 24px 140px;
     text-align: center;
     overflow: hidden;
 }
@@ -318,69 +346,85 @@ a:hover {
 .hero-overlay {
     position: absolute;
     inset: 0;
-    background-image: 
-        radial-gradient(circle at 20% 30%, rgba(212, 160, 23, 0.15) 0%, transparent 40%),
-        radial-gradient(circle at 80% 70%, rgba(139, 26, 26, 0.25) 0%, transparent 50%);
-    pointer-events: none;
+    background: 
+        linear-gradient(180deg, rgba(30, 4, 4, 0.85) 0%, rgba(66, 8, 8, 0.78) 45%, rgba(20, 2, 2, 0.92) 100%),
+        radial-gradient(circle at center, transparent 20%, rgba(15, 2, 2, 0.6) 80%);
+    backdrop-filter: blur(2px);
+    z-index: 1;
 }
 
 .hero-content {
     position: relative;
     z-index: 2;
-    max-width: 900px;
+    max-width: 960px;
     margin: 0 auto;
 }
 
 .hero-badge {
-    display: inline-block;
-    padding: 6px 16px;
-    background: rgba(212, 160, 23, 0.2);
-    border: 1px solid var(--emas);
-    color: var(--emas-muda);
-    border-radius: 30px;
-    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 18px;
+    background: rgba(247, 208, 112, 0.12);
+    border: 1px solid var(--border-halus);
+    color: var(--emas-terang);
+    border-radius: var(--radius-pill);
+    font-size: 0.82rem;
     font-weight: 600;
-    margin-bottom: 20px;
-    text-transform: uppercase;
+    margin-bottom: 24px;
     letter-spacing: 1px;
+    text-transform: uppercase;
+    backdrop-filter: blur(8px);
 }
 
 .hero-title {
-    font-size: 3.5rem;
+    font-size: clamp(2.8rem, 5.5vw, 4.4rem);
     font-weight: 900;
-    color: var(--emas-muda);
-    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    margin-bottom: 12px;
-    line-height: 1.15;
+    color: #FFF;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    margin-bottom: 14px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+
+.hero-title-gradient {
+    background: linear-gradient(135deg, #FFF 30%, var(--emas-terang) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .hero-tagline {
-    font-size: 1.4rem;
-    color: var(--krem);
+    font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+    color: var(--emas-terang);
     font-weight: 600;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    font-family: var(--font-heading);
 }
 
 .hero-subtext {
     font-size: 1.05rem;
-    color: rgba(255, 246, 229, 0.85);
-    max-width: 720px;
+    color: rgba(255, 253, 249, 0.88);
+    max-width: 760px;
     margin: 0 auto 36px;
+    line-height: 1.7;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
+/* Glassmorphism Stats Counter */
 .hero-stats {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 32px;
-    margin-bottom: 40px;
-    padding: 18px 24px;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--border-emas);
+    gap: 36px;
+    margin: 0 auto 40px;
+    padding: 20px 36px;
+    background: rgba(25, 4, 4, 0.65);
+    border: 1px solid rgba(247, 208, 112, 0.35);
     border-radius: var(--radius-md);
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 640px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
 .stat-item {
@@ -390,23 +434,26 @@ a:hover {
 }
 
 .stat-number {
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 800;
-    color: var(--emas);
+    color: var(--emas-terang);
     font-family: var(--font-heading);
+    line-height: 1;
+    margin-bottom: 4px;
 }
 
 .stat-label {
-    font-size: 0.8rem;
-    color: var(--krem);
+    font-size: 0.78rem;
+    color: rgba(255, 253, 249, 0.8);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.8px;
+    font-weight: 600;
 }
 
 .stat-divider {
     width: 1px;
-    height: 36px;
-    background: var(--border-emas);
+    height: 40px;
+    background: rgba(247, 208, 112, 0.25);
 }
 
 .hero-actions {
@@ -417,136 +464,142 @@ a:hover {
 }
 
 .btn-hero-primary {
-    background: linear-gradient(135deg, var(--emas) 0%, #b3850e 100%);
-    color: var(--hitam);
+    background: linear-gradient(135deg, #F3C64F 0%, #C49110 100%);
+    color: #1A1202;
     font-weight: 700;
-    padding: 14px 28px;
+    padding: 14px 30px;
     border-radius: var(--radius-sm);
-    font-size: 1.05rem;
-    box-shadow: 0 4px 20px rgba(212, 160, 23, 0.4);
+    font-size: 1rem;
+    box-shadow: 0 6px 20px rgba(243, 198, 79, 0.4);
+    border: none;
     transition: all 0.3s ease;
 }
 
 .btn-hero-primary:hover {
-    background: linear-gradient(135deg, var(--emas-muda) 0%, var(--emas) 100%);
+    background: linear-gradient(135deg, #FCE08D 0%, #E6B422 100%);
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(212, 160, 23, 0.6);
-    color: var(--hitam);
+    box-shadow: 0 10px 30px rgba(243, 198, 79, 0.6);
+    color: #1A1202;
 }
 
 .btn-hero-secondary {
-    background: transparent;
-    color: var(--krem);
-    border: 2px solid var(--emas);
+    background: rgba(255, 255, 255, 0.1);
+    color: #FFF;
+    border: 1.5px solid rgba(247, 208, 112, 0.6);
     font-weight: 600;
     padding: 14px 28px;
     border-radius: var(--radius-sm);
-    font-size: 1.05rem;
+    font-size: 1rem;
+    backdrop-filter: blur(8px);
 }
 
 .btn-hero-secondary:hover {
-    background: rgba(212, 160, 23, 0.2);
-    color: var(--emas-muda);
+    background: rgba(247, 208, 112, 0.2);
+    color: var(--emas-terang);
+    border-color: var(--emas-terang);
     transform: translateY(-3px);
 }
 
-/* Motif Songket Border Bawah Hero */
+/* Songket Pattern Border Bawah */
 .songket-border-bottom {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 16px;
+    height: 12px;
     background: repeating-linear-gradient(
         45deg,
-        var(--emas),
-        var(--emas) 12px,
-        var(--merah-gelap) 12px,
-        var(--merah-gelap) 24px
+        var(--emas-utama),
+        var(--emas-utama) 10px,
+        var(--merah-gelap) 10px,
+        var(--merah-gelap) 20px
     );
-    border-top: 2px solid var(--emas-muda);
+    border-top: 1.5px solid var(--emas-terang);
+    z-index: 2;
 }
 
 .songket-strip {
-    height: 10px;
+    height: 8px;
     background: repeating-linear-gradient(
         -45deg,
-        var(--merah),
-        var(--merah) 10px,
-        var(--emas) 10px,
-        var(--emas) 20px
+        var(--merah-utama),
+        var(--merah-utama) 12px,
+        var(--emas-utama) 12px,
+        var(--emas-utama) 24px
     );
-    margin: 40px 0;
+    margin: 50px 0;
 }
 
 /* ==========================================================================
-   SECTION COMMON
+   SECTIONS COMMON
    ========================================================================== */
 .section-container {
-    max-width: 1240px;
-    margin: 60px auto;
-    padding: 0 24px;
+    max-width: 1280px;
+    margin: 70px auto;
+    padding: 0 28px;
 }
 
 .section-kicker {
     display: inline-block;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 700;
-    color: var(--merah);
+    color: var(--merah-utama);
     letter-spacing: 2px;
     text-transform: uppercase;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 .section-heading {
-    font-size: 2.2rem;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
     font-weight: 800;
+    color: var(--merah-gelap);
     margin-bottom: 12px;
+    line-height: 1.2;
 }
 
 .section-subtext {
-    color: #555;
+    color: var(--teks-muted);
     font-size: 1rem;
-    max-width: 700px;
-    margin: 0 auto 24px;
+    max-width: 720px;
+    margin: 0 auto 28px;
 }
 
 .minang-divider {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    color: var(--emas);
-    margin-bottom: 16px;
-    font-size: 0.9rem;
+    gap: 10px;
+    color: var(--emas-utama);
+    margin-bottom: 18px;
+    font-size: 0.85rem;
 }
 
 .minang-divider .center-diamond {
-    font-size: 1.3rem;
-    color: var(--merah);
+    font-size: 1.4rem;
+    color: var(--merah-utama);
 }
 
 .minang-divider-left {
     display: flex;
     align-items: center;
-    gap: 6px;
-    color: var(--emas);
-    margin: 8px 0 16px;
+    gap: 8px;
+    color: var(--emas-utama);
+    margin: 8px 0 18px;
 }
 
 /* ==========================================================================
-   MAP & FILTER CONTROLS
+   MAP & CONTROLS (Modern Floating Card)
    ========================================================================== */
 .map-controls-card {
     background: var(--putih);
     border-radius: var(--radius-md);
-    padding: 20px;
+    padding: 22px 28px;
     margin-bottom: 24px;
-    box-shadow: var(--shadow-soft);
-    border: 1px solid var(--border-emas);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid rgba(212, 160, 23, 0.25);
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 18px;
 }
 
 .search-box-wrapper {
@@ -556,27 +609,29 @@ a:hover {
 
 .search-icon {
     position: absolute;
-    left: 16px;
+    left: 18px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 1.1rem;
-    color: #888;
+    font-size: 1.15rem;
+    color: #94A3B8;
 }
 
 .search-input {
     width: 100%;
-    padding: 14px 16px 14px 46px;
-    border: 2px solid #e2e8f0;
+    padding: 14px 18px 14px 50px;
+    border: 1.5px solid #E2E8F0;
     border-radius: var(--radius-sm);
-    font-size: 1rem;
+    font-size: 0.98rem;
     font-family: var(--font-body);
     transition: all 0.25s ease;
+    background-color: #FAFBFD;
 }
 
 .search-input:focus {
     outline: none;
-    border-color: var(--merah);
-    box-shadow: 0 0 0 3px rgba(139, 26, 26, 0.15);
+    border-color: var(--merah-utama);
+    background-color: #FFF;
+    box-shadow: 0 0 0 4px rgba(122, 20, 20, 0.1);
 }
 
 .category-filters {
@@ -586,75 +641,78 @@ a:hover {
 }
 
 .filter-btn {
-    padding: 8px 16px;
-    border-radius: 20px;
-    border: 1.5px solid #cbd5e1;
+    padding: 9px 18px;
+    border-radius: var(--radius-pill);
+    border: 1px solid #CBD5E1;
     background: var(--putih);
     color: #475569;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     font-family: var(--font-body);
 }
 
 .filter-btn:hover {
-    border-color: var(--emas);
-    color: var(--merah);
-    background-color: var(--krem);
+    border-color: var(--emas-utama);
+    color: var(--merah-utama);
+    background-color: #FFFDF7;
+    transform: translateY(-1px);
 }
 
 .filter-btn.active {
-    background: var(--merah);
-    border-color: var(--merah);
-    color: var(--putih);
-    box-shadow: 0 4px 12px rgba(139, 26, 26, 0.25);
+    background: linear-gradient(135deg, var(--merah-utama) 0%, var(--merah-gelap) 100%);
+    border-color: var(--merah-utama);
+    color: #FFF;
+    box-shadow: 0 4px 12px rgba(122, 20, 20, 0.28);
 }
 
 /* Map Wrapper */
 .map-wrapper {
     position: relative;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     overflow: hidden;
-    border: 3px solid var(--emas);
-    box-shadow: var(--shadow-hover);
+    border: 2.5px solid var(--emas-utama);
+    box-shadow: var(--shadow-lg);
 }
 
 .main-map {
-    height: 540px;
+    height: 560px;
     width: 100%;
-    background-color: #e5e7eb;
+    background-color: #E2E8F0;
 }
 
 .mini-map-box {
-    height: 280px;
+    height: 300px;
     width: 100%;
     border-radius: var(--radius-sm);
-    border: 2px solid #cbd5e1;
-    margin-top: 6px;
+    border: 1.5px solid #CBD5E1;
+    margin-top: 8px;
 }
 
 .map-legend {
     position: absolute;
-    bottom: 20px;
-    left: 20px;
+    bottom: 24px;
+    left: 24px;
     z-index: 999;
-    background: rgba(255, 255, 255, 0.95);
-    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(10px);
+    padding: 10px 18px;
     border-radius: var(--radius-sm);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-    border: 1px solid var(--border-emas);
-    font-size: 0.8rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(212, 160, 23, 0.3);
+    font-size: 0.82rem;
     font-weight: 600;
     display: flex;
-    gap: 12px;
+    gap: 16px;
     flex-wrap: wrap;
 }
 
 .legend-item {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
+    color: #334155;
 }
 
 /* Custom Marker Leaflet Gonjong */
@@ -664,87 +722,89 @@ a:hover {
 }
 
 .marker-pin {
-    width: 36px;
-    height: 42px;
-    background: var(--merah);
-    border: 2px solid var(--emas-muda);
+    width: 38px;
+    height: 44px;
+    background: linear-gradient(135deg, var(--merah-utama), var(--merah-gelap));
+    border: 2px solid var(--emas-terang);
     border-radius: 50% 50% 50% 0;
     transform: rotate(-45deg);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
     position: relative;
 }
 
 .marker-symbol {
     transform: rotate(45deg);
-    font-size: 16px;
+    font-size: 18px;
 }
 
-/* Leaflet Popup Minang */
+/* Leaflet Popup Modern */
 .leaflet-popup-content-wrapper {
-    border-radius: var(--radius-md);
-    border: 2px solid var(--emas);
-    box-shadow: var(--shadow-hover);
-    padding: 0;
+    border-radius: var(--radius-md) !important;
+    border: 1.5px solid var(--emas-utama) !important;
+    box-shadow: var(--shadow-lg) !important;
+    padding: 0 !important;
     overflow: hidden;
 }
 
 .leaflet-popup-content {
-    margin: 16px;
-    line-height: 1.5;
+    margin: 18px !important;
+    line-height: 1.55 !important;
 }
 
 .minang-popup .popup-header {
-    border-bottom: 1px solid #e2e8f0;
-    padding-bottom: 8px;
-    margin-bottom: 8px;
+    border-bottom: 1px solid #F1F5F9;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 .popup-badge {
     display: inline-block;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 0.75rem;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    font-size: 0.72rem;
     font-weight: 700;
-    background: var(--krem);
-    color: var(--merah);
-    border: 1px solid var(--emas);
-    margin-bottom: 4px;
-}
-
-.popup-title {
-    font-size: 1.15rem;
-    color: var(--merah);
-    margin: 0;
-}
-
-.popup-address {
-    font-size: 0.8rem;
-    color: #666;
+    background: rgba(212, 160, 23, 0.12);
+    color: #8C6500;
+    border: 1px solid rgba(212, 160, 23, 0.3);
     margin-bottom: 6px;
 }
 
+.popup-title {
+    font-size: 1.2rem;
+    color: var(--merah-gelap);
+    margin: 0;
+    font-family: var(--font-heading);
+}
+
+.popup-address {
+    font-size: 0.82rem;
+    color: #64748B;
+    margin-bottom: 8px;
+}
+
 .popup-desc {
-    font-size: 0.85rem;
-    color: #333;
-    margin-bottom: 10px;
+    font-size: 0.86rem;
+    color: #334155;
+    margin-bottom: 12px;
 }
 
 .popup-menu-list {
-    background: #fdfbf7;
-    border: 1px dashed var(--emas);
+    background: #FAF8F2;
+    border: 1px dashed var(--emas-utama);
     border-radius: var(--radius-sm);
-    padding: 8px 10px;
-    margin-bottom: 12px;
-    font-size: 0.8rem;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    font-size: 0.82rem;
 }
 
 .popup-menu-list strong {
-    color: var(--merah);
+    color: var(--merah-utama);
     display: block;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+    font-size: 0.85rem;
 }
 
 .popup-menu-list ul {
@@ -755,8 +815,8 @@ a:hover {
 .popup-menu-list li {
     display: flex;
     justify-content: space-between;
-    padding: 3px 0;
-    border-bottom: 1px solid #f1ece1;
+    padding: 4px 0;
+    border-bottom: 1px solid #ECE6D8;
 }
 
 .popup-menu-list li:last-child {
@@ -765,108 +825,110 @@ a:hover {
 
 .menu-price {
     font-weight: 700;
-    color: var(--merah);
+    color: var(--merah-utama);
 }
 
 .popup-buttons {
     display: flex;
-    gap: 6px;
+    gap: 8px;
 }
 
 .btn-popup-maps {
     flex: 1;
-    background: #0284c7;
-    color: #fff;
-    padding: 6px 8px;
-    border-radius: 4px;
-    font-size: 0.75rem;
+    background: #0284C7;
+    color: #FFF;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 0.76rem;
     text-align: center;
     font-weight: 600;
+    transition: background 0.2s ease;
 }
 
 .btn-popup-maps:hover {
-    background: #0369a1;
-    color: #fff;
+    background: #0369A1;
+    color: #FFF;
 }
 
 .btn-popup-wa {
     flex: 1;
-    background: #16a34a;
-    color: #fff;
-    padding: 6px 8px;
-    border-radius: 4px;
-    font-size: 0.75rem;
+    background: #16A34A;
+    color: #FFF;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 0.76rem;
     text-align: center;
     font-weight: 600;
+    transition: background 0.2s ease;
 }
 
 .btn-popup-wa:hover {
-    background: #15803d;
-    color: #fff;
+    background: #15803D;
+    color: #FFF;
 }
 
 /* ==========================================================================
-   GRID KARTU TOKO (repeat(auto-fill, minmax(260px, 1fr)))
+   GRID KARTU TOKO (Modern Card UI)
    ========================================================================== */
 .toko-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 28px;
 }
 
 .toko-card {
     background: var(--putih);
     border-radius: var(--radius-md);
     overflow: hidden;
-    border: 1.5px solid #f1f5f9;
-    box-shadow: var(--shadow-soft);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: var(--shadow-sm);
     display: flex;
     flex-direction: column;
-    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     cursor: pointer;
 }
 
 .toko-card:hover {
-    transform: translateY(-6px);
-    border-color: var(--emas);
-    box-shadow: var(--shadow-hover);
+    transform: translateY(-8px);
+    border-color: var(--emas-utama);
+    box-shadow: var(--shadow-md);
 }
 
 .card-img-wrapper {
     position: relative;
     width: 100%;
-    height: 180px;
+    height: 195px;
     overflow: hidden;
-    background-color: #eee;
+    background-color: #E2E8F0;
 }
 
 .card-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .toko-card:hover .card-img {
-    transform: scale(1.05);
+    transform: scale(1.08);
 }
 
 .card-badge {
     position: absolute;
-    top: 12px;
-    right: 12px;
-    background: rgba(139, 26, 26, 0.9);
-    color: var(--emas-muda);
-    padding: 4px 10px;
-    border-radius: 20px;
+    top: 14px;
+    right: 14px;
+    background: rgba(30, 4, 4, 0.85);
+    color: var(--emas-terang);
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
     font-size: 0.75rem;
     font-weight: 700;
-    border: 1px solid var(--emas);
-    backdrop-filter: blur(4px);
+    border: 1px solid rgba(247, 208, 112, 0.4);
+    backdrop-filter: blur(6px);
 }
 
 .card-body {
-    padding: 18px;
+    padding: 22px;
     display: flex;
     flex-direction: column;
     flex: 1;
@@ -875,15 +937,15 @@ a:hover {
 .card-title {
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--merah);
+    color: var(--merah-gelap);
     margin-bottom: 6px;
     line-height: 1.3;
 }
 
 .card-address {
     font-size: 0.82rem;
-    color: #64748b;
-    margin-bottom: 10px;
+    color: #64748B;
+    margin-bottom: 12px;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
@@ -891,23 +953,24 @@ a:hover {
 }
 
 .card-desc {
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     color: #334155;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     flex: 1;
+    line-height: 1.6;
 }
 
 .card-menu-preview {
-    background-color: #f8fafc;
+    background-color: #F8FAFC;
     border-radius: var(--radius-sm);
-    padding: 8px 10px;
-    margin-bottom: 16px;
-    font-size: 0.8rem;
-    border: 1px solid #e2e8f0;
+    padding: 10px 12px;
+    margin-bottom: 18px;
+    font-size: 0.82rem;
+    border: 1px solid #E2E8F0;
 }
 
 .preview-menu-row {
@@ -919,29 +982,30 @@ a:hover {
 
 .price-tag {
     font-weight: 700;
-    color: var(--merah);
+    color: var(--merah-utama);
 }
 
 .card-actions {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     margin-top: auto;
 }
 
 .badge-total-view {
-    background: var(--krem);
-    color: var(--merah);
-    border: 1px solid var(--emas);
-    padding: 6px 14px;
-    border-radius: 20px;
+    background: #FFFDF7;
+    color: var(--merah-utama);
+    border: 1px solid var(--border-halus);
+    padding: 8px 18px;
+    border-radius: var(--radius-pill);
     font-size: 0.85rem;
     font-weight: 700;
+    box-shadow: var(--shadow-sm);
 }
 
 /* Skeleton Loading */
 .skeleton-card {
-    height: 380px;
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    height: 400px;
+    background: linear-gradient(90deg, #F1F5F9 25%, #E2E8F0 50%, #F1F5F9 75%);
     background-size: 200% 100%;
     animation: skeleton-loading 1.5s infinite;
     border-radius: var(--radius-md);
@@ -953,47 +1017,52 @@ a:hover {
 }
 
 /* ==========================================================================
-   ABOUT SECTION
+   ABOUT SECTION (Foto Iconic Rumah Gadang Minang)
    ========================================================================== */
 .about-card {
     background: var(--putih);
     border-radius: var(--radius-lg);
-    padding: 48px;
-    box-shadow: var(--shadow-soft);
-    border: 2px solid var(--border-emas);
+    padding: 56px;
+    box-shadow: var(--shadow-md);
+    border: 1.5px solid var(--border-halus);
 }
 
 .about-grid {
     display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: 40px;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 48px;
     align-items: center;
 }
 
 .about-title {
-    font-size: 2rem;
-    margin-bottom: 12px;
+    font-size: 2.2rem;
+    margin-bottom: 14px;
+    color: var(--merah-gelap);
 }
 
 .about-info p {
-    margin-bottom: 14px;
+    margin-bottom: 16px;
     color: #475569;
+    font-size: 0.98rem;
+    line-height: 1.7;
 }
 
 .features-list {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 24px;
+    gap: 14px;
+    margin-top: 28px;
 }
 
 .feature-badge {
-    background: #fdfbf7;
-    border-left: 3px solid var(--emas);
-    padding: 8px 12px;
-    font-size: 0.85rem;
+    background: #FFFDF9;
+    border: 1px solid rgba(212, 160, 23, 0.2);
+    border-left: 4px solid var(--merah-utama);
+    padding: 10px 14px;
+    font-size: 0.86rem;
     font-weight: 600;
-    color: var(--hitam);
+    color: var(--hitam-modern);
+    border-radius: 4px;
 }
 
 .about-visual {
@@ -1001,54 +1070,75 @@ a:hover {
     justify-content: center;
 }
 
+/* Modern Card Visual Berlatar Foto Rumah Gadang */
 .gonjong-box {
-    background: linear-gradient(135deg, var(--merah) 0%, var(--hitam) 100%);
-    border: 3px solid var(--emas);
+    position: relative;
+    background: url('../img/rumah-gadang.jpg') center center / cover no-repeat;
+    border: 2px solid var(--emas-terang);
     border-radius: var(--radius-md);
-    padding: 36px 24px;
+    padding: 44px 28px;
     text-align: center;
-    color: var(--krem);
-    box-shadow: var(--shadow-hover);
+    color: #FFF;
+    box-shadow: var(--shadow-lg);
     width: 100%;
-    max-width: 320px;
+    max-width: 380px;
+    overflow: hidden;
+}
+
+.gonjong-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(30, 4, 4, 0.82) 0%, rgba(20, 2, 2, 0.92) 100%);
+    z-index: 1;
+}
+
+.gonjong-box > * {
+    position: relative;
+    z-index: 2;
 }
 
 .gonjong-roof {
-    font-size: 3rem;
-    margin-bottom: 12px;
+    font-size: 3.2rem;
+    margin-bottom: 14px;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
 }
 
 .gonjong-box h3 {
-    color: var(--emas-muda);
-    font-size: 1.4rem;
-    margin-bottom: 8px;
+    color: var(--emas-terang);
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    font-weight: 800;
 }
 
 .gonjong-box p {
-    font-size: 0.9rem;
-    margin-bottom: 16px;
-    line-height: 1.4;
+    font-size: 0.92rem;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    color: rgba(255, 253, 249, 0.9);
 }
 
 .badge-award {
     display: inline-block;
-    padding: 6px 14px;
-    background: rgba(212, 160, 23, 0.25);
-    border: 1px solid var(--emas);
-    color: var(--emas-muda);
-    font-size: 0.8rem;
+    padding: 7px 18px;
+    background: rgba(247, 208, 112, 0.2);
+    border: 1px solid var(--emas-terang);
+    color: var(--emas-terang);
+    font-size: 0.82rem;
     font-weight: 700;
-    border-radius: 20px;
+    border-radius: var(--radius-pill);
+    backdrop-filter: blur(8px);
 }
 
 /* ==========================================================================
-   FOOTER MINANG
+   FOOTER MINANG MODERN
    ========================================================================== */
 .footer-minang {
-    background-color: var(--hitam);
-    color: var(--krem);
+    background: linear-gradient(180deg, #180303 0%, #0F0202 100%);
+    color: #E2E8F0;
     position: relative;
-    padding-top: 60px;
+    padding-top: 70px;
+    border-top: 3px solid var(--emas-utama);
 }
 
 .footer-songket-top {
@@ -1056,45 +1146,46 @@ a:hover {
     top: 0;
     left: 0;
     right: 0;
-    height: 8px;
+    height: 6px;
     background: repeating-linear-gradient(
         90deg,
-        var(--merah),
-        var(--merah) 20px,
-        var(--emas) 20px,
-        var(--emas) 40px
+        var(--merah-utama),
+        var(--merah-utama) 16px,
+        var(--emas-utama) 16px,
+        var(--emas-utama) 32px
     );
 }
 
 .footer-container {
-    max-width: 1240px;
+    max-width: 1280px;
     margin: 0 auto;
-    padding: 0 24px 48px;
+    padding: 0 28px 56px;
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1.2fr;
-    gap: 40px;
+    gap: 48px;
 }
 
 .footer-brand {
-    margin-bottom: 14px;
+    margin-bottom: 16px;
 }
 
 .footer-logo {
-    color: var(--emas-muda);
-    font-size: 1.3rem;
+    color: var(--emas-terang);
+    font-size: 1.35rem;
     line-height: 1.2;
+    font-family: var(--font-heading);
 }
 
 .footer-bio {
-    font-size: 0.85rem;
-    color: #a1a1aa;
-    line-height: 1.6;
+    font-size: 0.88rem;
+    color: #94A3B8;
+    line-height: 1.7;
 }
 
 .footer-heading {
-    font-size: 1.05rem;
-    color: var(--emas);
-    margin-bottom: 16px;
+    font-size: 1.1rem;
+    color: var(--emas-terang);
+    margin-bottom: 18px;
     font-family: var(--font-heading);
 }
 
@@ -1103,32 +1194,34 @@ a:hover {
 }
 
 .footer-links li {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .footer-links a {
-    color: #d4d4d8;
+    color: #CBD5E1;
     font-size: 0.9rem;
 }
 
 .footer-links a:hover {
-    color: var(--emas-muda);
-    padding-left: 4px;
+    color: var(--emas-terang);
+    padding-left: 6px;
 }
 
 .footer-bottom {
-    border-top: 1px solid #27272a;
-    padding: 20px 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 22px 28px;
     text-align: center;
     font-size: 0.85rem;
-    color: #71717a;
+    color: #64748B;
 }
 
 /* ==========================================================================
-   AUTH PAGES (Login & Register)
+   AUTH PAGES (Login & Register Modern Glass)
    ========================================================================== */
 .auth-page {
-    background: radial-gradient(circle at center, #3b0b0b 0%, #150303 100%);
+    background: 
+        linear-gradient(135deg, rgba(20, 2, 2, 0.88) 0%, rgba(55, 7, 7, 0.85) 100%),
+        url('../img/hero-padang.jpg') center center / cover no-repeat;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -1138,20 +1231,21 @@ a:hover {
 
 .auth-container {
     width: 100%;
-    max-width: 440px;
+    max-width: 460px;
 }
 
 .auth-card {
-    background: var(--putih);
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(16px);
     border-radius: var(--radius-lg);
-    padding: 36px;
-    border: 2px solid var(--emas);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    padding: 40px;
+    border: 1.5px solid var(--border-halus);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 }
 
 .auth-header {
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 26px;
 }
 
 .brand-link {
@@ -1159,99 +1253,107 @@ a:hover {
     flex-direction: column;
     align-items: center;
     gap: 6px;
+    text-decoration: none;
 }
 
 .gonjong-icon {
-    font-size: 2.4rem;
+    font-size: 2.6rem;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.2));
 }
 
 .auth-subtitle {
-    font-size: 0.9rem;
-    color: #64748b;
+    font-size: 0.92rem;
+    color: #64748B;
     margin-top: 4px;
 }
 
 .demo-account-hint {
-    background: var(--krem);
-    border-left: 4px solid var(--emas);
-    padding: 10px 14px;
+    background: #FFFDF5;
+    border-left: 4px solid var(--emas-utama);
+    padding: 12px 16px;
     border-radius: var(--radius-sm);
-    margin-bottom: 20px;
-    color: var(--hitam);
+    margin-bottom: 22px;
+    color: #1E293B;
+    font-size: 0.88rem;
+    border-top: 1px solid rgba(212, 160, 23, 0.2);
+    border-right: 1px solid rgba(212, 160, 23, 0.2);
+    border-bottom: 1px solid rgba(212, 160, 23, 0.2);
 }
 
 .demo-account-hint code {
-    background: #e2e8f0;
-    padding: 2px 6px;
+    background: #F1F5F9;
+    padding: 3px 8px;
     border-radius: 4px;
     font-weight: 700;
+    color: var(--merah-utama);
 }
 
 .form-group {
-    margin-bottom: 18px;
+    margin-bottom: 20px;
 }
 
 .form-group label {
     display: block;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 600;
-    margin-bottom: 6px;
+    margin-bottom: 7px;
     color: #334155;
 }
 
 .form-control {
     width: 100%;
-    padding: 12px 14px;
-    border: 1.5px solid #cbd5e1;
+    padding: 13px 16px;
+    border: 1.5px solid #CBD5E1;
     border-radius: var(--radius-sm);
     font-size: 0.95rem;
     font-family: var(--font-body);
     transition: all 0.2s ease;
+    background: #FFF;
 }
 
 .form-control:focus {
     outline: none;
-    border-color: var(--merah);
-    box-shadow: 0 0 0 3px rgba(139, 26, 26, 0.15);
+    border-color: var(--merah-utama);
+    box-shadow: 0 0 0 3px rgba(122, 20, 20, 0.12);
 }
 
 .alert {
-    padding: 12px 16px;
+    padding: 13px 18px;
     border-radius: var(--radius-sm);
-    margin-bottom: 20px;
+    margin-bottom: 22px;
     font-size: 0.9rem;
     font-weight: 500;
 }
 
 .alert-danger {
-    background-color: #fee2e2;
-    border: 1px solid #f87171;
-    color: #991b1b;
+    background-color: #FEF2F2;
+    border: 1px solid #FECACA;
+    color: #991B1B;
 }
 
 .alert-success {
-    background-color: #dcfce7;
-    border: 1px solid #4ade80;
+    background-color: #F0FDF4;
+    border: 1px solid #BBF7D0;
     color: #166534;
 }
 
 .alert-link {
     font-weight: 700;
-    color: #15803d;
+    color: #15803D;
     text-decoration: underline;
 }
 
 .auth-footer {
     text-align: center;
-    margin-top: 24px;
-    padding-top: 18px;
-    border-top: 1px solid #e2e8f0;
+    margin-top: 26px;
+    padding-top: 20px;
+    border-top: 1px solid #F1F5F9;
     font-size: 0.9rem;
 }
 
 .back-home {
     display: inline-block;
-    margin-top: 8px;
+    margin-top: 10px;
     font-weight: 600;
 }
 
@@ -1259,23 +1361,23 @@ a:hover {
    ADMIN DASHBOARD & CRUD STYLES
    ========================================================================== */
 .admin-body {
-    background-color: #f8fafc;
+    background-color: #F8FAFC;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
 .admin-nav {
-    background-color: var(--merah);
-    border-bottom: 3px solid var(--emas);
+    background: linear-gradient(135deg, var(--merah-gelap) 0%, var(--merah-utama) 100%);
+    border-bottom: 2.5px solid var(--emas-utama);
     color: var(--putih);
-    box-shadow: var(--shadow-soft);
+    box-shadow: var(--shadow-sm);
 }
 
 .admin-nav-container {
-    max-width: 1280px;
+    max-width: 1320px;
     margin: 0 auto;
-    padding: 14px 24px;
+    padding: 16px 28px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1284,57 +1386,57 @@ a:hover {
 .admin-brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 .admin-title {
     font-family: var(--font-heading);
-    font-size: 1.25rem;
+    font-size: 1.3rem;
     font-weight: 700;
-    color: var(--emas-muda);
+    color: var(--emas-terang);
 }
 
 .admin-user-info {
     display: flex;
     align-items: center;
-    gap: 16px;
-    font-size: 0.9rem;
+    gap: 18px;
+    font-size: 0.92rem;
 }
 
 .admin-main {
     flex: 1;
-    padding: 36px 0;
+    padding: 40px 0;
 }
 
 .admin-container {
-    max-width: 1280px;
+    max-width: 1320px;
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0 28px;
 }
 
 .admin-header-flex {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: 24px;
-    gap: 16px;
+    margin-bottom: 28px;
+    gap: 18px;
 }
 
 .section-title {
-    font-size: 1.8rem;
-    color: var(--merah);
+    font-size: 1.9rem;
+    color: var(--merah-gelap);
 }
 
 .section-desc {
-    color: #64748b;
+    color: #64748B;
     font-size: 0.95rem;
 }
 
 .card-table {
     background: var(--putih);
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-soft);
-    border: 1px solid #e2e8f0;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid #E2E8F0;
     overflow: hidden;
 }
 
@@ -1345,34 +1447,37 @@ a:hover {
 .data-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     text-align: left;
 }
 
 .data-table th {
-    background-color: #f1f5f9;
+    background-color: #F8FAFC;
     color: #334155;
-    padding: 14px 16px;
+    padding: 16px 18px;
     font-weight: 700;
-    border-bottom: 2px solid #e2e8f0;
+    border-bottom: 2px solid #E2E8F0;
+    font-size: 0.88rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .data-table td {
-    padding: 12px 16px;
-    border-bottom: 1px solid #f1f5f9;
+    padding: 14px 18px;
+    border-bottom: 1px solid #F1F5F9;
     vertical-align: middle;
 }
 
 .data-table tr:hover {
-    background-color: #fdfbf7;
+    background-color: #FFFDF9;
 }
 
 .thumb-table {
-    width: 50px;
-    height: 50px;
+    width: 54px;
+    height: 54px;
     border-radius: var(--radius-sm);
     object-fit: cover;
-    border: 1px solid #cbd5e1;
+    border: 1px solid #CBD5E1;
 }
 
 .btn-group {
@@ -1381,10 +1486,10 @@ a:hover {
 }
 
 .admin-footer {
-    background: #1e293b;
-    color: #94a3b8;
+    background: #0F172A;
+    color: #94A3B8;
     text-align: center;
-    padding: 18px 24px;
+    padding: 20px 28px;
     font-size: 0.85rem;
     margin-top: auto;
 }
@@ -1393,55 +1498,55 @@ a:hover {
 .admin-two-cols {
     display: grid;
     grid-template-columns: 1fr 1.6fr;
-    gap: 30px;
+    gap: 32px;
     align-items: start;
 }
 
 .price-badge {
     font-weight: 700;
-    color: var(--merah);
-    background: #fef2f2;
-    padding: 3px 8px;
+    color: var(--merah-utama);
+    background: #FEF2F2;
+    padding: 4px 10px;
     border-radius: 4px;
-    border: 1px solid #fecaca;
+    border: 1px solid #FECACA;
 }
 
 /* Admin Forms */
 .form-container {
-    max-width: 980px;
+    max-width: 1020px;
 }
 
 .form-card {
     background: var(--putih);
     border-radius: var(--radius-md);
-    padding: 32px;
-    box-shadow: var(--shadow-soft);
-    border: 1px solid var(--border-emas);
+    padding: 36px;
+    box-shadow: var(--shadow-sm);
+    border: 1.5px solid rgba(212, 160, 23, 0.25);
 }
 
 .form-title {
-    font-size: 1.6rem;
-    color: var(--merah);
-    margin-bottom: 6px;
+    font-size: 1.7rem;
+    color: var(--merah-gelap);
+    margin-bottom: 8px;
 }
 
 .form-title-sm {
-    font-size: 1.25rem;
-    color: var(--merah);
-    margin-bottom: 18px;
-    border-bottom: 1px solid #e2e8f0;
-    padding-bottom: 10px;
+    font-size: 1.3rem;
+    color: var(--merah-gelap);
+    margin-bottom: 20px;
+    border-bottom: 1px solid #E2E8F0;
+    padding-bottom: 12px;
 }
 
 .form-subtitle {
-    color: #64748b;
-    margin-bottom: 24px;
+    color: #64748B;
+    margin-bottom: 28px;
     font-size: 0.95rem;
 }
 
 .form-row {
     display: flex;
-    gap: 24px;
+    gap: 28px;
 }
 
 .form-col {
@@ -1454,18 +1559,19 @@ a:hover {
 
 .form-actions {
     display: flex;
-    gap: 12px;
-    margin-top: 24px;
-    padding-top: 18px;
-    border-top: 1px solid #e2e8f0;
+    gap: 14px;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid #E2E8F0;
 }
 
 /* ==========================================================================
    RESPONSIVE (MOBILE & TABLET)
    ========================================================================== */
 @media (max-width: 992px) {
-    .hero-title {
-        font-size: 2.8rem;
+    .hero-stats {
+        padding: 16px 24px;
+        gap: 20px;
     }
     .about-grid {
         grid-template-columns: 1fr;
@@ -1485,38 +1591,40 @@ a:hover {
 @media (max-width: 768px) {
     .nav-container {
         flex-direction: column;
-        gap: 12px;
+        gap: 14px;
+        padding: 14px 20px;
     }
     .nav-links {
         flex-wrap: wrap;
         justify-content: center;
-        gap: 12px;
+        gap: 14px;
     }
-    .hero-title {
-        font-size: 2.2rem;
-    }
-    .hero-tagline {
-        font-size: 1.15rem;
+    .hero-section {
+        padding: 90px 20px 110px;
     }
     .hero-stats {
         flex-direction: column;
-        gap: 14px;
+        gap: 16px;
+        padding: 16px 20px;
     }
     .stat-divider {
         display: none;
     }
     .footer-container {
         grid-template-columns: 1fr;
-        gap: 28px;
+        gap: 32px;
     }
     .admin-header-flex {
         flex-direction: column;
         align-items: flex-start;
     }
     .main-map {
-        height: 400px;
+        height: 420px;
     }
     .features-list {
         grid-template-columns: 1fr;
+    }
+    .about-card {
+        padding: 32px 24px;
     }
 }

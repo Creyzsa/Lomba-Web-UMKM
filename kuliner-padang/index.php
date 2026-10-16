@@ -68,10 +68,10 @@ $total_menu = ($res_stat_menu) ? mysqli_fetch_assoc($res_stat_menu)['total'] : 0
     <section class="hero-section">
         <div class="hero-overlay"></div>
         <div class="hero-content">
-            <div class="hero-badge">🏆 IT FEST 2026 — Digitalisasi UMKM Kuliner</div>
-            <h1 class="hero-title">Peta Rasa Padang</h1>
+            <div class="hero-badge">🏛️ IT FEST 2026 — Digitalisasi UMKM Kuliner Minangkabau</div>
+            <h1 class="hero-title"><span class="hero-title-gradient">Peta Rasa Padang</span></h1>
             <p class="hero-tagline">Jelajahi Cita Rasa Autentik Ranah Minang Langsung dari Sentra Kuliner Kota Padang</p>
-            <p class="hero-subtext">Temukan rumah makan legendaris, sate kuah rempah, seduhan kawa daun hangat, hingga oleh-oleh khas Padang dalam satu etalase interaktif.</p>
+            <p class="hero-subtext">Temukan rumah makan legendaris, sate kuah rempah khas Pariaman, seduhan kawa daun hangat, hingga oleh-oleh khas Padang dalam etalase digital interaktif modern.</p>
             
             <div class="hero-stats">
                 <div class="stat-item">
