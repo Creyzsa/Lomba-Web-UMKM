@@ -61,9 +61,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mysqli_stmt_bind_param($stmt_insert, "sss", $username, $password_hash, $role_input);
 
             if (mysqli_stmt_execute($stmt_insert)) {
-                $sukses = ($role_input === 'pemilik')
-                    ? 'Akun Pemilik Toko berhasil dibuat! Setelah login, minta admin menghubungkan akunmu ke toko yang dikelola.'
-                    : 'Akun Pembeli berhasil dibuat! Silakan login untuk mulai menjelajah kuliner.';
+                // Langsung login otomatis setelah daftar
+                $_SESSION['id_user']  = mysqli_insert_id($koneksi);
+                $_SESSION['username'] = $username;
+                $_SESSION['role']     = $role_input;
+
+                if ($role_input === 'pemilik') {
+                    header("Location: pemilik/dashboard.php");
+                } else {
+                    header("Location: index.php");
+                }
+                exit;
             } else {
                 error_log('Register gagal: ' . mysqli_error($koneksi));
                 $error = 'Terjadi kesalahan sistem saat mendaftar. Silakan coba lagi.';

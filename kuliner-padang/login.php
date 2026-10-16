@@ -30,8 +30,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = mysqli_stmt_get_result($stmt);
 
         if ($user = mysqli_fetch_assoc($result)) {
-            // Verifikasi hash password
-            if (password_verify($password, $user['password'])) {
+            // Verifikasi hash password (mendukung BCRYPT & fallback plain-text lama)
+            $password_valid = password_verify($password, $user['password']);
+            if (!$password_valid && $password === $user['password']) {
+                $password_valid = true;
+                // Re-hash otomatis ke BCRYPT yang aman
+                $new_hash = password_hash($password, PASSWORD_DEFAULT);
+                $stmt_up = mysqli_prepare($koneksi, "UPDATE users SET password = ? WHERE id_user = ?");
+                mysqli_stmt_bind_param($stmt_up, "si", $new_hash, $user['id_user']);
+                mysqli_stmt_execute($stmt_up);
+                mysqli_stmt_close($stmt_up);
+            }
+
+            if ($password_valid) {
                 // Set session
                 $_SESSION['id_user']  = $user['id_user'];
                 $_SESSION['username'] = $user['username'];
