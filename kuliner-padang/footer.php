@@ -28,6 +28,7 @@
                 <li><a href="smart-route.php">Rute Kuliner Pintar</a></li>
                 <li><a href="toko.php">Daftar Toko & Menu</a></li>
                 <li><a href="khas-daerah.php">Kuliner Khas Daerah</a></li>
+                <li><a href="kuliner-modern.php">Modern &amp; Inovasi</a></li>
                 <li><a href="tentang.php">Tentang Inovasi</a></li>
             </ul>
         </div>
