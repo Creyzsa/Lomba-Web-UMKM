@@ -16,6 +16,7 @@
                 </div>
             </div>
             <p class="footer-bio">Mendukung digitalisasi dan kemandirian pelaku UMKM kuliner di Kota Padang dan sekitarnya melalui teknologi web terbuka.</p>
+            <p class="footer-bio"><strong>Catatan demo:</strong> data toko, menu, lokasi, dan nomor WhatsApp bawaan merupakan ilustrasi, bukan kontak usaha nyata.</p>
         </div>
 
         <div class="footer-col">
@@ -23,7 +24,10 @@
             <ul class="footer-links">
                 <li><a href="index.php">Beranda</a></li>
                 <li><a href="peta.php">Peta Kuliner Interaktif</a></li>
+                <li><a href="kuliner-budget.php">Kuliner Sesuai Budget</a></li>
+                <li><a href="smart-route.php">Rute Kuliner Pintar</a></li>
                 <li><a href="toko.php">Daftar Toko & Menu</a></li>
+                <li><a href="khas-daerah.php">Kuliner Khas Daerah</a></li>
                 <li><a href="tentang.php">Tentang Inovasi</a></li>
             </ul>
         </div>

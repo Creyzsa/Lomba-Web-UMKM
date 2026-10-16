@@ -8,6 +8,8 @@
  * - Grid kartu toko dengan tombol Fly-to lokasi & buka popup
  * - Fitur Filter Kategori & Pencarian real-time
  * - Efek navbar saat di-scroll
+ * - Badge "Khas Daerah" & "Hidden Gem"
+ * - Nomor WhatsApp per toko
  */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -92,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
         markersMap = {};
 
         const gridContainer = document.getElementById('toko-grid-container');
+        if (!gridContainer) return;
         gridContainer.innerHTML = '';
 
         if (daftarToko.length === 0) {
@@ -100,11 +103,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     <p>Tidak ada toko yang sesuai dengan pencarian atau filter kategori yang dipilih.</p>
                 </div>
             `;
-            document.getElementById('counter-toko-tampil').innerText = '0 Toko Ditemukan';
+            const counter = document.getElementById('counter-toko-tampil');
+            if (counter) counter.innerText = '0 Toko Ditemukan';
             return;
         }
 
-        document.getElementById('counter-toko-tampil').innerText = `${daftarToko.length} Toko Ditampilkan`;
+        const counter = document.getElementById('counter-toko-tampil');
+        if (counter) counter.innerText = `${daftarToko.length} Toko Ditampilkan`;
 
         daftarToko.forEach(toko => {
             // A. Buat Marker & Popup Leaflet
@@ -128,22 +133,35 @@ document.addEventListener('DOMContentLoaded', function () {
                 menuHtml = '<p class="text-muted"><small>Belum ada daftar menu terdaftar.</small></p>';
             }
 
-            // WhatsApp link (nomor fiktif contoh/customer care)
-            const waText = encodeURIComponent(`Halo ${toko.nama_toko}, saya melihat etalase Anda di Peta Rasa Padang dan ingin memesan.`);
-            const waUrl = `https://wa.me/6281234567890?text=${waText}`;
+            // WhatsApp link per toko
+            const noWa = toko.no_wa || '';
+            let waHtml = '';
+            if (noWa) {
+                const waText = encodeURIComponent(`Halo ${toko.nama_toko}, saya melihat etalase Anda di Peta Rasa Padang dan ingin memesan.`);
+                waHtml = `<a href="https://wa.me/${noWa}?text=${waText}" target="_blank" class="btn-popup-wa">💬 Hubungi via WA</a>`;
+            } else {
+                waHtml = '<span class="btn-popup-wa" style="background:#94A3B8;cursor:not-allowed;">💬 WA tidak tersedia</span>';
+            }
+
+            // Badge
+            let badgeHtml = '';
+            if (toko.badges && toko.badges.length > 0) {
+                badgeHtml = toko.badges.map(b => `<span style="display:inline-block;margin-left:4px;padding:1px 8px;border-radius:999px;font-size:0.65rem;background:rgba(212,160,23,0.12);color:#8C6500;border:1px solid rgba(212,160,23,0.3);">${b}</span>`).join('');
+            }
 
             const popupContent = `
                 <div class="minang-popup">
                     <div class="popup-header">
                         <span class="popup-badge">${escapeHtml(toko.kategori)}</span>
-                        <h3 class="popup-title">${escapeHtml(toko.nama_toko)}</h3>
+                        <h3 class="popup-title">${escapeHtml(toko.nama_toko)} ${badgeHtml}</h3>
                     </div>
                     <p class="popup-address">📍 ${escapeHtml(toko.alamat)}</p>
+                    ${toko.jam_buka ? `<p class="popup-address">🕐 ${escapeHtml(toko.jam_buka)}</p>` : ''}
                     <p class="popup-desc">${escapeHtml(toko.deskripsi)}</p>
                     ${menuHtml}
                     <div class="popup-buttons">
-                        <a href="${toko.maps_url}" target="_blank" class="btn-popup-maps">🗺️ Buka di Google Maps</a>
-                        <a href="${waUrl}" target="_blank" class="btn-popup-wa">💬 Hubungi via WA</a>
+                        <a href="${toko.maps_url}" target="_blank" class="btn-popup-maps">🗺️ Buka Google Maps</a>
+                        ${waHtml}
                     </div>
                 </div>
             `;
@@ -172,17 +190,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 previewMenuHtml += '</div>';
             }
 
+            // Kartu badge
+            let cardBadgeHtml = escapeHtml(toko.kategori);
+            if (toko.badges && toko.badges.length > 0) {
+                cardBadgeHtml += ' ' + toko.badges.map(b => `<span style="margin-left:4px;">${b === 'Khas Daerah' ? '🏅' : '💎'}</span>`).join('');
+            }
+
             card.innerHTML = `
                 <div class="card-img-wrapper">
                     <img src="${escapeHtml(toko.foto)}" alt="${escapeHtml(toko.nama_toko)}" class="card-img" onerror="this.src='https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=500&q=80'">
-                    <span class="card-badge">${escapeHtml(toko.kategori)}</span>
+                    <span class="card-badge">${cardBadgeHtml}</span>
                 </div>
                 <div class="card-body">
-                    <h3 class="card-title">${escapeHtml(toko.nama_toko)}</h3>
+                    <h3 class="card-title">${escapeHtml(toko.nama_toko)} ${toko.badges ? toko.badges.map(b => b === 'Khas Daerah' ? '<span style="font-size:0.7rem;background:rgba(212,160,23,0.12);color:#8C6500;padding:2px 8px;border-radius:999px;font-weight:600;vertical-align:middle;">🏅 Khas Daerah</span>' : '<span style="font-size:0.7rem;background:rgba(147,51,234,0.08);color:#7C3AED;padding:2px 8px;border-radius:999px;font-weight:600;vertical-align:middle;">💎 Hidden Gem</span>').join(' ') : ''}</h3>
                     <p class="card-address">📍 ${escapeHtml(toko.alamat)}</p>
                     <p class="card-desc">${escapeHtml(toko.deskripsi)}</p>
                     ${previewMenuHtml}
                     <div class="card-actions">
+                        <a href="detail.php?id=${toko.id_toko}" class="btn btn-sm" style="background:#1E293B;color:#FFF;flex:1;">📄 Detail</a>
                         <button class="btn btn-primary btn-sm btn-fly" data-id="${toko.id_toko}">
                             🎯 Sorot di Peta
                         </button>
@@ -195,10 +220,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Event Klik Kartu Toko → Fly to Map & Open Popup
             card.addEventListener('click', function (e) {
-                // Cegah double trigger jika klik link Google Maps
                 if (e.target.tagName.toLowerCase() === 'a') return;
+                if (e.target.classList.contains('btn-fly') || e.target.closest('.btn-fly')) return;
                 flyToToko(toko.id_toko, toko.latitude, toko.longitude);
             });
+
+            // Fly button click
+            const flyBtn = card.querySelector('.btn-fly');
+            if (flyBtn) {
+                flyBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    flyToToko(toko.id_toko, toko.latitude, toko.longitude);
+                });
+            }
 
             gridContainer.appendChild(card);
         });
@@ -206,19 +240,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 4. Aksi FlyTo Lokasi Toko
     function flyToToko(idToko, lat, lng) {
-        // Scroll halus ke area peta
         const petaSection = document.getElementById('peta-section');
         if (petaSection) {
             petaSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-
-        // Animasi terbang di Leaflet
         map.flyTo([lat, lng], 16, {
             animate: true,
             duration: 1.2
         });
-
-        // Buka popup setelah pergerakan selesai
         setTimeout(() => {
             const marker = markersMap[idToko];
             if (marker) {
@@ -259,8 +288,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 const namaMatch = toko.nama_toko.toLowerCase().includes(searchQuery);
                 const alamatMatch = (toko.alamat || '').toLowerCase().includes(searchQuery);
                 const descMatch = (toko.deskripsi || '').toLowerCase().includes(searchQuery);
-                
-                // Cek nama menu makanan
                 const menuMatch = toko.menu && toko.menu.some(m => m.nama_menu.toLowerCase().includes(searchQuery));
 
                 matchSearch = namaMatch || alamatMatch || descMatch || menuMatch;

@@ -1726,6 +1726,31 @@ a:hover {
     color: #64748B;
 }
 
+.budget-qty-label,
+.route-qty-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #334155;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.budget-qty-input,
+.route-qty-input {
+    width: 64px;
+    min-height: 42px;
+    padding: 8px;
+    border: 1px solid #CBD5E1;
+    border-radius: 4px;
+    color: #1E293B;
+    font: inherit;
+}
+
+.route-qty-label {
+    margin: 8px 0;
+}
+
 /* ==========================================================================
    RESPONSIVE (MOBILE & TABLET)
    ========================================================================== */

@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $deskripsi = trim($_POST['deskripsi'] ?? '');
     $latitude  = trim($_POST['latitude'] ?? '');
     $longitude = trim($_POST['longitude'] ?? '');
+    $no_wa     = trim($_POST['no_wa'] ?? '');
 
     // Validasi input
     if (empty($nama_toko) || empty($latitude) || empty($longitude)) {
@@ -53,8 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if (empty($error)) {
-            $stmt = mysqli_prepare($koneksi, "INSERT INTO toko (nama_toko, alamat, kategori, deskripsi, latitude, longitude, foto) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            mysqli_stmt_bind_param($stmt, "ssssdds", $nama_toko, $alamat, $kategori, $deskripsi, $latitude, $longitude, $foto_nama);
+            // Include no_wa in insert
+            $stmt = mysqli_prepare($koneksi, "INSERT INTO toko (nama_toko, alamat, kategori, deskripsi, latitude, longitude, foto, no_wa) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            mysqli_stmt_bind_param($stmt, "ssssddss", $nama_toko, $alamat, $kategori, $deskripsi, $latitude, $longitude, $foto_nama, $no_wa);
 
             if (mysqli_stmt_execute($stmt)) {
                 $_SESSION['pesan'] = "Toko '" . $nama_toko . "' berhasil ditambahkan!";
@@ -89,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div class="admin-user-info">
                 <span>Halo, <strong><?= htmlspecialchars($_SESSION['username']); ?></strong></span>
-                <a href="dashboard.php" class="btn btn-outline-light btn-sm">← Kembali ke Dashboard</a>
+                <a href="dashboard.php" class="btn btn-outline-light btn-sm">&larr; Kembali ke Dashboard</a>
             </div>
         </div>
     </header>
@@ -101,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <p class="form-subtitle">Lengkapi formulir di bawah ini. Klik titik pada peta untuk menentukan koordinat otomatis.</p>
 
                 <?php if (!empty($error)): ?>
-                    <div class="alert alert-danger"><?= htmlspecialchars($error); ?></div>
+                    <div class="alert alert-danger><?= htmlspecialchars($error); ?></div>
                 <?php endif; ?>
 
                 <form action="tambah.php" method="POST" enctype="multipart/form-data">
@@ -126,12 +128,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                             <div class="form-group">
                                 <label for="alamat">Alamat Lengkap</label>
-                                <textarea id="alamat" name="alamat" class="form-control" rows="2" placeholder="Contoh: Jl. Khatib Sulaiman No. 99, Padang"><?= htmlspecialchars($_POST['alamat'] ?? ''); ?></textarea>
+                                <textarea id="alamat" name="alamat" class="form-control" rows="2" placeholder="Contoh: Jl. Khatib Sulaiman No. 99, Padang><?= htmlspecialchars($_POST['alamat'] ?? ''); ?></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label for="deskripsi">Deskripsi Singkat Toko</label>
-                                <textarea id="deskripsi" name="deskripsi" class="form-control" rows="3" placeholder="Ceritakan keistimewaan rasa, sejarah, atau menu andalan toko..."><?= htmlspecialchars($_POST['deskripsi'] ?? ''); ?></textarea>
+                                <textarea id="deskripsi" name="deskripsi" class="form-control" rows="3" placeholder="Ceritakan keistimewaan rasa, sejarah, atau menu andalan toko...><?= htmlspecialchars($_POST['deskripsi'] ?? ''); ?></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="no_wa">Nomor WhatsApp Penjual (opsional)</label>
+                                <input type="text" id="no_wa" name="no_wa" class="form-control" placeholder="6281234567890" value="<?= htmlspecialchars($_POST['no_wa'] ?? ''); ?>">
+                                <small class="text-muted">Format internasional tanpa tanda + (mis. 6281...).</small>
                             </div>
 
                             <div class="form-group">
@@ -151,11 +159,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="form-row">
                                 <div class="form-group col-half">
                                     <label for="latitude">Latitude <span class="required">*</span></label>
-                                    <input type="text" id="latitude" name="latitude" class="form-control" placeholder="-0.9471000" required readonly value="<?= htmlspecialchars($_POST['latitude'] ?? '-0.9471000'); ?>">
+                                    <input type="text" id="latitude" name="latitude" class="form-control" placeholder="-0.9471000" required value="<?= htmlspecialchars($_POST['latitude'] ?? '-0.9471000'); ?>">
                                 </div>
                                 <div class="form-group col-half">
                                     <label for="longitude">Longitude <span class="required">*</span></label>
-                                    <input type="text" id="longitude" name="longitude" class="form-control" placeholder="100.4172000" required readonly value="<?= htmlspecialchars($_POST['longitude'] ?? '100.4172000'); ?>">
+                                    <input type="text" id="longitude" name="longitude" class="form-control" placeholder="100.4172000" required value="<?= htmlspecialchars($_POST['longitude'] ?? '100.4172000'); ?>">
                                 </div>
                             </div>
                         </div>

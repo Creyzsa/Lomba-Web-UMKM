@@ -22,6 +22,9 @@ if (!isset($active_nav)) {
             <a href="index.php" class="nav-link <?= ($active_nav === 'beranda') ? 'active-link' : ''; ?>">Beranda</a>
             <a href="peta.php" class="nav-link <?= ($active_nav === 'peta') ? 'active-link' : ''; ?>">Peta Kuliner</a>
             <a href="toko.php" class="nav-link <?= ($active_nav === 'toko') ? 'active-link' : ''; ?>">Daftar Toko</a>
+            <a href="khas-daerah.php" class="nav-link <?= ($active_nav === 'khas') ? 'active-link' : ''; ?>">Khas Daerah</a>
+            <a href="kuliner-budget.php" class="nav-link <?= ($active_nav === 'budget') ? 'active-link' : ''; ?>">Sesuai Budget</a>
+            <a href="smart-route.php" class="nav-link <?= ($active_nav === 'route') ? 'active-link' : ''; ?>">Rute Pintar</a>
             <a href="tentang.php" class="nav-link <?= ($active_nav === 'tentang') ? 'active-link' : ''; ?>">Tentang</a>
             
             <?php if (isset($_SESSION['role'])): ?>

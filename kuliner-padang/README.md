@@ -5,35 +5,31 @@ Tema: **Digitalisasi UMKM: Membangun Etalase Digital yang Menarik, Interaktif, d
 
 ---
 
-## 📁 Lokasi File Project
-Folder project terletak di:
-`C:\Lomba web UMKM\kuliner-padang`
+## Lokasi Proyek
+Folder aplikasi pada workspace ini berada di `C:\xampp1\htdocs\Lomba-Web-UMKM\kuliner-padang`.
 
 ---
 
 ## 🚀 Cara Menjalankan di XAMPP
 
-1. **Pindahkan/Copy Folder:**
-   - Copy folder `kuliner-padang` ke dalam direktori `htdocs` XAMPP Anda:
-     Contoh: `C:\xampp\htdocs\kuliner-padang`
-
-2. **Aktifkan Server XAMPP:**
+1. **Aktifkan Server XAMPP:**
    - Buka **XAMPP Control Panel**.
    - Klik **Start** pada modul **Apache** dan **MySQL**.
 
-3. **Impor Database:**
+2. **Impor Database:**
    - Buka browser dan kunjungi: `http://localhost/phpmyadmin`
    - Buat database baru bernama `db_kuliner_padang` (atau langsung klik tab **Import**).
    - Pilih file: `database/db_kuliner.sql`
    - Klik **Go / Impor**.
+   - Jika memakai database dari versi sebelumnya, jalankan juga `database/migrate_umkm_features.sql` melalui tab **Import** agar kolom statistik/kurasi dan tabel makanan khas tersedia. Migrasi ini menambah struktur tanpa menghapus data toko.
 
-4. **Akses Website:**
+3. **Akses Website:**
    - **Halaman Pengunjung (Peta Kuliner):**
-     `http://localhost/kuliner-padang/`
+   `http://localhost/Lomba-Web-UMKM/kuliner-padang/`
    - **Halaman Login Admin / Pengguna:**
-     `http://localhost/kuliner-padang/login.php`
+   `http://localhost/Lomba-Web-UMKM/kuliner-padang/login.php`
    - **Panel Admin:**
-     `http://localhost/kuliner-padang/admin/dashboard.php`
+   `http://localhost/Lomba-Web-UMKM/kuliner-padang/admin/dashboard.php`
 
 ---
 
@@ -72,3 +68,20 @@ Folder project terletak di:
    - Ornamen pembatas songket Minang, siluet rumah gadang/gonjong.
    - Navbar interaktif dengan garis bawah emas animasi hover dan efek blur saat di-scroll.
    - Desain responsif di layar Mobile, Tablet, dan Desktop.
+
+## Fitur Etalase UMKM
+- **Kuliner Sesuai Budget:** filter harga menu, kategori, dan jarak dari lokasi pengguna; hasil ditandai pada peta dan diurutkan dari kecocokan harga serta jarak.
+- **Rute Kuliner Pintar:** menyusun 2–4 pemberhentian sesuai pilihan dan plafon belanja, memprioritaskan Hidden Gem, menggambar garis rute, serta membuka navigasi eksternal Google Maps.
+- **Pesan via WhatsApp:** jumlah pesanan dapat diatur dari kartu menu dan detail; website hanya membuka WhatsApp, tanpa memproses pembayaran.
+- **Kuliner Khas Daerah:** cerita makanan tradisional dan tautan ke UMKM yang terkait.
+- Utilitas filter budget, penyusun rute, format pesan, dan pencatatan klik WA berada di `assets/js/kuliner-utils.js`.
+
+## Catatan Data dan Batas Demo
+Data toko/menu pada `database/db_kuliner.sql`, termasuk nomor WhatsApp, adalah data ilustrasi untuk demo dan bukan kontak usaha nyata. Ganti dengan data yang telah diverifikasi dan mendapat izin sebelum dipublikasikan. Pendaftaran pemilik dan dashboard analitik khusus pemilik belum tersedia; pengelolaan data saat ini hanya melalui panel admin.
+
+## Alur Demo Singkat
+1. Buka **Kuliner Sesuai Budget**, aktifkan lokasi bila ingin menguji filter jarak, lalu cari menu dengan anggaran Rp15.000.
+2. Buka **Rute Pintar**, pilih anggaran Rp50.000 dan 2–4 pemberhentian; tunjukkan ringkasan serta garis rute.
+3. Ubah jumlah pada salah satu destinasi dan tunjukkan estimasi belanja/sisa anggaran ikut berubah.
+4. Buka detail UMKM, pilih jumlah menu, lalu tunjukkan pesan yang terisi di WhatsApp tanpa menyelesaikan transaksi.
+5. Buka **Khas Daerah** untuk melihat cerita makanan dan hubungan ke UMKM; jelaskan bahwa data yang tampil masih ilustrasi.

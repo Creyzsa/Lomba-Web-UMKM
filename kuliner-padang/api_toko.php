@@ -36,17 +36,27 @@ if ($res_toko) {
 
         $foto_url = !empty($toko['foto']) ? 'assets/img/' . $toko['foto'] : 'assets/img/default.png';
 
+        // Siapkan badges
+        $badges = [];
+        if (!empty($toko['is_khas'])) $badges[] = 'Khas Daerah';
+        if (!empty($toko['is_hidden_gem'])) $badges[] = 'Hidden Gem';
+        $no_wa = $toko['no_wa'] ?? '';
+
         $daftar_toko[] = [
-            'id_toko'   => $id_toko,
-            'nama_toko' => $toko['nama_toko'],
-            'alamat'    => $toko['alamat'] ?? '',
-            'kategori'  => $toko['kategori'] ?? '',
-            'deskripsi' => $toko['deskripsi'] ?? '',
-            'latitude'  => (float)$toko['latitude'],
-            'longitude' => (float)$toko['longitude'],
-            'foto'      => $foto_url,
-            'maps_url'  => 'https://www.google.com/maps?q=' . $toko['latitude'] . ',' . $toko['longitude'],
-            'menu'      => $daftar_menu
+            'id_toko'       => $id_toko,
+            'nama_toko'     => $toko['nama_toko'],
+            'alamat'        => $toko['alamat'] ?? '',
+            'kategori'      => $toko['kategori'] ?? '',
+            'deskripsi'     => $toko['deskripsi'] ?? '',
+            'latitude'      => (float)$toko['latitude'],
+            'longitude'     => (float)$toko['longitude'],
+            'foto'          => $foto_url,
+            'no_wa'         => $no_wa,
+            'jam_buka'      => $toko['jam_buka'] ?? '',
+            'badges'        => $badges,
+            'visit_count'   => (int)($toko['visit_count'] ?? 0),
+            'maps_url'      => 'https://www.google.com/maps?q=' . $toko['latitude'] . ',' . $toko['longitude'],
+            'menu'          => $daftar_menu
         ];
     }
 }
