@@ -36,16 +36,18 @@ export type Chapter = {
 const MOTIF_RATIO = 1.49;
 
 /** File motif (sudah di-crop dan diperkecil) di /public */
-const SONGKET_SRC = "assets/img/songketminangkabau.png";
+const SONGKET_SRC = "/images/songket-minangkabau.png";
 
 /** Aset scene bawah (sudah di-crop): jalan + dua rangkiang yang tepi potongnya menempel di tepi layar. */
-const ROAD_SRC = "assets/img/jalan.png";
-const RANGKIANG_LEFT_SRC = "assets/img/rangkiang1.png";
-const RANGKIANG_RIGHT_SRC = "assets/img/rangkiang2.png";
+const ROAD_SRC = "/images/jalan.webp";
+const RANGKIANG_LEFT_SRC = "/images/rangkiang-kiri.webp";
+const RANGKIANG_RIGHT_SRC = "/images/rangkiang-kanan.webp";
 /** Rasio tinggi/lebar masing-masing file */
 const ROAD_RATIO = 152 / 2128;
 const LEFT_RATIO = 975 / 360;
 const RIGHT_RATIO = 975 / 357;
+const ROAD_MAX_VH = 0.14;   // tinggi jalan maksimal = 14% tinggi layar (kecilkan kalau masih besar)
+let roadRatio = ROAD_RATIO; // diganti otomatis dengan rasio asli file
 
 /**
  * Motif menggantung dari tepi atas layar, selang-seling panjang dan pendek.
@@ -147,14 +149,15 @@ type Props = {
  * Hero "scroll-scrubbed": layar terkunci (sticky), seluruh animasi
  * dikendalikan posisi scroll (maju saat turun, mundur saat naik).
  *
- *  0.00 - 0.34  Jalan naik dari bawah, rangkiang kiri dan kanan masuk dari tepi layar
+ *  0.00 - 0.22  Jalan (selebar halaman) naik dari bawah
+ *  0.10 - 0.40  Rangkiang kiri dan kanan masuk dari tepi layar (kanan sedikit menyusul)
  *  0.00 - 0.45  Konten hero memudar; motif songket turun dari atas lalu menjuntai (ada yang panjang, ada yang pendek)
  *  0.00 - 1.00  Rumah Gadang zoom ke arah pintu, latar menggelap bertahap
  *  0.34 - 0.94  Tiga bab bergantian; bab terakhir bertahan dan tombolnya bisa diklik
  *  0.80 - 1.00  Rangkiang menepi, jalan turun, motif ditarik kembali ke atas saat hero selesai
  */
 export default function MinangScrollHero({
-  image = "assets/img/rumah-gadang.jpg",
+  image = "/images/rumah-gadang.jpg",
   children,
   items = DEFAULT_ITEMS,
   chapters = DEFAULT_CHAPTERS,
@@ -169,9 +172,9 @@ export default function MinangScrollHero({
   const hintRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const heightsRef = useRef<number[]>([]);
-  const roadRef = useRef<HTMLImageElement>(null);
-  const leftRef = useRef<HTMLImageElement>(null);
-  const rightRef = useRef<HTMLImageElement>(null);
+  const roadRef = useRef<HTMLDivElement>(null);
+  const leftRef = useRef<HTMLDivElement>(null);
+  const rightRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef({ roadH: 0, wl: 0, wr: 0 });
   const chapterRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -191,16 +194,16 @@ export default function MinangScrollHero({
       vh = window.innerHeight;
 
       /* Scene bawah: jalan selebar layar (sedikit lebih), rangkiang berdiri di atas jalan */
-      const roadW = Math.max(vw * 1.25, 900);
+      const cw = track.clientWidth || vw;
+      /* Jalan selalu selebar halaman (sisi bawahnya menyentuh kedua tepi layar) */
+      const roadW = cw;
       const roadH = roadW * ROAD_RATIO;
-      const houseH = Math.min(vh * 0.5, vw * 0.3 * LEFT_RATIO);
+      const houseH = Math.min(vh * 0.5, cw * 0.3 * LEFT_RATIO);
       const wl = houseH / LEFT_RATIO;
       const wr = houseH / RIGHT_RATIO;
       sceneRef.current = { roadH, wl, wr };
       if (roadRef.current) {
-        roadRef.current.style.width = `${roadW}px`;
         roadRef.current.style.height = `${roadH}px`;
-        roadRef.current.style.marginLeft = `${-roadW / 2}px`;
       }
       /* kaki rumah berada di tengah permukaan jalan */
       const footY = roadH * 0.42;
@@ -255,29 +258,35 @@ export default function MinangScrollHero({
         const { roadH, wl, wr } = sceneRef.current;
         const ease = easeInOutCubic;
 
-        const roadIn = reduced ? 1 : ease(clamp(p / 0.16));
+        const roadIn = reduced ? 1 : ease(clamp(p / 0.22));
         const roadOut = reduced ? 0 : ease(clamp((p - 0.86) / 0.14));
         if (roadRef.current) {
-          const y = (roadH + 12) * (1 - roadIn + roadOut);
+          /* +48px: bayangan (drop-shadow) ikut tersembunyi di bawah layar */
+          const y = (roadH + 48) * (1 - roadIn + roadOut);
           roadRef.current.style.transform = `translate3d(0, ${y}px, 0)`;
           roadRef.current.style.visibility = roadIn <= 0 || roadOut >= 1 ? "hidden" : "visible";
         }
 
-        /* Rangkiang kiri masuk dari tepi luar kiri layar dan menempel di margin luar kiri */
-        const leftIn = reduced ? 1 : ease(clamp(p / 0.22));
+        /* masuk: melambat saat tiba (easeOutCubic) supaya terasa "mendarat" di tepi layar */
+        const leftIn = reduced ? 1 : easeOutCubic(clamp((p - 0.1) / 0.26));
+        const rightIn = reduced ? 1 : easeOutCubic(clamp((p - 0.14) / 0.26));
         const leftOut = reduced ? 0 : ease(clamp((p - 0.8) / 0.12));
+        const rightOut = reduced ? 0 : ease(clamp((p - 0.82) / 0.12));
         if (leftRef.current) {
-          const x = -(wl + 32) * (1 - leftIn) - (wl + 32) * leftOut;
-          leftRef.current.style.transform = `translate3d(${x}px, 0, 0)`;
+          const slide = Math.max(0, 1 - leftIn + leftOut);
+          /* +56px: bayangan ikut tersembunyi di luar layar; tepi potong tidak pernah melewati tepi kiri ke dalam */
+          const x = -(wl + 56) * slide;
+          /* sedikit naik dari bawah saat masuk, supaya gerakan tidak kaku */
+          const y = 28 * slide;
+          leftRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
           leftRef.current.style.visibility = leftIn <= 0 || leftOut >= 1 ? "hidden" : "visible";
         }
-
-        /* Rangkiang kanan masuk dari tepi luar kanan layar dan menempel di margin luar kanan */
-        const rightIn = reduced ? 1 : ease(clamp(p / 0.22));
-        const rightOut = reduced ? 0 : ease(clamp((p - 0.8) / 0.12));
         if (rightRef.current) {
-          const x = (wr + 32) * (1 - rightIn) + (wr + 32) * rightOut;
-          rightRef.current.style.transform = `translate3d(${x}px, 0, 0)`;
+          const slide = Math.max(0, 1 - rightIn + rightOut);
+          /* +56px: bayangan ikut tersembunyi di luar layar; tepi potong tidak pernah melewati tepi kanan ke dalam */
+          const x = (wr + 56) * slide;
+          const y = 28 * slide;
+          rightRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
           rightRef.current.style.visibility = rightIn <= 0 || rightOut >= 1 ? "hidden" : "visible";
         }
       }
@@ -339,11 +348,20 @@ export default function MinangScrollHero({
     };
 
     /* Inersia: nilai mengejar target supaya gerakannya halus di dua arah */
-    const tick = () => {
-      cur += (target - cur) * 0.1;
-      if (Math.abs(target - cur) < 0.0004) cur = target;
+    let last = 0;
+    const tick = (now: number) => {
+      /* Redaman eksponensial berbasis waktu: kecepatan sama di layar 60Hz, 120Hz, maupun saat frame drop */
+      const dt = last ? Math.min((now - last) / 1000, 0.05) : 1 / 60;
+      last = now;
+      cur += (target - cur) * (1 - Math.exp(-dt * 7));
+      if (Math.abs(target - cur) < 0.0002) cur = target;
       apply(cur);
-      raf = cur !== target ? requestAnimationFrame(tick) : 0;
+      if (cur !== target) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        raf = 0;
+        last = 0;
+      }
     };
 
     const kick = () => {
@@ -417,43 +435,53 @@ export default function MinangScrollHero({
           style={{ background: "radial-gradient(circle, rgba(232,178,92,.35), transparent 70%)" }}
         />
 
-        {/* Jalan (naik dari bawah) */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        {/* Jalan: selebar halaman, naik dari bawah saat scroll turun dan turun lagi saat scroll naik.
+            Pakai background-image supaya tidak terpengaruh CSS global untuk <img>. */}
+        <div
           ref={roadRef}
-          src={ROAD_SRC}
-          alt=""
           aria-hidden="true"
-          draggable={false}
-          decoding="async"
-          className="pointer-events-none absolute bottom-0 left-1/2 max-w-none select-none will-change-transform"
-          style={{ visibility: "hidden", filter: "drop-shadow(0 -6px 18px rgba(0,0,0,.45))" }}
+          className="pointer-events-none absolute inset-x-0 bottom-0 w-full will-change-transform"
+          style={{
+            aspectRatio: `${1 / ROAD_RATIO}`,
+            visibility: "hidden",
+            backgroundImage: `url(${ROAD_SRC})`,
+            backgroundSize: "100% 100%",
+            backgroundRepeat: "no-repeat",
+            backfaceVisibility: "hidden",
+            filter: "drop-shadow(0 -6px 18px rgba(0,0,0,.45))",
+          }}
         />
 
-        {/* Rangkiang kiri (masuk dari kiri) */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        {/* Rangkiang kiri: tepi potong menempel di tepi kiri layar, masuk dari kiri */}
+        <div
           ref={leftRef}
-          src={RANGKIANG_LEFT_SRC}
-          alt=""
           aria-hidden="true"
-          draggable={false}
-          decoding="async"
-          className="pointer-events-none absolute left-0 max-w-none select-none will-change-transform"
-          style={{ visibility: "hidden", filter: "drop-shadow(0 14px 22px rgba(0,0,0,.55))" }}
+          className="pointer-events-none absolute will-change-transform"
+          style={{
+            left: 0,
+            visibility: "hidden",
+            backgroundImage: `url(${RANGKIANG_LEFT_SRC})`,
+            backgroundSize: "100% 100%",
+            backgroundRepeat: "no-repeat",
+            backfaceVisibility: "hidden",
+            filter: "drop-shadow(0 14px 22px rgba(0,0,0,.55))",
+          }}
         />
 
-        {/* Rangkiang kanan (masuk dari kanan) */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        {/* Rangkiang kanan: tepi potong menempel di tepi kanan layar, masuk dari kanan */}
+        <div
           ref={rightRef}
-          src={RANGKIANG_RIGHT_SRC}
-          alt=""
           aria-hidden="true"
-          draggable={false}
-          decoding="async"
-          className="pointer-events-none absolute right-0 max-w-none select-none will-change-transform"
-          style={{ visibility: "hidden", filter: "drop-shadow(0 14px 22px rgba(0,0,0,.55))" }}
+          className="pointer-events-none absolute will-change-transform"
+          style={{
+            right: 0,
+            visibility: "hidden",
+            backgroundImage: `url(${RANGKIANG_RIGHT_SRC})`,
+            backgroundSize: "100% 100%",
+            backgroundRepeat: "no-repeat",
+            backfaceVisibility: "hidden",
+            filter: "drop-shadow(0 14px 22px rgba(0,0,0,.55))",
+          }}
         />
 
         {/* Songket menjuntai dari atas */}

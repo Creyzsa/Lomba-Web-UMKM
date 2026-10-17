@@ -99,7 +99,7 @@ $res_toko_khas = mysqli_query($koneksi, "SELECT * FROM toko WHERE is_khas = 1 OR
             </div>
         <?php else: ?>
             <div class="error-msg-box">
-                <p>Belum ada data makanan khas daerah. <a href="detail.php?id=1">Lihat contoh UMKM</a></p>
+                <p>Belum ada data makanan khas daerah yang ditampilkan. <a href="toko.php">Jelajahi UMKM Kuliner</a></p>
             </div>
         <?php endif; ?>
     </section>

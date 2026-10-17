@@ -578,7 +578,7 @@ $active_nav = 'budget';
             }).addTo(map);
 
             const markersLayer = L.layerGroup().addTo(map);
-            const kategoriIcons = { 'Rumah Makan': '<i class="fa-solid fa-bowl-rice"></i>', 'Sate': '<i class="fa-solid fa-stroopwafel"></i>', 'Kopi': '<i class="fa-solid fa-mug-hot"></i>', 'Oleh-oleh': '<i class="fa-solid fa-gift"></i>', 'Camilan': '<i class="fa-solid fa-cookie-bite"></i>' };
+            const kategoriIcons = { 'Rumah Makan': '<i class="fa-solid fa-bowl-rice"></i>', 'Sate': '<i class="fa-solid fa-stroopwafel"></i>', 'Kopi': '<i class="fa-solid fa-mug-hot"></i>', 'Oleh-oleh': '<i class="fa-solid fa-gift"></i>', 'Camilan': '<i class="fa-solid fa-cookie-bite"></i>', 'Modern': '<i class="fa-solid fa-wand-magic-sparkles"></i>', 'Modern & Inovasi': '<i class="fa-solid fa-wand-magic-sparkles"></i>' };
             const rupiah = n => 'Rp' + Number(n).toLocaleString('id-ID');
             const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
             const errBox = document.getElementById('budget-error');

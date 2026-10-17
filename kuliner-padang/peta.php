@@ -58,7 +58,7 @@ $active_nav = 'peta';
                 <button class="filter-btn" data-category="Kopi"><i class="fa-solid fa-mug-hot"></i> Kopi &amp; Kawa</button>
                 <button class="filter-btn" data-category="Oleh-oleh"><i class="fa-solid fa-gift"></i> Oleh-oleh</button>
                 <button class="filter-btn" data-category="Camilan"><i class="fa-solid fa-cookie-bite"></i> Camilan</button>
-                <button class="filter-btn" data-category="Modern"><i class="fa-solid fa-sparkles"></i> Modern &amp; Fusion</button>
+                <button class="filter-btn" data-category="Modern"><i class="fa-solid fa-wand-magic-sparkles"></i> Modern &amp; Fusion</button>
             </div>
         </div>
 
@@ -71,6 +71,7 @@ $active_nav = 'peta';
                 <div class="legend-item"><span class="legend-icon kopi-icon"><i class="fa-solid fa-mug-hot"></i></span> Kedai Kopi</div>
                 <div class="legend-item"><span class="legend-icon oleh-icon"><i class="fa-solid fa-gift"></i></span> Oleh-oleh</div>
                 <div class="legend-item"><span class="legend-icon camilan-icon"><i class="fa-solid fa-cookie-bite"></i></span> Camilan</div>
+                <div class="legend-item"><span class="legend-icon modern-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span> Modern &amp; Fusion</div>
             </div>
         </div>
 

@@ -16,8 +16,7 @@ $nav_prefix = $nav_prefix ?? '';
                     <small>Warisan Cita Rasa di Ujung Jari</small>
                 </div>
             </div>
-            <p class="footer-bio">Mendukung digitalisasi dan kemandirian pelaku UMKM kuliner di Kota Padang dan sekitarnya melalui teknologi web terbuka.</p>
-            <p class="footer-bio"><strong>Catatan demo:</strong> data toko, menu, lokasi, dan nomor WhatsApp bawaan merupakan ilustrasi, bukan kontak usaha nyata.</p>
+            <p class="footer-bio">Mendukung digitalisasi dan kemandirian pelaku UMKM kuliner di Kota Padang dan sekitarnya melalui ekosistem etalase digital terintegrasi.</p>
         </div>
 
         <div class="footer-col">

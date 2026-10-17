@@ -10,9 +10,9 @@
  */
 $hero_bg = 'assets/img/rumah-gadang.jpg';
 $songket_src = 'assets/img/songketminangkabau.png';
-$road_src = 'assets/img/jalan.png';
-$rangkiang_left_src = 'assets/img/rangkiang.png';
-$rangkiang_right_src = 'assets/img/rangkiang - Copy.png';
+$road_src = 'assets/img/jalan.webp';
+$rangkiang_left_src = 'assets/img/rangkiang-kiri.webp';
+$rangkiang_right_src = 'assets/img/rangkiang-kanan.webp';
 
 $songket_items = [
     ["id" => "r1", "label" => "Songket 1", "x" => 17, "len" => 14, "size" => 9, "flip" => false, "window" => [0.02, 0.24]],
@@ -122,11 +122,15 @@ $songket_items = [
             filter: drop-shadow(0 10px 16px rgba(0,0,0,0.55)) drop-shadow(0 0 10px rgba(232, 178, 92, 0.25));
         }
 
-        /* Scene Bawah: Jalan & Dua Rangkiang */
+        /* Scene Bawah: Jalan & Dua Rangkiang
+           Wadah ini harus selebar layar (left:0 + right:0), supaya rangkiang
+           menempel di ujung kiri dan ujung kanan layar. */
         .shs-bottom-scene {
             position: absolute;
-            inset-x: 0;
+            left: 0;
+            right: 0;
             bottom: 0;
+            width: 100%;
             pointer-events: none;
             z-index: 18;
             overflow: visible;
@@ -134,7 +138,9 @@ $songket_items = [
         .shs-road {
             position: absolute;
             bottom: 0;
-            left: 50%;
+            left: 0;
+            right: 0;
+            width: 100%;
             pointer-events: none;
             user-select: none;
             will-change: transform;
@@ -189,30 +195,71 @@ $songket_items = [
         .shs-chapter-kicker {
             font-size: 0.9rem;
             font-weight: 600;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            color: var(--emas-utama);
+            color: #F4D58D;
             margin-bottom: 12px;
+            text-shadow: 0 0 12px rgba(244, 213, 141, 0.45);
         }
         .shs-chapter-title {
             font-family: var(--font-heading);
-            font-size: clamp(2rem, 4.2vw, 3.4rem);
-            font-weight: 800;
-            color: var(--emas-terang);
+            font-size: clamp(2.2rem, 4.4vw, 3.6rem);
+            font-weight: 900;
+            line-height: 1.18;
             max-width: 920px;
-            line-height: 1.2;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            margin: 0 auto;
+            background: linear-gradient(135deg, #FFF8EC 0%, #FDE4AA 25%, #E8B25C 50%, #FFD475 75%, #F4D58D 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 28px rgba(232, 178, 92, 0.4));
+            animation: shsTitleShine 5s linear infinite, shsTitlePulse 3.5s ease-in-out infinite alternate;
+        }
+        @keyframes shsTitleShine {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes shsTitlePulse {
+            0% {
+                filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 20px rgba(232, 178, 92, 0.3));
+            }
+            100% {
+                filter: drop-shadow(0 6px 22px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 38px rgba(244, 213, 141, 0.65));
+            }
         }
         .shs-chapter-text {
-            font-size: 1.05rem;
-            color: rgba(255, 255, 255, 0.9);
-            max-width: 680px;
-            margin: 16px auto 0;
-            line-height: 1.7;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+            color: #FFFFFF;
+            max-width: 740px;
+            margin: 20px auto 0;
+            line-height: 1.75;
+            text-shadow: 0 2px 14px rgba(0, 0, 0, 0.85), 0 0 20px rgba(0, 0, 0, 0.6);
         }
 
-        /* Indikator Scroll & Rail */
+        /* Efek Elegan Eksklusif pada Judul Hero Utama Peta Rasa Padang */
+        .hero-title {
+            margin-bottom: 16px !important;
+        }
+        .hero-title-gradient {
+            background: linear-gradient(135deg, #FFFFFF 0%, #FFF4DE 35%, #F4D58D 70%, #E8B25C 100%) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.75)) !important;
+            letter-spacing: -0.02em !important;
+            display: inline-block !important;
+            animation: heroTitleFloat 4s ease-in-out infinite alternate !important;
+        }
+        @keyframes heroTitleFloat {
+            0% {
+                transform: translateY(0);
+                filter: drop-shadow(0 4px 18px rgba(0, 0, 0, 0.75));
+            }
+            100% {
+                transform: translateY(-3px);
+                filter: drop-shadow(0 8px 24px rgba(232, 178, 92, 0.35));
+            }
+        }
         .shs-scroll-hint {
             position: absolute;
             bottom: 24px;
@@ -286,9 +333,9 @@ $songket_items = [
 
         <!-- 5. Scene Bawah: Jalan & Rangkiang Kiri-Kanan -->
         <div class="shs-bottom-scene">
-            <img id="shs-road" src="<?= $road_src; ?>" alt="Jalan Minang" class="shs-road">
-            <img id="shs-rangkiang-left" src="<?= $rangkiang_left_src; ?>" alt="Rangkiang Minang Kiri" class="shs-rangkiang shs-rangkiang-left">
-            <img id="shs-rangkiang-right" src="<?= $rangkiang_right_src; ?>" alt="Rangkiang Minang Kanan" class="shs-rangkiang shs-rangkiang-right">
+            <div id="shs-road" class="shs-road" style="background-image: url('<?= $road_src; ?>'); background-size: 100% 100%; background-repeat: no-repeat; backface-visibility: hidden;"></div>
+            <div id="shs-rangkiang-left" class="shs-rangkiang shs-rangkiang-left" style="background-image: url('<?= $rangkiang_left_src; ?>'); background-size: 100% 100%; background-repeat: no-repeat;"></div>
+            <div id="shs-rangkiang-right" class="shs-rangkiang shs-rangkiang-right" style="background-image: url('<?= $rangkiang_right_src; ?>'); background-size: 100% 100%; background-repeat: no-repeat;"></div>
         </div>
 
         <!-- 6. Konten Hero Awal -->
@@ -323,28 +370,34 @@ $songket_items = [
 
         <!-- 7. Bab Cerita Bergantian -->
         <div class="shs-chapter" id="shs-chapter-0">
-            <span class="shs-chapter-kicker"><i class="fa-solid fa-gem"></i> Keagungan Budaya &amp; Kuliner</span>
-            <h2 class="shs-chapter-title">Sentuhan Kain Songket &amp; Rempah Sakral Minangkabau</h2>
-            <p class="shs-chapter-text">Sebagaimana benang emas ditenun teliti menjadi mahakarya songket, begitu pula racikan rempah leluhur berpadu menciptakan rasa autentik yang mendunia.</p>
+            <div class="shs-chapter-card">
+                <span class="shs-chapter-kicker"><i class="fa-solid fa-pepper-hot"></i> Warisan Rasa &amp; Rempah Minangkabau</span>
+                <h2 class="shs-chapter-title">Kelezatan Autentik Dapur Kuliner Ranah Minang</h2>
+                <p class="shs-chapter-text">Dari kuali rendang beraroma rempah kelapa hingga gurihnya gulai kapau dan hangatnya seduhan kawa daun, setiap suapan menghadirkan cita rasa warisan yang mendunia.</p>
+            </div>
         </div>
 
         <div class="shs-chapter" id="shs-chapter-1">
-            <span class="shs-chapter-kicker"><i class="fa-solid fa-wheat-awn"></i> Simbol Kemakmuran Rangkiang</span>
-            <h2 class="shs-chapter-title">Lumbung Pangan &amp; UMKM Kebanggaan Ranah Minang</h2>
-            <p class="shs-chapter-text">Rangkiang melambangkan ketahanan dan kesejahteraan. Kami hadir mendampingi 35+ UMKM kuliner Padang agar terus bertumbuh dan mandiri secara digital.</p>
+            <div class="shs-chapter-card">
+                <span class="shs-chapter-kicker"><i class="fa-solid fa-store"></i> Simbol Kemakmuran UMKM</span>
+                <h2 class="shs-chapter-title">Lumbung Pangan &amp; UMKM Kebanggaan Ranah Minang</h2>
+                <p class="shs-chapter-text">Rangkiang melambangkan ketahanan dan kesejahteraan. Kami hadir mendampingi <span class="shs-accent-badge">35+ UMKM kuliner Padang</span> agar terus bertumbuh dan mandiri secara digital.</p>
+            </div>
         </div>
 
         <div class="shs-chapter" id="shs-chapter-2">
-            <span class="shs-chapter-kicker"><i class="fa-solid fa-map-location-dot"></i> Siap Menjelajah Kota Padang?</span>
-            <h2 class="shs-chapter-title">Temukan Kelezatan Terdekat Sekarang</h2>
-            <p class="shs-chapter-text" style="margin-bottom: 24px;">Gunakan peta pintar kami untuk menemukan tempat makan terdekat, susun rute perjalanan, atau pesan langsung via WhatsApp.</p>
-            <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
-                <a href="peta.php" class="btn btn-hero-primary" style="padding: 12px 28px; font-size: 0.95rem;">
-                    <i class="fa-solid fa-map-location-dot"></i> Buka Peta Interaktif
-                </a>
-                <a href="smart-route.php" class="btn btn-hero-secondary" style="padding: 12px 28px; font-size: 0.95rem;">
-                    <i class="fa-solid fa-route"></i> Susun Rute Pintar
-                </a>
+            <div class="shs-chapter-card">
+                <span class="shs-chapter-kicker"><i class="fa-solid fa-map-location-dot"></i> Siap Menjelajah Kota Padang?</span>
+                <h2 class="shs-chapter-title">Temukan Kelezatan Terdekat Sekarang</h2>
+                <p class="shs-chapter-text" style="margin-bottom: 24px;">Gunakan peta pintar kami untuk menemukan tempat makan terdekat, susun rute perjalanan, atau pesan langsung via WhatsApp.</p>
+                <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-top: 10px;">
+                    <a href="peta.php" class="btn btn-hero-primary" style="padding: 13px 30px; font-size: 0.95rem; box-shadow: 0 8px 24px rgba(232, 178, 92, 0.35);">
+                        <i class="fa-solid fa-map-location-dot"></i> Buka Peta Interaktif
+                    </a>
+                    <a href="smart-route.php" class="btn btn-hero-secondary" style="padding: 13px 30px; font-size: 0.95rem;">
+                        <i class="fa-solid fa-route"></i> Susun Rute Pintar
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -395,6 +448,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const LEFT_RATIO = 975 / 360;
     const RIGHT_RATIO = 975 / 357;
 
+    const ROAD_MAX_VH = 0.08;   // tinggi jalan diperkecil: maksimal 8% tinggi layar, lebar tetap 100%
+    let roadRatio = ROAD_RATIO; // diganti otomatis dengan rasio asli file
+
+    /* ===== PENGATURAN UKURAN (ubah angka di sini saja) ===== */
+    // Ukuran rangkiang: 1 = standar, 1.3 = 30% lebih besar, 0.8 = 20% lebih kecil
+    const SIZE_LEFT = 1;
+    const SIZE_RIGHT = 1;
+    /* ======================================================= */
+
     let vw = window.innerWidth;
     let vh = window.innerHeight;
     let target = 0;
@@ -408,26 +470,27 @@ document.addEventListener('DOMContentLoaded', function () {
         vw = window.innerWidth;
         vh = window.innerHeight;
 
-        const roadW = Math.max(vw * 1.25, 900);
-        const roadH = roadW * ROAD_RATIO;
-        const houseH = Math.min(vh * 0.5, vw * 0.3 * LEFT_RATIO);
-        const wl = houseH / LEFT_RATIO;
-        const wr = houseH / RIGHT_RATIO;
+        const cw = track.clientWidth || vw;
+        const roadW = cw;
+        const roadH = Math.min(roadW * roadRatio, vh * ROAD_MAX_VH);
+        const houseH = Math.min(vh * 0.5, cw * 0.3 * LEFT_RATIO);
+        const hl = houseH * SIZE_LEFT;
+        const hr = houseH * SIZE_RIGHT;
+        const wl = hl / LEFT_RATIO;
+        const wr = hr / RIGHT_RATIO;
         scene = { roadH, wl, wr };
 
         if (road) {
-            road.style.width = roadW + 'px';
             road.style.height = roadH + 'px';
-            road.style.marginLeft = (-roadW / 2) + 'px';
         }
         const footY = roadH * 0.42;
         if (rangLeft) {
-            rangLeft.style.height = houseH + 'px';
+            rangLeft.style.height = hl + 'px';
             rangLeft.style.width = wl + 'px';
             rangLeft.style.bottom = footY + 'px';
         }
         if (rangRight) {
-            rangRight.style.height = houseH + 'px';
+            rangRight.style.height = hr + 'px';
             rangRight.style.width = wr + 'px';
             rangRight.style.bottom = footY + 'px';
         }
@@ -471,29 +534,37 @@ document.addEventListener('DOMContentLoaded', function () {
         // 3. Scene Bawah: Jalan naik dari bawah, Rangkiang masuk dari kiri & kanan
         {
             const { roadH, wl, wr } = scene;
-            const roadIn = reduced ? 1 : easeInOutCubic(clamp(p / 0.16));
+            const roadIn = reduced ? 1 : easeInOutCubic(clamp(p / 0.22));
             const roadOut = reduced ? 0 : easeInOutCubic(clamp((p - 0.86) / 0.14));
             if (road) {
-                const y = (roadH + 12) * (1 - roadIn + roadOut);
+                const y = (roadH + 48) * (1 - roadIn + roadOut);
                 road.style.transform = `translate3d(0, ${y}px, 0)`;
                 road.style.visibility = (roadIn <= 0 || roadOut >= 1) ? 'hidden' : 'visible';
             }
 
             // Rangkiang kiri masuk dari luar layar dan menempel di margin luar kiri
-            const leftIn = reduced ? 1 : easeInOutCubic(clamp(p / 0.22));
+            // masuk: melambat saat tiba (easeOutCubic) supaya terasa "mendarat" di tepi layar
+            const leftIn = reduced ? 1 : easeOutCubic(clamp((p - 0.1) / 0.26));
+            const rightIn = reduced ? 1 : easeOutCubic(clamp((p - 0.14) / 0.26));
             const leftOut = reduced ? 0 : easeInOutCubic(clamp((p - 0.8) / 0.12));
+            const rightOut = reduced ? 0 : easeInOutCubic(clamp((p - 0.82) / 0.12));
+
             if (rangLeft) {
-                const x = -(wl + 32) * (1 - leftIn) - (wl + 32) * leftOut;
-                rangLeft.style.transform = `translate3d(${x}px, 0, 0)`;
+                const slide = Math.max(0, 1 - leftIn + leftOut);
+                // +56px: bayangan ikut tersembunyi di luar layar; tepi potong tidak pernah melewati tepi kiri ke dalam
+                const x = -(wl + 56) * slide;
+                // sedikit naik dari bawah saat masuk, supaya gerakan tidak kaku
+                const y = 28 * slide;
+                rangLeft.style.transform = `translate3d(${x}px, ${y}px, 0)`;
                 rangLeft.style.visibility = (leftIn <= 0 || leftOut >= 1) ? 'hidden' : 'visible';
             }
 
             // Rangkiang kanan masuk dari luar layar dan menempel di margin luar kanan
-            const rightIn = reduced ? 1 : easeInOutCubic(clamp(p / 0.22));
-            const rightOut = reduced ? 0 : easeInOutCubic(clamp((p - 0.8) / 0.12));
             if (rangRight) {
-                const x = (wr + 32) * (1 - rightIn) + (wr + 32) * rightOut;
-                rangRight.style.transform = `translate3d(${x}px, 0, 0)`;
+                const slide = Math.max(0, 1 - rightIn + rightOut);
+                const x = (wr + 56) * slide;
+                const y = 28 * slide;
+                rangRight.style.transform = `translate3d(${x}px, ${y}px, 0)`;
                 rangRight.style.visibility = (rightIn <= 0 || rightOut >= 1) ? 'hidden' : 'visible';
             }
         }
@@ -539,6 +610,12 @@ document.addEventListener('DOMContentLoaded', function () {
             el.style.transform = `translate3d(0, ${isLast ? lerp(36, 0, easeOutCubic(fadeIn)) : lerp(36, -36, local)}px, 0)`;
             el.style.pointerEvents = (!reduced && vis > 0.6) ? 'auto' : 'none';
             el.style.visibility = (vis < 0.01) ? 'hidden' : 'visible';
+
+            if (vis > 0.45) {
+                el.classList.add('active-step');
+            } else {
+                el.classList.remove('active-step');
+            }
         });
 
         // 6. Rail Progress & Hint
@@ -552,14 +629,18 @@ document.addEventListener('DOMContentLoaded', function () {
         target = total > 0 ? clamp(-rect.top / total) : 0;
     };
 
-    const tick = () => {
-        cur += (target - cur) * 0.1;
-        if (Math.abs(target - cur) < 0.0004) cur = target;
+    let last = 0;
+    const tick = (now) => {
+        const dt = last ? Math.min((now - last) / 1000, 0.05) : 1 / 60;
+        last = now;
+        cur += (target - cur) * (1 - Math.exp(-dt * 7));
+        if (Math.abs(target - cur) < 0.0002) cur = target;
         apply(cur);
         if (cur !== target) {
             raf = requestAnimationFrame(tick);
         } else {
             raf = 0;
+            last = 0;
         }
     };
 
@@ -567,6 +648,16 @@ document.addEventListener('DOMContentLoaded', function () {
         readTarget();
         if (!raf) raf = requestAnimationFrame(tick);
     };
+
+    const roadProbe = new Image();
+    roadProbe.onload = () => {
+        if (roadProbe.naturalWidth > 0) {
+            roadRatio = roadProbe.naturalHeight / roadProbe.naturalWidth;
+            measure();
+            apply(cur);
+        }
+    };
+    roadProbe.src = '<?= $road_src; ?>';
 
     measure();
 

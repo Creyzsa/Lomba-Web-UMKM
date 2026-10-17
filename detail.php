@@ -230,15 +230,19 @@ $active_nav = 'toko';
 
         <section class="review-section" id="ulasan">
             <div class="review-heading">
-                <div>
-                    <span class="section-kicker">CERITA PENGUNJUNG</span>
-                    <h2 class="section-heading">Rating & Ulasan</h2>
-                    <p class="text-muted">Bagikan pengalaman Anda dan bantu pengunjung lain memilih.</p>
+                <div class="review-heading-content">
+                    <span class="section-kicker"><i class="fa-solid fa-comment-dots"></i> CERITA PENGUNJUNG</span>
+                    <h2 class="section-heading">Rating &amp; Ulasan</h2>
+                    <p class="text-muted">Bagikan pengalaman santap kuliner Anda untuk membantu penikmat rasa lainnya.</p>
                 </div>
-                <div class="review-summary" aria-label="Rating rata-rata <?= number_format((float)$ringkasan_rating['rata_rating'], 1); ?> dari 5">
-                    <strong><?= number_format((float)$ringkasan_rating['rata_rating'], 1); ?></strong>
-                    <span class="review-stars" aria-hidden="true">★</span>
-                    <small><?= (int)$ringkasan_rating['total_ulasan']; ?> ulasan</small>
+                <div class="review-summary-box">
+                    <div class="review-score">
+                        <strong><?= number_format((float)$ringkasan_rating['rata_rating'], 1); ?></strong>
+                        <div class="review-stars-group">
+                            <span class="review-stars" aria-hidden="true">★</span>
+                            <small class="review-count"><?= (int)$ringkasan_rating['total_ulasan']; ?> ulasan</small>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -253,26 +257,47 @@ $active_nav = 'toko';
                 <form method="POST" action="detail.php?id=<?= $id_toko; ?>#ulasan" class="review-form">
                     <input type="hidden" name="action" value="ulasan">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrf_ulasan); ?>">
-                    <label for="rating">Rating Anda</label>
-                    <select id="rating" name="rating" class="form-control" required>
-                        <option value="">Pilih bintang</option>
-                        <?php for ($bintang = 5; $bintang >= 1; $bintang--): ?>
-                            <option value="<?= $bintang; ?>" <?= (int)($ulasan_saya['rating'] ?? 0) === $bintang ? 'selected' : ''; ?>>
-                                <?= $bintang; ?> <?= $bintang === 1 ? 'bintang' : 'bintang'; ?>
-                            </option>
-                        <?php endfor; ?>
-                    </select>
-                    <label for="komentar">Ulasan (opsional)</label>
-                    <textarea id="komentar" name="komentar" class="form-control" rows="3" maxlength="2000" placeholder="Ceritakan pengalaman Anda..."><?= htmlspecialchars($ulasan_saya['komentar'] ?? ''); ?></textarea>
-                    <button type="submit" class="btn btn-primary">
-                        <?= $ulasan_saya ? 'Perbarui Ulasan' : 'Kirim Ulasan'; ?>
-                    </button>
-                    <?php if ($ulasan_saya): ?>
-                        <small class="text-muted">Anda sudah memberi rating. Menyimpan ulasan baru akan menggantikan rating sebelumnya.</small>
-                    <?php endif; ?>
+                    <div class="review-form-header">
+                        <i class="fa-solid fa-pen-to-square text-gold"></i>
+                        <span><?= $ulasan_saya ? 'Perbarui Ulasan Anda' : 'Tulis Pengalaman & Ulasan'; ?></span>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="rating"><i class="fa-solid fa-star text-gold"></i> Rating Kepuasan</label>
+                        <select id="rating" name="rating" class="form-control" required style="max-width: 240px;">
+                            <option value="">Pilih Bintang (1 - 5)</option>
+                            <?php for ($bintang = 5; $bintang >= 1; $bintang--): ?>
+                                <option value="<?= $bintang; ?>" <?= (int)($ulasan_saya['rating'] ?? 0) === $bintang ? 'selected' : ''; ?>>
+                                    ★ <?= $bintang; ?> Bintang <?= $bintang === 5 ? '(Sangat Puas)' : ($bintang === 1 ? '(Kurang)' : ''); ?>
+                                </option>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="komentar"><i class="fa-solid fa-message text-gold"></i> Cerita Ulasan Anda (opsional)</label>
+                        <textarea id="komentar" name="komentar" class="form-control" rows="3" maxlength="2000" placeholder="Ceritakan bagaimana kelezatan masakan, porsi, suasana tempat, atau keramahan pelayanan..."><?= htmlspecialchars($ulasan_saya['komentar'] ?? ''); ?></textarea>
+                    </div>
+                    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+                        <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">
+                            <i class="fa-solid fa-paper-plane"></i> <?= $ulasan_saya ? 'Simpan Perubahan' : 'Kirim Ulasan'; ?>
+                        </button>
+                        <?php if ($ulasan_saya): ?>
+                            <small class="text-muted"><i class="fa-solid fa-info-circle"></i> Menyimpan ulasan baru akan menggantikan ulasan sebelumnya.</small>
+                        <?php endif; ?>
+                    </div>
                 </form>
             <?php elseif (!isset($_SESSION['id_user'])): ?>
-                <p class="review-login-note">Ingin memberikan rating? <a href="login.php">Masuk sebagai pembeli</a> terlebih dahulu.</p>
+                <div class="review-login-card">
+                    <div class="review-login-icon">
+                        <i class="fa-solid fa-pen-nib"></i>
+                    </div>
+                    <div class="review-login-info">
+                        <strong>Ingin berbagi ulasan pengalaman rasa?</strong>
+                        <p>Silakan masuk ke akun pembeli untuk memberikan rating bintang dan pengalaman bersantap Anda.</p>
+                    </div>
+                    <a href="login.php" class="btn btn-primary btn-sm review-login-btn">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i> Masuk Sekarang
+                    </a>
+                </div>
             <?php endif; ?>
 
             <div class="review-list">
@@ -280,11 +305,16 @@ $active_nav = 'toko';
                     <?php while ($ulasan = mysqli_fetch_assoc($res_ulasan)): ?>
                         <article class="review-card">
                             <div class="review-card-heading">
-                                <div>
-                                    <strong><?= htmlspecialchars($ulasan['username']); ?></strong>
-                                    <span class="review-stars" aria-label="<?= (int)$ulasan['rating']; ?> dari 5 bintang">
-                                        <?= str_repeat('★', (int)$ulasan['rating']); ?><span class="review-stars-muted"><?= str_repeat('★', 5 - (int)$ulasan['rating']); ?></span>
-                                    </span>
+                                <div class="review-user-block">
+                                    <div class="review-user-avatar">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <strong class="review-author"><?= htmlspecialchars($ulasan['username']); ?></strong>
+                                        <span class="review-stars" aria-label="<?= (int)$ulasan['rating']; ?> dari 5 bintang">
+                                            <?= str_repeat('★', (int)$ulasan['rating']); ?><span class="review-stars-muted"><?= str_repeat('★', 5 - (int)$ulasan['rating']); ?></span>
+                                        </span>
+                                    </div>
                                 </div>
                                 <time datetime="<?= htmlspecialchars($ulasan['created_at']); ?>"><?= date('d M Y', strtotime($ulasan['created_at'])); ?></time>
                             </div>
@@ -293,14 +323,21 @@ $active_nav = 'toko';
                             <?php endif; ?>
                             <?php if (!empty($ulasan['balasan'])): ?>
                                 <div class="review-reply">
-                                    <strong>Balasan pemilik</strong>
+                                    <div class="review-reply-header">
+                                        <i class="fa-solid fa-store text-gold"></i>
+                                        <strong>Tanggapan Pemilik Toko</strong>
+                                    </div>
                                     <p><?= nl2br(htmlspecialchars($ulasan['balasan'])); ?></p>
                                 </div>
                             <?php endif; ?>
                         </article>
                     <?php endwhile; ?>
                 <?php else: ?>
-                    <div class="review-empty">Belum ada ulasan. Jadilah yang pertama berbagi pengalaman.</div>
+                    <div class="review-empty-state">
+                        <div class="empty-icon"><i class="fa-regular fa-comments"></i></div>
+                        <h4>Belum Ada Ulasan</h4>
+                        <p>Jadilah pengunjung pertama yang membagikan cerita dan rating cita rasa autentik di tempat ini.</p>
+                    </div>
                 <?php endif; ?>
             </div>
         </section>

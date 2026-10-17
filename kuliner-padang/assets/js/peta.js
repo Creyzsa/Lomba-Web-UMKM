@@ -38,7 +38,9 @@ document.addEventListener('DOMContentLoaded', function () {
         'Sate': '<i class="fa-solid fa-stroopwafel"></i>',
         'Kopi': '<i class="fa-solid fa-mug-hot"></i>',
         'Oleh-oleh': '<i class="fa-solid fa-gift"></i>',
-        'Camilan': '<i class="fa-solid fa-cookie-bite"></i>'
+        'Camilan': '<i class="fa-solid fa-cookie-bite"></i>',
+        'Modern': '<i class="fa-solid fa-wand-magic-sparkles"></i>',
+        'Modern & Inovasi': '<i class="fa-solid fa-wand-magic-sparkles"></i>'
     };
 
     // Fungsi membuat custom icon pin gonjong Minang
